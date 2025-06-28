@@ -73,14 +73,15 @@ app.use(cors({
         }
         
         // Define other allowed origins
-        const allowedOrigins = [
-            'http://localhost:3000',
-            'http://localhost:5000',
-            'http://127.0.0.1:3000',
-            'http://127.0.0.1:5000',
-            'https://checkout.stripe.com',
-            'https://js.stripe.com'
-        ];
+       const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5000', 
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:5000',
+    'https://checkout.stripe.com',
+    'https://js.stripe.com',
+    'https://ai-career-assistant-production.up.railway.app'
+];
         
         // Check if origin is in allowed list
         if (allowedOrigins.indexOf(origin) !== -1) {
