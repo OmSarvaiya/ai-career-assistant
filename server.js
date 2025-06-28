@@ -13,6 +13,8 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const mongoose = require('mongoose');
+const { OpenAI } = require('openai');
+
 
 // Load environment variables
 require('dotenv').config();
@@ -22,6 +24,9 @@ const SubscriptionSystem = require('./subscription-system');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+});
 
 console.log('🚀 Starting AI Interview Assistant Backend Server...');
 
@@ -81,7 +86,7 @@ app.use(cors({
     'https://checkout.stripe.com',
     'https://js.stripe.com',
     'https://ai-career-assistant-production.up.railway.app'
-];
+];  
         
         // Check if origin is in allowed list
         if (allowedOrigins.indexOf(origin) !== -1) {
@@ -1211,6 +1216,67 @@ app.post('/api/auth/login', async (req, res) => {
             error: 'Login failed. Please try again.'
         });
     }
+});
+
+app.post('/api/ai/generate-response', authenticateToken, async (req, res) => {
+    try {
+        console.log('🤖 AI response request received');
+        const { question, context, user_id } = req.body;
+        
+        if (!question) {
+            return res.status(400).json({
+                success: false,
+                error: 'Question is required'
+            });
+        }
+        
+        console.log('📝 Processing question:', question.substring(0, 50) + '...');
+        
+        // Call OpenAI
+        const completion = await openai.chat.completions.create({
+            model: 'gpt-4o-mini',
+            messages: [
+                {
+                    role: 'system',
+                    content: 'You are an AI interview assistant. Provide concise, professional responses that demonstrate relevant experience and skills. Keep responses under 150 words and focus on practical examples.'
+                },
+                {
+                    role: 'user',
+                    content: question
+                }
+            ],
+            max_tokens: 200,
+            temperature: 0.7
+        });
+        
+        const aiResponse = completion.choices[0]?.message?.content || 'Unable to generate response.';
+        
+        console.log('✅ AI response generated successfully');
+        
+        res.json({
+            success: true,
+            response: aiResponse,
+            tokens_used: completion.usage?.total_tokens || 0
+        });
+        
+    } catch (error) {
+        console.error('❌ AI generation error:', error);
+        
+        const fallbackResponse = "Based on my experience, I approach this by first understanding the requirements clearly, then developing a structured plan to address the challenge effectively.";
+        
+        res.json({
+            success: true,
+            response: fallbackResponse,
+            fallback: true
+        });
+    }
+});
+app.get('/api/ai/health', (req, res) => {
+    res.json({
+        success: true,
+        ai_service: 'operational',
+        timestamp: new Date().toISOString()
+    });
 });
 
 // Token Verification
