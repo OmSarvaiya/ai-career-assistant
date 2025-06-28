@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Management - AI Interview Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='20' cy='20' r='2'/%3E%3C/g%3E%3C/svg%3E") repeat;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+        }
+
+        .loading::before {
+            content: '';
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: linear-gradient(135deg, #fee, #fdd);
+            border: 1px solid #fcc;
+            color: #c33;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .error::before {
+            content: '⚠️';
+            font-size: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .content {
+                padding: 30px 20px;
+            }
+        }
+
+        .card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid #e8ebf7;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+        }
+
+        .card h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 25px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-active {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+        }
+
+        .status-trial {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            color: #856404;
+        }
+
+        .status-cancelled {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+        }
+
+        .usage-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 12px;
+            margin: 16px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .usage-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .usage-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .usage-fill.warning {
+            background: linear-gradient(90deg, #ffc107, #fd7e14);
+        }
+
+        .usage-fill.danger {
+            background: linear-gradient(90deg, #dc3545, #e83e8c);
+        }
+
+        .plan-info {
+            margin: 20px 0;
+        }
+
+        .plan-info p {
+            margin: 12px 0;
+            color: #4a5568;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .plan-info strong {
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: 8px 8px 8px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .button:hover::before {
+            left: 100%;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .button.secondary {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+        }
+
+        .button.secondary:hover {
+            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+        }
+
+        .button.danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+
+        .button.danger:hover {
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+        }
+
+        .features-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .features-list li {
+            padding: 8px 0;
+            color: #4a5568;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .features-list li:before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            background: rgba(40, 167, 69, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .plans-section {
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid #e8ebf7;
+        }
+
+        .plans-section h3 {
+            margin-bottom: 30px;
+            color: #2d3748;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .plan-card {
+            border: 2px solid #e8ebf7;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            background: white;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+        }
+
+        .plan-card.current {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            transform: scale(1.02);
+        }
+
+        .plan-card h4 {
+            color: #2d3748;
+            margin-bottom: 16px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .plan-price {
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+            margin: 16px 0;
+        }
+
+        .current-label {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .billing-history {
+            margin-top: 50px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid #e8ebf7;
+        }
+
+        .billing-history h3 {
+            margin-bottom: 24px;
+            color: #2d3748;
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .billing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .billing-table th,
+        .billing-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #e8ebf7;
+        }
+
+        .billing-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .billing-table td {
+            background: white;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .billing-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .billing-table tr:hover td {
+            background: #f8f9ff;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 460px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal h3 {
+            margin-bottom: 20px;
+            color: #2d3748;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .modal p {
+            margin-bottom: 30px;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.2s ease;
+        }
+
+        .close:hover {
+            color: #667eea;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
+        }
+
+        .usage-percentage {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+            margin-top: 8px;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .button-group {
+                flex-direction: column;
+            }
+            .button {
+                margin: 4px 0;
+            }
+        }
+
+        /* Success notification styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+            z-index: 10000;
+            font-weight: 600;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Subscription Management</h1>
+            <p>Manage your AI Interview Assistant subscription and billing</p>
+        </div>
+
+        <div class="content">
+            <div id="loading" class="loading">
+                <p>Loading your subscription data...</p>
+            </div>
+
+            <div id="error" class="error" style="display: none;">
+                <p id="error-message"></p>
+            </div>
+
+            <div id="subscription-data" style="display: none;">
+                <div class="grid">
+                    <!-- Current Plan Card -->
+                    <div class="card">
+                        <h3>📊 Current Plan</h3>
+                        <div class="plan-info">
+                            <p><strong>Plan:</strong> <span id="current-plan-name"></span> 
+                               <span id="plan-status" class="status-badge"></span></p>
+                            <p><strong>Status:</strong> <span id="subscription-status"></span></p>
+                            <p id="next-billing" style="display: none;"><strong>Next Billing:</strong> <span id="next-billing-date"></span></p>
+                            <p id="access-until" style="display: none;"><strong>Access Until:</strong> <span id="access-until-date"></span></p>
+                        </div>
+                        <ul id="current-features" class="features-list"></ul>
+                        <div class="button-group">
+                            <button id="upgrade-btn" class="button" onclick="showUpgradePlans()">Upgrade Plan</button>
+                            <button id="cancel-btn" class="button danger" onclick="showCancelModal()">Cancel Plan</button>
+                            <button id="portal-btn" class="button secondary" onclick="openBillingPortal()">Billing Portal</button>
+                        </div>
+                    </div>
+
+                    <!-- Usage Card -->
+                    <div class="card">
+                        <h3>📈 Usage This Month</h3>
+                        <div class="plan-info">
+                            <p><strong>AI Responses:</strong> <span id="usage-count"></span> / <span id="usage-limit"></span></p>
+                            <div class="usage-bar">
+                                <div id="usage-fill" class="usage-fill"></div>
+                            </div>
+                            <div class="usage-percentage" id="usage-percentage">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Available Plans -->
+                <div class="plans-section" id="upgrade-section" style="display: none;">
+                    <h3>🚀 Available Plans</h3>
+                    <div class="plans-grid" id="plans-container"></div>
+                </div>
+
+                <!-- Billing History -->
+                <div class="billing-history">
+                    <h3>💳 Recent Billing History</h3>
+                    <table class="billing-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Plan</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="billing-tbody">
+                            <tr>
+                                <td colspan="4" class="empty-state">No billing history available</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancel Confirmation Modal -->
+    <div id="cancel-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCancelModal()">&times;</span>
+            <h3>Cancel Subscription</h3>
+            <p>Are you sure you want to cancel your subscription? You'll still have access until the end of your current billing period.</p>
+            <div class="button-group">
+                <button class="button danger" onclick="cancelSubscription()">Yes, Cancel</button>
+                <button class="button secondary" onclick="closeCancelModal()">Keep Subscription</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            API_BASE: 'http://localhost:5000/api',
+            USER_ID: getUserIdFromUrl() || '507f1f77bcf86cd799439011'
+        };
+
+        function getUserIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userIdFromUrl = urlParams.get('userId');
+            
+            if (userIdFromUrl) return userIdFromUrl;
+            
+            // Try localStorage fallback
+            const userData = localStorage.getItem('userData');
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    return user.id || user._id;
+                } catch (e) {
+                    console.error('Error parsing user data:', e);
+                }
+            }
+            
+            // Try JWT token
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    return payload.userId || payload.sub || payload.id;
+                } catch (e) {
+                    console.error('Error decoding token:', e);
+                }
+            }
+            
+            return null;
+        }
+
+        let subscriptionData = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSubscriptionData();
+        });
+
+        async function loadSubscriptionData() {
+            try {
+                console.log('Loading subscription data for user:', CONFIG.USER_ID);
+                
+                const response = await fetch(`${CONFIG.API_BASE}/subscription/manage/${CONFIG.USER_ID}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    subscriptionData = data.data;
+                    displaySubscriptionData();
+                } else {
+                    showError(data.error || 'Failed to load subscription data');
+                }
+            } catch (error) {
+                console.error('Error loading subscription data:', error);
+                showError('Failed to connect to server. Please check if the backend is running.');
+            }
+        }
+
+        function displaySubscriptionData() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('subscription-data').style.display = 'block';
+
+            const { subscription, usage, availablePlans, recentPayments } = subscriptionData;
+
+            // Display current plan
+            document.getElementById('current-plan-name').textContent = subscription.planName;
+            document.getElementById('subscription-status').textContent = subscription.status;
+
+            // Plan status badge
+            const statusBadge = document.getElementById('plan-status');
+            statusBadge.textContent = subscription.status;
+            statusBadge.className = `status-badge status-${subscription.status}`;
+
+            // Billing dates
+            if (subscription.nextBillingDate) {
+                document.getElementById('next-billing').style.display = 'block';
+                document.getElementById('next-billing-date').textContent = 
+                    new Date(subscription.nextBillingDate).toLocaleDateString();
+            }
+
+            if (subscription.expiryDate && subscription.status === 'cancelled') {
+                document.getElementById('access-until').style.display = 'block';
+                document.getElementById('access-until-date').textContent = 
+                    new Date(subscription.expiryDate).toLocaleDateString();
+            }
+
+            // Display features
+            const featuresList = document.getElementById('current-features');
+            featuresList.innerHTML = subscription.features.map(feature => 
+                `<li>${feature}</li>`
+            ).join('');
+
+            // Display usage
+            document.getElementById('usage-count').textContent = usage.responses;
+            document.getElementById('usage-limit').textContent = usage.limit === 999999 ? 'Unlimited' : usage.limit;
+            document.getElementById('usage-percentage').textContent = `${usage.percentage}%`;
+
+            // Usage bar with animation
+            const usageFill = document.getElementById('usage-fill');
+            setTimeout(() => {
+                usageFill.style.width = `${Math.min(usage.percentage, 100)}%`;
+                
+                if (usage.percentage >= 90) {
+                    usageFill.className = 'usage-fill danger';
+                } else if (usage.percentage >= 75) {
+                    usageFill.className = 'usage-fill warning';
+                } else {
+                    usageFill.className = 'usage-fill';
+                }
+            }, 300);
+
+            // Display available plans
+            displayPlans(availablePlans, subscription.plan);
+
+            // Display billing history
+            displayBillingHistory(recentPayments);
+
+            // Show/hide buttons based on status
+            updateButtons(subscription.status);
+        }
+
+        function displayPlans(plans, currentPlan) {
+            const container = document.getElementById('plans-container');
+            container.innerHTML = plans.map(plan => `
+                <div class="plan-card ${plan.id === currentPlan ? 'current' : ''}">
+                    ${plan.id === currentPlan ? '<div class="current-label">Current Plan</div>' : ''}
+                    <h4>${plan.name}</h4>
+                    <div class="plan-price">$${(plan.price / 100).toFixed(2)}</div>
+                    <p>per ${plan.interval}</p>
+                    <ul class="features-list">
+                        ${plan.features.map(feature => `<li>${feature}</li>`).join('')}
+                    </ul>
+                    ${plan.id !== currentPlan ? 
+                        `<button class="button" onclick="upgradeToPlan('${plan.id}')">
+                            ${getPlanOrder(plan.id) > getPlanOrder(currentPlan) ? 'Upgrade' : 'Switch'}
+                        </button>` : 
+                        '<button class="button" disabled>Current Plan</button>'
+                    }
+                </div>
+            `).join('');
+        }
+
+        function displayBillingHistory(payments) {
+            const tbody = document.getElementById('billing-tbody');
+            
+            if (payments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No billing history available</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = payments.map(payment => `
+                <tr>
+                    <td>${new Date(payment.date).toLocaleDateString()}</td>
+                    <td>${payment.plan}</td>
+                    <td>$${payment.amount.toFixed(2)} ${payment.currency.toUpperCase()}</td>
+                    <td><span class="status-badge status-${payment.status}">${payment.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function updateButtons(status) {
+            const upgradeBtn = document.getElementById('upgrade-btn');
+            const cancelBtn = document.getElementById('cancel-btn');
+            
+            if (status === 'cancelled') {
+                upgradeBtn.textContent = 'Reactivate';
+                cancelBtn.style.display = 'none';
+            } else if (status === 'trial') {
+                upgradeBtn.textContent = 'Subscribe Now';
+                cancelBtn.style.display = 'none';
+            }
+        }
+
+        function showUpgradePlans() {
+            const upgradeSection = document.getElementById('upgrade-section');
+            upgradeSection.style.display = upgradeSection.style.display === 'none' ? 'block' : 'none';
+        }
+
+        async function upgradeToPlan(planId) {
+            try {
+                const action = subscriptionData.subscription.status === 'cancelled' ? 'reactivate' : 'upgrade';
+                
+                const response = await fetch(`${CONFIG.API_BASE}/subscription/change`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: CONFIG.USER_ID,
+                        action: action,
+                        planId: planId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.checkoutUrl) {
+                    window.location.href = data.checkoutUrl;
+                } else {
+                    showError(data.error || 'Failed to create checkout session');
+                }
+            } catch (error) {
+                console.error('Error upgrading plan:', error);
+                showError('Failed to process upgrade');
+            }
+        }
+
+        function showCancelModal() {
+            document.getElementById('cancel-modal').style.display = 'block';
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancel-modal').style.display = 'none';
+        }
+
+        async function cancelSubscription() {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE}/subscription/change`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: CONFIG.USER_ID,
+                        action: 'cancel',
+                        reason: 'User requested cancellation'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    closeCancelModal();
+                    loadSubscriptionData();
+                    showNotification('Subscription cancelled successfully. You\'ll have access until the end of your billing period.');
+                } else {
+                    showError(data.error || 'Failed to cancel subscription');
+                }
+            } catch (error) {
+                console.error('Error cancelling subscription:', error);
+                showError('Failed to cancel subscription');
+            }
+        }
+
+        async function openBillingPortal() {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE}/subscription/portal`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: CONFIG.USER_ID })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.portalUrl) {
+                    window.open(data.portalUrl, '_blank');
+                } else {
+                    showError(data.error || 'Failed to open billing portal');
+                }
+            } catch (error) {
+                console.error('Error opening billing portal:', error);
+                showError('Failed to open billing portal');
+            }
+        }
+
+        function getPlanOrder(planId) {
+            const order = { free: 0, trial: 0, monthly: 1, quarterly: 2, yearly: 3 };
+            return order[planId] || 0;
+        }
+
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('error-message').textContent = message;
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideInRight 0.3s ease reverse';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('cancel-modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Handle URL parameters (success/cancel from Stripe)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('success') === 'true') {
+            setTimeout(() => {
+                showNotification('🎉 Payment successful! Your subscription has been activated.');
+                loadSubscriptionData();
+            }, 1000);
+        } else if (urlParams.get('cancelled') === 'true') {
+            setTimeout(() => {
+                showError('❌ Payment was cancelled. You can try again anytime.');
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

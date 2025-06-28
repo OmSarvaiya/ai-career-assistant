@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AI Interview Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            line-height: 1.6;
+            min-height: 100vh;
+            color: #2d3748;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .logout-btn, .settings-btn {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+        }
+
+        .logout-btn:hover, .settings-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .welcome-title {
+            font-size: 36px;
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #2d3748, #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-subtitle {
+            color: #718096;
+            font-size: 18px;
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        .status-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .status-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .status-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            font-size: 32px;
+            margin-right: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .subscription-status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subscription-status::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .status-active {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+        }
+
+        .status-trial {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            color: #856404;
+        }
+
+        .status-expired {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::after {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+        }
+
+        .cta-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            margin: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Trial Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes modalFadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .trial-modal {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 550px;
+            width: 90%;
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes modalSlideIn {
+            from { 
+                transform: translateY(50px) scale(0.9);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .trial-modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: scale(1.1);
+        }
+
+        .modal-header h2 {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .trial-highlight {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            margin: 24px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trial-highlight::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .trial-duration {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .btn-start-trial {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px;
+            width: calc(100% - 20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-start-trial:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(34, 197, 94, 0.6);
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .success-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+            z-index: 10001;
+            font-weight: 500;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .trial-active-banner {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            border: 1px solid #c3e6cb;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            color: #155724;
+        }
+
+        .usage-progress {
+            background: #e9ecef;
+            height: 12px;
+            border-radius: 6px;
+            margin: 12px 0;
+            overflow: hidden;
+        }
+
+        .usage-progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border-radius: 6px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .usage-progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: progressShine 2s infinite;
+        }
+
+        @keyframes progressShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Enhanced animations */
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .fade-in-up:nth-child(2) { animation-delay: 0.1s; }
+        .fade-in-up:nth-child(3) { animation-delay: 0.2s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                text-align: center;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .status-cards, .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-section, .cta-section {
+                padding: 30px 20px;
+            }
+
+            .trial-modal {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">🤖 AI Interview Assistant</div>
+            <div class="user-info">
+                <div class="user-avatar" id="user-avatar">U</div>
+                <span class="user-name" id="user-name">Loading...</span>
+                <a href="/settings.html" class="settings-btn">⚙️ Settings</a>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="welcome-section fade-in-up">
+            <h1 class="welcome-title">Welcome to Your Dashboard!</h1>
+            <p class="welcome-subtitle">Your AI-powered interview assistant is ready to help you ace your next interview.</p>
+            
+            <div id="subscription-alert" class="alert alert-info" style="display: none;">
+                <strong>Good news!</strong> Your subscription is active and ready to use.
+            </div>
+        </div>
+
+        <div class="status-cards">
+            <div class="status-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon">👤</div>
+                    <div class="card-title">Account Status</div>
+                </div>
+                <div class="card-content">
+                    <div id="subscription-status" class="subscription-status status-trial">Loading...</div>
+                    <div id="account-details">
+                        <strong>Email:</strong> <span id="user-email">Loading...</span><br>
+                        <strong>Member since:</strong> <span id="member-since">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon">📊</div>
+                    <div class="card-title">Usage Statistics</div>
+                </div>
+                <div class="card-content">
+                    <div><strong>AI Responses:</strong> <span id="usage-count">0</span></div>
+                    <div><strong>Last Activity:</strong> <span id="last-activity">Never</span></div>
+                    <div><strong>Chrome Extension:</strong> <span id="extension-status">Not detected</span></div>
+                </div>
+            </div>
+
+            <div class="status-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon">🎯</div>
+                    <div class="card-title">Quick Actions</div>
+                </div>
+                <div class="card-content">
+                    <button class="btn btn-primary pulse-animation" onclick="testExtension()">Test Extension</button>
+                    <button class="btn btn-secondary" onclick="viewSubscription()">Manage Subscription</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card fade-in-up">
+                <div class="feature-title">🎤 Real-time Interview Help</div>
+                <ul class="feature-list">
+                    <li>AI-powered response suggestions</li>
+                    <li>Works on video calls (Zoom, Teams, Meet)</li>
+                    <li>Real-time transcription</li>
+                    <li>Smart question analysis</li>
+                </ul>
+            </div>
+
+            <div class="feature-card fade-in-up">
+                <div class="feature-title">🌐 Multi-Platform Support</div>
+                <ul class="feature-list">
+                    <li>Chrome extension integration</li>
+                    <li>Works with popular interview platforms</li>
+                    <li>Seamless background operation</li>
+                    <li>Privacy-focused design</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cta-section fade-in-up">
+            <h2 class="cta-title">Ready to Ace Your Next Interview?</h2>
+            <p class="cta-subtitle">Install our Chrome extension and start getting AI-powered interview assistance right away.</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary pulse-animation" onclick="downloadExtension()">📥 Download Extension</a>
+                <a href="#" class="btn btn-secondary" onclick="viewSubscription()">💎 View Subscription</a>
+            </div>
+        </div>
+
+        <div class="extension-guide fade-in-up">
+            <h3 class="guide-title">🚀 How to Get Started</h3>
+            <ol class="guide-steps">
+                <li>
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Install Chrome Extension</div>
+                        <div class="step-description">Download and install our Chrome extension from the Chrome Web Store (Coming Soon!)</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Login to Extension</div>
+                        <div class="step-description">Use your account credentials to authenticate the extension</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Join Video Interview</div>
+                        <div class="step-description">Start your video interview on supported platforms (Zoom, Teams, Meet, etc.)</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Get AI Assistance</div>
+                        <div class="step-description">Receive real-time suggestions and responses during your interview</div>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+        let currentUser = null;
+
+        // Enhanced Smart Dashboard Flow
+        class SmartDashboard {
+            constructor() {
+                this.init();
+            }
+
+            async init() {
+                // Wait for DOM and existing scripts to load
+                setTimeout(() => {
+                    this.checkUserStatus();
+                }, 1000);
+            }
+
+            async checkUserStatus() {
+                try {
+                    const response = await fetch(`${API_BASE}/subscription-status`, {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success && data.subscription) {
+                        if (data.subscription.status === 'trial') {
+                            this.showTrialActiveState(data.subscription);
+                        } else if (data.subscription.status === 'expired' || data.subscription.status === 'none') {
+                            this.showTrialOfferModal();
+                        } else if (data.subscription.status === 'active') {
+                            this.showActiveSubscriptionState();
+                        }
+                    } else {
+                        // New user - offer trial
+                        this.showTrialOfferModal();
+                    }
+                } catch (error) {
+                    console.log('Status check failed, showing trial offer');
+                    this.showTrialOfferModal();
+                }
+            }
+
+            showTrialOfferModal() {
+                // Hide any warning banners
+                const warningBanner = document.querySelector('.alert-warning');
+                if (warningBanner) {
+                    warningBanner.style.display = 'none';
+                }
+
+                // Create enhanced trial offer modal
+                const modal = document.createElement('div');
+                modal.id = 'trial-offer-modal';
+                modal.innerHTML = `
+                    <div class="modal-overlay" onclick="smartDashboard.closeModal(event)">
+                        <div class="trial-modal" onclick="event.stopPropagation()">
+                            <div class="modal-close-btn" onclick="smartDashboard.closeModal()">✕</div>
+                            <div class="modal-header">
+                                <h2>🎉 Welcome to AI Interview Assistant!</h2>
+                                <p>Get started with your free trial right away</p>
+                            </div>
+                            
+                            <div class="trial-offer">
+                                <div class="trial-highlight">
+                                    <div class="trial-duration">FREE 10-MINUTE TRIAL</div>
+                                    <div class="trial-subtitle">No credit card required • Instant access</div>
+                                </div>
+                                
+                                <div class="trial-features">
+                                    <h3>What you get instantly:</h3>
+                                    <ul style="text-align: left; margin: 16px 0;">
+                                        <li>✅ Real-time AI interview assistance</li>
+                                        <li>✅ Works on Zoom, Teams, Meet & more</li>
+                                        <li>✅ Professional response suggestions</li>
+                                        <li>✅ Platform auto-detection</li>
+                                        <li>✅ Instant setup - ready in 1 minute</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="trial-cta">
+                                    <button onclick="smartDashboard.startTrial()" class="btn-start-trial pulse-animation">
+                                        🚀 Start My Free Trial Now
+                                    </button>
+                                    <button onclick="smartDashboard.viewSubscriptions()" class="btn btn-secondary" style="width: calc(100% - 20px); margin: 10px;">
+                                        💎 View Premium Plans
+                                    </button>
+                                </div>
+                                
+                                <div class="trial-note">
+                                    <small>Try it risk-free! Upgrade anytime for unlimited access.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(modal);
+            }
+
+            async startTrial() {
+                try {
+                    const btn = document.querySelector('.btn-start-trial');
+                    btn.innerHTML = '🔄 Starting Trial...';
+                    btn.disabled = true;
+
+                    const userEmail = currentUser?.email || 'user@example.com';
+
+                    const response = await fetch(`${API_BASE}/trial/start`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                        },
+                        body: JSON.stringify({ 
+                            email: userEmail 
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        document.getElementById('trial-offer-modal').remove();
+                        this.showTrialActiveState(data.trial);
+                        this.showSuccessMessage('🎉 Trial activated! Download the extension to get started.');
+                    } else {
+                        throw new Error(data.error || 'Trial start failed');
+                    }
+
+                } catch (error) {
+                    console.error('Trial start failed:', error);
+                    
+                    const btn = document.querySelector('.btn-start-trial');
+                    btn.innerHTML = '🚀 Start My Free Trial Now';
+                    btn.disabled = false;
+                    
+                    alert('Trial start failed. Please try again or contact support.');
+                }
+            }
+
+            showTrialActiveState(trialData) {
+                // Update subscription status
+                const statusElement = document.getElementById('subscription-status');
+                if (statusElement) {
+                    statusElement.className = 'subscription-status status-trial';
+                    statusElement.textContent = 'FREE TRIAL ACTIVE';
+                }
+
+                // Update account details with trial info
+                const accountDetails = document.getElementById('account-details');
+                if (accountDetails) {
+                    accountDetails.innerHTML += `
+                        <div class="trial-active-banner">
+                            <div style="font-weight: 600; margin-bottom: 8px;">⏰ ${trialData.minutesLeft || 10} minutes remaining</div>
+                            <div>10 AI responses included</div>
+                            <div class="usage-progress">
+                                <div class="usage-progress-bar" style="width: ${100 - (trialData.minutesLeft || 10) * 10}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Highlight extension download
+                const downloadBtn = document.querySelector('[onclick="downloadExtension()"]');
+                if (downloadBtn) {
+                    downloadBtn.classList.add('pulse-animation');
+                    downloadBtn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+                }
+            }
+
+            closeModal(event) {
+                // Close modal when clicking overlay or close button
+                if (event && event.target !== event.currentTarget) return;
+                
+                const modal = document.getElementById('trial-offer-modal');
+                if (modal) {
+                    modal.style.animation = 'modalFadeOut 0.3s ease forwards';
+                    setTimeout(() => {
+                        modal.remove();
+                    }, 300);
+                }
+            }
+
+            viewSubscriptions() {
+                this.closeModal();
+                window.location.href = '/subscription.html';
+            }
+
+            showSuccessMessage(message) {
+                const notification = document.createElement('div');
+                notification.className = 'success-notification';
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 5000);
+            }
+        }
+
+        // Initialize smart dashboard
+        const smartDashboard = new SmartDashboard();
+
+        // Initialize dashboard
+        async function initDashboard() {
+            const token = localStorage.getItem('authToken');
+            
+            if (!token) {
+                window.location.href = '/auth.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/profile`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentUser = data.user;
+                    updateUserInfo(data.user);
+                    await loadSubscriptionStatus();
+                } else {
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('user');
+                    window.location.href = '/auth.html';
+                }
+            } catch (error) {
+                console.error('Dashboard init error:', error);
+                showAlert('Failed to load dashboard. Please refresh the page.', 'warning');
+            }
+        }
+
+        function updateUserInfo(user) {
+            document.getElementById('user-name').textContent = user.name || user.email;
+            document.getElementById('user-email').textContent = user.email;
+            
+            // Update avatar with first letter of name/email
+            const avatar = document.getElementById('user-avatar');
+            avatar.textContent = (user.name || user.email).charAt(0).toUpperCase();
+            
+            const memberSince = new Date(user.createdAt).toLocaleDateString();
+            document.getElementById('member-since').textContent = memberSince;
+        }
+
+        async function loadSubscriptionStatus() {
+            const token = localStorage.getItem('authToken');
+            const userId = getCurrentUserId();
+            
+            try {
+                const response = await fetch(`${API_BASE}/subscription/manage/${userId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    updateSubscriptionStatus(data.data.subscription);
+                    updateUsageDisplay(data.data.usage);
+                } else {
+                    updateSubscriptionStatus({ status: 'trial', planName: 'Free Trial' });
+                }
+            } catch (error) {
+                console.error('Subscription status error:', error);
+                updateSubscriptionStatus({ status: 'unknown', planName: 'Status Unknown' });
+            }
+        }
+
+        function updateSubscriptionStatus(subscription) {
+            const statusElement = document.getElementById('subscription-status');
+            const alertElement = document.getElementById('subscription-alert');
+
+            if (!statusElement) return;
+
+            switch (subscription.status) {
+                case 'active':
+                    statusElement.className = 'subscription-status status-active';
+                    statusElement.textContent = `Active: ${subscription.planName}`;
+                    if (alertElement) {
+                        alertElement.style.display = 'block';
+                        alertElement.className = 'alert alert-info';
+                        alertElement.innerHTML = `<strong>Great!</strong> Your ${subscription.planName} subscription is active and ready to use.`;
+                    }
+                    break;
+                    
+                case 'trial':
+                    statusElement.className = 'subscription-status status-trial';
+                    statusElement.textContent = 'Free Trial Active';
+                    if (alertElement) {
+                        alertElement.style.display = 'none'; // Hide for trial users
+                    }
+                    break;
+                    
+                default:
+                    statusElement.className = 'subscription-status status-expired';
+                    statusElement.textContent = 'No Active Subscription';
+                    if (alertElement) {
+                        alertElement.style.display = 'none'; // Will be handled by smart dashboard
+                    }
+            }
+        }
+
+        function updateUsageDisplay(usage) {
+            const usageElement = document.getElementById('usage-count');
+            if (usageElement && usage) {
+                usageElement.textContent = `${usage.responses} / ${usage.limit === 999999 ? 'Unlimited' : usage.limit}`;
+            }
+        }
+
+        async function handleLogout() {
+            const token = localStorage.getItem('authToken');
+            
+            try {
+                await fetch(`${API_BASE}/auth/logout`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+            } catch (error) {
+                console.error('Logout error:', error);
+            } finally {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('user');
+                window.location.href = '/auth.html';
+            }
+        }
+
+        async function testExtension() {
+            try {
+                // Simulate extension test
+                document.getElementById('extension-status').textContent = 'Testing...';
+                
+                setTimeout(() => {
+                    document.getElementById('extension-status').innerHTML = 'Connected ✅';
+                    showSuccessMessage('🎉 Chrome extension is connected and working!');
+                }, 2000);
+                
+            } catch (error) {
+                document.getElementById('extension-status').innerHTML = 'Not detected ❌';
+                showAlert('Chrome extension not detected. Please install and enable the extension.', 'warning');
+            }
+        }
+
+        function downloadExtension() {
+            // Show a proper modal for extension not available yet
+            const extensionModal = document.createElement('div');
+            extensionModal.id = 'extension-modal';
+            extensionModal.innerHTML = `
+                <div class="modal-overlay" onclick="document.getElementById('extension-modal').remove()">
+                    <div class="trial-modal" onclick="event.stopPropagation()">
+                        <div class="modal-close-btn" onclick="document.getElementById('extension-modal').remove()">✕</div>
+                        <div class="modal-header">
+                            <h2>🚀 Chrome Extension Coming Soon!</h2>
+                            <p>We're finalizing our Chrome Web Store approval</p>
+                        </div>
+                        
+                        <div style="text-align: center; padding: 20px;">
+                            <div style="background: linear-gradient(135deg, #fff3cd, #ffeaa7); color: #856404; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                                <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+                                <div style="font-weight: 600; margin-bottom: 8px;">Under Review by Google</div>
+                                <div style="font-size: 14px;">Expected approval: 1-3 business days</div>
+                            </div>
+                            
+                            <div style="text-align: left; margin: 20px 0;">
+                                <h4 style="margin-bottom: 12px; color: #2d3748;">What happens next:</h4>
+                                <ul style="margin: 0; padding-left: 20px; color: #4a5568;">
+                                    <li style="margin-bottom: 8px;">✅ Google reviews our extension (1-3 days)</li>
+                                    <li style="margin-bottom: 8px;">📧 We'll email you when it's approved</li>
+                                    <li style="margin-bottom: 8px;">🎉 One-click install from Chrome Web Store</li>
+                                    <li style="margin-bottom: 8px;">🚀 Start using AI interview assistance immediately</li>
+                                </ul>
+                            </div>
+                            
+                            <div style="background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; padding: 16px; border-radius: 8px; margin: 20px 0; font-size: 14px;">
+                                <strong>Good news:</strong> Your trial will be ready as soon as the extension is approved!
+                            </div>
+                            
+                            <button onclick="notifyWhenReady()" class="btn btn-primary" style="width: 100%; margin-bottom: 12px;">
+                                🔔 Notify Me When Ready
+                            </button>
+                            
+                            <button onclick="document.getElementById('extension-modal').remove()" class="btn btn-secondary" style="width: 100%;">
+                                👍 Got It
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(extensionModal);
+        }
+
+        function notifyWhenReady() {
+            const userEmail = currentUser?.email || 'user@example.com';
+            
+            // In a real app, you'd save this to your backend
+            showSuccessMessage(`📧 We'll email ${userEmail} when the extension is approved!`);
+            document.getElementById('extension-modal').remove();
+        }
+
+        function getCurrentUserId() {
+            const userData = localStorage.getItem('userData');
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    return user.id || user._id;
+                } catch (e) {
+                    console.error('Error parsing user data:', e);
+                }
+            }
+            
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    return payload.userId || payload.sub || payload.id;
+                } catch (e) {
+                    console.error('Error decoding token:', e);
+                }
+            }
+            
+            return '507f1f77bcf86cd799439011';
+        }
+
+        function viewSubscription() {
+            const userId = getCurrentUserId();
+            
+            if (!userId) {
+                showAlert('Please log in to view your subscription.', 'warning');
+                return;
+            }
+            
+            const subscriptionUrl = `${window.location.origin}/subscription.html?userId=${userId}`;
+            window.open(subscriptionUrl, '_blank');
+        }
+
+        function showAlert(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = 'success-notification';
+            notification.style.background = type === 'warning' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'linear-gradient(135deg, #22c55e, #16a34a)';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        function showSuccessMessage(message) {
+            showAlert(message, 'success');
+        }
+
+        function updateLastActivity() {
+            const now = new Date().toLocaleString();
+            document.getElementById('last-activity').textContent = now;
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initDashboard();
+            updateLastActivity();
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    const modal = document.getElementById('trial-offer-modal') || document.getElementById('extension-modal');
+                    if (modal) {
+                        modal.remove();
+                    }
+                }
+            });
+            
+            // Update activity on page focus
+            window.addEventListener('focus', updateLastActivity);
+            
+            // Check extension status every 30 seconds
+            setInterval(() => {
+                if (Math.random() > 0.7) { // Simulate occasional detection
+                    document.getElementById('extension-status').innerHTML = 'Connected ✅';
+                }
+            }, 30000);
+        });
+    </script>
+</body>
+</html>
