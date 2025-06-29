@@ -24,9 +24,7 @@ const SubscriptionSystem = require('./subscription-system');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-});
+
 
 console.log('🚀 Starting AI Interview Assistant Backend Server...');
 
@@ -872,15 +870,7 @@ mongoose.connect(MONGODB_URI)
 // AUTHENTICATION CONFIGURATION & UTILITY FUNCTIONS
 // ====================================================================
 // Initialize OpenAI
-let openai = null;
-if (process.env.OPENAI_API_KEY) {
-    openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY
-    });
-    console.log('🤖 OpenAI initialized successfully');
-} else {
-    console.warn('⚠️ OPENAI_API_KEY not found in environment variables');
-}
+
 // Safe Email configuration with proper error handling
 let emailTransporter = null;
 
