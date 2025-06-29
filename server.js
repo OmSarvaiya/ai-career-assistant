@@ -31,85 +31,25 @@ console.log('🚀 Starting AI Interview Assistant Backend Server...');
 // ====================================================================
 // MIDDLEWARE SETUP
 // ====================================================================
-
+app.use((req, res, next) => {
+    console.log(`🔧 CORS request: ${req.method} ${req.path} from: ${req.headers.origin || 'no origin'}`);
+    
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    
+    if (req.method === 'OPTIONS') {
+        console.log('✅ Handling CORS preflight for:', req.path);
+        return res.status(200).end();
+    }
+    
+    next();
+});
 // Security middleware
 app.use(helmet({
     contentSecurityPolicy: false // Allow external scripts for Stripe
 }));
 
-// CORS configuration
-app.use(cors({
-    origin: function (origin, callback) {
-        console.log('🔍 CORS check for origin:', origin);
-        
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) {
-            console.log('✅ Allowing request with no origin');
-            return callback(null, true);
-        }
-        
-        // ✅ CRITICAL: Allow ALL Chrome extension origins
-        if (origin.startsWith('chrome-extension://')) {
-            console.log('✅ Allowing Chrome extension origin:', origin);
-            return callback(null, true);
-        }
-        
-        // ✅ CRITICAL: Allow Google Meet and other meeting platforms
-        const meetingPlatforms = [
-            'meet.google.com',
-            'teams.microsoft.com', 
-            'zoom.us',
-            'webex.com',
-            'skype.com',
-            'discord.com',
-            'whereby.com'
-        ];
-        
-        // Check if origin contains any meeting platform domain
-        const isFromMeetingPlatform = meetingPlatforms.some(domain => 
-            origin.includes(domain)
-        );
-        
-        if (isFromMeetingPlatform) {
-            console.log('✅ Allowing meeting platform origin:', origin);
-            return callback(null, true);
-        }
-        
-        // Define other allowed origins
-       const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:5000', 
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1:5000',
-    'https://checkout.stripe.com',
-    'https://js.stripe.com',
-    'https://ai-career-assistant-production.up.railway.app'
-];  
-        
-        // Check if origin is in allowed list
-        if (allowedOrigins.indexOf(origin) !== -1) {
-            console.log('✅ Allowing standard origin:', origin);
-            return callback(null, true);
-        }
-        
-        console.log('❌ CORS blocked origin:', origin);
-        return callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowedHeaders: [
-        'Origin',
-        'X-Requested-With',
-        'Content-Type',
-        'Accept',
-        'Authorization',
-        'stripe-signature',
-        'Access-Control-Allow-Origin'
-    ],
-    exposedHeaders: ['Authorization'],
-    preflightContinue: false,
-    optionsSuccessStatus: 204
-}));
 
 // Rate limiting - TEMPORARILY COMMENTED OUT FOR TESTING
 /*
@@ -138,22 +78,19 @@ app.use((req, res, next) => {
     next();
 });
 app.use((req, res, next) => {
-    // Allow requests from any origin (including Chrome extensions and meet.google.com)
+    console.log(`🔧 CORS request: ${req.method} ${req.path} from: ${req.headers.origin || 'no origin'}`);
+    
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     
-    console.log(`🔧 CORS headers added for ${req.method} ${req.path}`);
-    
-    // Handle preflight requests
     if (req.method === 'OPTIONS') {
-        console.log('✅ Handling OPTIONS preflight request');
-        res.sendStatus(200);
-    } else {
-        next();
+        console.log('✅ Handling CORS preflight for:', req.path);
+        return res.status(200).end();
     }
+    
+    next();
 });
-
 app.use(express.static('public'));
 
 // ====================================================================
