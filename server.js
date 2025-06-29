@@ -137,6 +137,23 @@ app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
     next();
 });
+app.use((req, res, next) => {
+    // Allow requests from any origin (including Chrome extensions and meet.google.com)
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    
+    console.log(`🔧 CORS headers added for ${req.method} ${req.path}`);
+    
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        console.log('✅ Handling OPTIONS preflight request');
+        res.sendStatus(200);
+    } else {
+        next();
+    }
+});
+
 app.use(express.static('public'));
 
 // ====================================================================
@@ -866,7 +883,7 @@ mongoose.connect(MONGODB_URI)
         console.error('❌ MongoDB connection error:', err);
         process.exit(1);
     });
-    let openai = null;
+let openai = null;
 if (process.env.OPENAI_API_KEY) {
     openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY
