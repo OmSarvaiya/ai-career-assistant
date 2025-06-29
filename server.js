@@ -866,6 +866,15 @@ mongoose.connect(MONGODB_URI)
         console.error('❌ MongoDB connection error:', err);
         process.exit(1);
     });
+    let openai = null;
+if (process.env.OPENAI_API_KEY) {
+    openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY
+    });
+    console.log('🤖 OpenAI initialized successfully');
+} else {
+    console.warn('⚠️ OPENAI_API_KEY not found in environment variables');
+}
 // ====================================================================
 // AUTHENTICATION CONFIGURATION & UTILITY FUNCTIONS
 // ====================================================================
