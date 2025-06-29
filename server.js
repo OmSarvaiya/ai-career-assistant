@@ -29,8 +29,10 @@ const PORT = process.env.PORT || 5000;
 console.log('🚀 Starting AI Interview Assistant Backend Server...');
 
 // ====================================================================
-// MIDDLEWARE SETUP
+// MIDDLEWARE SETUP - CLEAN VERSION
 // ====================================================================
+
+// ✅ STEP 1: CORS FIRST
 app.use((req, res, next) => {
     console.log(`🔧 CORS request: ${req.method} ${req.path} from: ${req.headers.origin || 'no origin'}`);
     
@@ -45,41 +47,25 @@ app.use((req, res, next) => {
     
     next();
 });
-// Security middleware
+
+// ✅ STEP 2: Security middleware
 app.use(helmet({
     contentSecurityPolicy: false // Allow external scripts for Stripe
 }));
 
-
-// Rate limiting - TEMPORARILY COMMENTED OUT FOR TESTING
-/*
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: {
-        success: false,
-        error: 'Too many requests from this IP, please try again later.',
-        retryAfter: '15 minutes'
-    },
-    standardHeaders: true,
-    legacyHeaders: false,
-});
-app.use(limiter);
-*/
-
-// Body parsing
+// ✅ STEP 3: Body parsing (webhook handling first)
 app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Request logging
+// ✅ STEP 4: Request logging
 app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
     next();
 });
 
+// ✅ STEP 5: Static files
 app.use(express.static('public'));
-
 // ====================================================================
 // MONGODB SCHEMAS AND MODELS
 // ====================================================================
