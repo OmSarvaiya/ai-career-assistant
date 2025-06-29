@@ -868,11 +868,19 @@ mongoose.connect(MONGODB_URI)
         console.error('❌ MongoDB connection error:', err);
         process.exit(1);
     });
-
 // ====================================================================
 // AUTHENTICATION CONFIGURATION & UTILITY FUNCTIONS
 // ====================================================================
-
+// Initialize OpenAI
+let openai = null;
+if (process.env.OPENAI_API_KEY) {
+    openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY
+    });
+    console.log('🤖 OpenAI initialized successfully');
+} else {
+    console.warn('⚠️ OPENAI_API_KEY not found in environment variables');
+}
 // Safe Email configuration with proper error handling
 let emailTransporter = null;
 
@@ -1218,7 +1226,11 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
-app.post('/api/ai/generate-response', authenticateToken, async (req, res) => {
+// ====================================================================
+// 🤖 FINAL AI ENDPOINT - REPLACE YOUR EXISTING app.post('/api/ai/generate-response')
+// ====================================================================
+
+app.post('/api/ai/generate-response', async (req, res) => {
     try {
         console.log('🤖 AI response request received');
         const { question, context, user_id } = req.body;
@@ -1231,53 +1243,346 @@ app.post('/api/ai/generate-response', authenticateToken, async (req, res) => {
         }
         
         console.log('📝 Processing question:', question.substring(0, 50) + '...');
+        console.log('👤 User ID:', user_id || 'guest');
+        console.log('📋 Context:', context || 'interview');
         
-        // Call OpenAI
-        const completion = await openai.chat.completions.create({
-            model: 'gpt-4o-mini',
-            messages: [
-                {
-                    role: 'system',
-                    content: 'You are an AI interview assistant. Provide concise, professional responses that demonstrate relevant experience and skills. Keep responses under 150 words and focus on practical examples.'
-                },
-                {
-                    role: 'user',
-                    content: question
+        let aiResponse;
+        let tokensUsed = 0;
+        let responseSource = 'fallback';
+        
+        // Try OpenAI if configured
+        if (openai) {
+            try {
+                console.log('🔗 Calling OpenAI API...');
+                
+                const completion = await openai.chat.completions.create({
+                    model: 'gpt-4o-mini',
+                    messages: [
+                        {
+                            role: 'system',
+                            content: `You are an expert interview coach helping someone answer interview questions professionally and concisely.
+
+Guidelines:
+- Provide specific, actionable responses in 1-2 sentences
+- Use the STAR method when relevant (Situation, Task, Action, Result)
+- Be confident but humble
+- Focus on skills, experience, and value proposition
+- Keep responses under 150 words
+- Sound natural and conversational
+- Answer in first person as if you are the candidate
+
+Context: ${context || 'Interview'} interview
+Current time: ${new Date().toLocaleString()}`
+                        },
+                        {
+                            role: 'user',
+                            content: `Interview Question: "${question}"
+
+Please provide a professional first-person response that:
+1. Directly answers the question
+2. Uses specific examples when possible
+3. Demonstrates relevant skills and experience
+4. Sounds natural and conversational
+5. Is concise (1-2 sentences, under 150 words)
+
+Response:`
+                        }
+                    ],
+                    max_tokens: 200,
+                    temperature: 0.7,
+                    top_p: 0.9
+                });
+                
+                aiResponse = completion.choices[0]?.message?.content || 'Unable to generate response.';
+                tokensUsed = completion.usage?.total_tokens || 0;
+                responseSource = 'openai';
+                
+                console.log('✅ OpenAI response generated successfully');
+                console.log('📊 Tokens used:', tokensUsed);
+                
+            } catch (openaiError) {
+                console.error('❌ OpenAI API error:', openaiError.message);
+                
+                // Check for specific OpenAI errors
+                if (openaiError.status === 401) {
+                    console.error('🔑 Invalid OpenAI API key');
+                } else if (openaiError.status === 429) {
+                    console.error('⏳ OpenAI rate limit exceeded');
+                } else if (openaiError.status === 500) {
+                    console.error('🔧 OpenAI server error');
                 }
-            ],
-            max_tokens: 200,
-            temperature: 0.7
-        });
+                
+                // Use fallback on OpenAI error
+                aiResponse = generateSmartFallback(question);
+                responseSource = 'fallback_openai_error';
+            }
+        } else {
+            console.log('⚠️ OpenAI not configured, using fallback');
+            aiResponse = generateSmartFallback(question);
+            responseSource = 'fallback_no_api';
+        }
         
-        const aiResponse = completion.choices[0]?.message?.content || 'Unable to generate response.';
+        // Track usage if subscription system is available and user provided
+        if (user_id && typeof subscriptionSystem !== 'undefined') {
+            try {
+                await subscriptionSystem.updateUsage(user_id, 'ai_response_generated', { 
+                    question_length: question.length,
+                    response_length: aiResponse.length,
+                    tokens_used: tokensUsed,
+                    source: responseSource,
+                    timestamp: new Date()
+                });
+                console.log('📊 Usage tracked for user:', user_id);
+            } catch (usageError) {
+                console.warn('⚠️ Usage tracking failed:', usageError.message);
+            }
+        }
         
-        console.log('✅ AI response generated successfully');
-        
+        // Return successful response
         res.json({
             success: true,
             response: aiResponse,
-            tokens_used: completion.usage?.total_tokens || 0
+            tokens_used: tokensUsed,
+            source: responseSource,
+            user_id: user_id || null,
+            timestamp: new Date().toISOString(),
+            fallback: responseSource.includes('fallback')
         });
         
     } catch (error) {
-        console.error('❌ AI generation error:', error);
+        console.error('❌ AI generation critical error:', error);
         
-        const fallbackResponse = "Based on my experience, I approach this by first understanding the requirements clearly, then developing a structured plan to address the challenge effectively.";
+        // Emergency fallback response
+        const emergencyResponse = generateSmartFallback(req.body.question || 'general interview question');
+        
+        res.json({
+            success: true,
+            response: emergencyResponse,
+            tokens_used: 0,
+            source: 'emergency_fallback',
+            fallback: true,
+            error_handled: true,
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// ====================================================================
+// 🎯 CONTEXTUAL AI ENDPOINT (also add this if you don't have it)
+// ====================================================================
+
+app.post('/api/ai/contextual-response', async (req, res) => {
+    try {
+        console.log('🎯 Contextual AI response request received');
+        const { question, context, resumeData, interviewType, user_id } = req.body;
+        
+        if (!question) {
+            return res.status(400).json({
+                success: false,
+                error: 'Question is required'
+            });
+        }
+        
+        console.log('📝 Processing contextual question:', question.substring(0, 50) + '...');
+        console.log('📋 Has resume data:', !!(resumeData && Object.keys(resumeData).length > 0));
+        
+        let aiResponse;
+        let tokensUsed = 0;
+        let responseSource = 'fallback';
+        
+        if (openai) {
+            try {
+                // Build enhanced system prompt with resume data
+                let systemPrompt = `You are an expert interview coach providing personalized responses based on the candidate's background.
+
+CANDIDATE PROFILE:`;
+
+                if (resumeData && Object.keys(resumeData).length > 0) {
+                    if (resumeData.name) systemPrompt += `\nName: ${resumeData.name}`;
+                    if (resumeData.title) systemPrompt += `\nTitle: ${resumeData.title}`;
+                    if (resumeData.summary) systemPrompt += `\nSummary: ${resumeData.summary}`;
+                    if (resumeData.skills && resumeData.skills.length > 0) {
+                        systemPrompt += `\nKey Skills: ${resumeData.skills.slice(0, 5).join(', ')}`;
+                    }
+                    if (resumeData.experience && resumeData.experience.length > 0) {
+                        systemPrompt += `\nRecent Experience: ${resumeData.experience.slice(0, 2).map(exp => 
+                            `${exp.title} at ${exp.company} (${exp.duration})`
+                        ).join('; ')}`;
+                    }
+                } else {
+                    systemPrompt += `\nNo specific background provided - use general professional experience`;
+                }
+
+                systemPrompt += `
+
+RESPONSE GUIDELINES:
+- Answer in first person as the candidate
+- Draw from the candidate's actual experience and skills when available
+- Provide specific examples when possible
+- Keep responses conversational and confident
+- Use 1-2 sentences maximum (under 150 words)
+- Sound authentic to this person's background
+- Interview Type: ${interviewType || 'General'}
+- Platform: ${context?.platform || 'Interview'}`;
+
+                const completion = await openai.chat.completions.create({
+                    model: 'gpt-4o-mini',
+                    messages: [
+                        {
+                            role: 'system',
+                            content: systemPrompt
+                        },
+                        {
+                            role: 'user',
+                            content: `Interview Question: "${question}"
+
+Please provide a professional first-person response that:
+1. Directly answers the question
+2. Uses specific examples from my background when relevant
+3. Demonstrates my skills and experience
+4. Sounds natural and conversational
+5. Is concise (1-2 sentences, under 150 words)
+
+Response:`
+                        }
+                    ],
+                    max_tokens: 250,
+                    temperature: 0.6
+                });
+
+                aiResponse = completion.choices[0]?.message?.content || 'Unable to generate contextual response.';
+                tokensUsed = completion.usage?.total_tokens || 0;
+                responseSource = 'openai_contextual';
+                
+                console.log('✅ Contextual OpenAI response generated');
+
+            } catch (openaiError) {
+                console.error('❌ Contextual OpenAI error:', openaiError.message);
+                aiResponse = generateContextualFallback(question, resumeData);
+                responseSource = 'contextual_fallback';
+            }
+        } else {
+            aiResponse = generateContextualFallback(question, resumeData);
+            responseSource = 'contextual_fallback_no_api';
+        }
+
+        res.json({
+            success: true,
+            response: aiResponse,
+            tokens_used: tokensUsed,
+            source: responseSource,
+            hasResumeData: !!(resumeData && Object.keys(resumeData).length > 0),
+            timestamp: new Date().toISOString()
+        });
+
+    } catch (error) {
+        console.error('❌ Contextual AI generation error:', error);
+        
+        const fallbackResponse = generateContextualFallback(req.body.question, req.body.resumeData);
         
         res.json({
             success: true,
             response: fallbackResponse,
-            fallback: true
+            tokens_used: 0,
+            source: 'contextual_emergency_fallback',
+            fallback: true,
+            timestamp: new Date().toISOString()
         });
     }
 });
+
+// ====================================================================
+// 🛠️ HELPER FUNCTIONS (add these to your server.js)
+// ====================================================================
+
+function generateSmartFallback(question) {
+    const questionLower = question.toLowerCase();
+    
+    // Question-specific professional responses
+    if (questionLower.includes('tell me about yourself') || questionLower.includes('introduce yourself')) {
+        return "I'm a dedicated professional with a strong background in problem-solving and team collaboration. I'm passionate about delivering high-quality results and contributing to organizational success.";
+    }
+    
+    if (questionLower.includes('experience') || questionLower.includes('background')) {
+        return "Throughout my career, I've gained diverse experience that has prepared me to tackle complex challenges and contribute meaningfully to team success.";
+    }
+    
+    if (questionLower.includes('strength') || questionLower.includes('skills')) {
+        return "My strengths include strong analytical thinking, effective communication, and the ability to collaborate across teams to achieve shared goals.";
+    }
+    
+    if (questionLower.includes('weakness') || questionLower.includes('improve')) {
+        return "I continuously work on improving my skills and am always open to feedback as a way to grow professionally and deliver better results.";
+    }
+    
+    if (questionLower.includes('why') && (questionLower.includes('company') || questionLower.includes('join'))) {
+        return "I'm drawn to this company because of its reputation for innovation and excellence. I believe my skills and experience align well with your team's goals.";
+    }
+    
+    if (questionLower.includes('goal') || questionLower.includes('future') || questionLower.includes('years')) {
+        return "My goal is to continue growing professionally while contributing to meaningful projects that drive business success and make a positive impact.";
+    }
+    
+    if (questionLower.includes('challenge') || questionLower.includes('difficult') || questionLower.includes('problem')) {
+        return "I approach challenges by first analyzing the situation thoroughly, then developing a clear action plan with specific steps to achieve the desired outcome.";
+    }
+    
+    // Generic professional responses for other questions
+    const genericResponses = [
+        "Based on my experience, I believe in taking a systematic approach and focusing on delivering high-quality results that align with team objectives.",
+        "I approach this by first understanding the requirements clearly, then developing a strategic plan that leverages my skills to achieve the best outcome.",
+        "In my experience, success comes from combining technical expertise with strong communication and collaboration skills to drive meaningful results.",
+        "My approach is to listen carefully, analyze the situation thoroughly, and then apply my experience to deliver value while maintaining high professional standards."
+    ];
+    
+    return genericResponses[Math.floor(Math.random() * genericResponses.length)];
+}
+
+function generateContextualFallback(question, resumeData) {
+    const questionLower = question.toLowerCase();
+    
+    // Use resume data if available
+    if (resumeData && Object.keys(resumeData).length > 0) {
+        if (questionLower.includes('tell me about yourself') && resumeData.summary) {
+            return `${resumeData.summary} I'm excited about this opportunity to contribute my experience to your team.`;
+        }
+        
+        if (questionLower.includes('experience') && resumeData.experience && resumeData.experience.length > 0) {
+            const latestExp = resumeData.experience[0];
+            return `In my role as ${latestExp.title} at ${latestExp.company}, I gained valuable experience that directly relates to this position and prepared me for new challenges.`;
+        }
+        
+        if (questionLower.includes('strength') && resumeData.skills && resumeData.skills.length > 0) {
+            const topSkills = resumeData.skills.slice(0, 3).join(', ');
+            return `My key strengths include ${topSkills}, which I've successfully applied in previous roles to deliver impactful results.`;
+        }
+    }
+    
+    // Fall back to smart generic responses
+    return generateSmartFallback(question);
+}
+
+// ====================================================================
+// 🔍 AI HEALTH CHECK ENDPOINT (add this too)
+// ====================================================================
+
 app.get('/api/ai/health', (req, res) => {
     res.json({
         success: true,
-        ai_service: 'operational',
+        service: 'AI Interview Assistant',
+        version: '1.0.0',
+        endpoints: {
+            generate_response: '/api/ai/generate-response',
+            contextual_response: '/api/ai/contextual-response',
+            health_check: '/api/ai/health'
+        },
+        openai_configured: !!process.env.OPENAI_API_KEY,
+        openai_available: !!openai,
+        environment: process.env.NODE_ENV || 'development',
         timestamp: new Date().toISOString()
     });
 });
+
 
 app.get('/privacy', (req, res) => {
     res.send(`
@@ -2311,26 +2616,29 @@ app.use((req, res) => {
         success: false,
         error: 'Not found',
         message: 'The requested endpoint does not exist',
-        available_endpoints: [
-            'GET /api/health',
-            'GET /api/plans',
-            'POST /api/create-checkout-session',
-            'POST /api/verify-payment',
-            'GET /api/subscription-status/:userId',
-            'POST /api/start-trial',
-            'POST /api/cancel-subscription',
-            'POST /api/update-usage',
-            'GET /api/analytics/:userId',
-            'POST /api/webhooks/stripe',
-            'POST /api/auth/signup',
-            'POST /api/auth/login',
-            'POST /api/auth/logout',
-            'GET /api/auth/profile',
-            'GET /api/auth/verify',
-            'POST /api/auth/verify-email',
-            'POST /api/auth/forgot-password',
-            'GET /api/debug/data'
-        ]
+       available_endpoints: [
+    'GET /api/health',
+    'GET /api/plans',
+    'POST /api/create-checkout-session',
+    'POST /api/verify-payment',
+    'GET /api/subscription-status/:userId',
+    'POST /api/start-trial',
+    'POST /api/cancel-subscription',
+    'POST /api/update-usage',
+    'GET /api/analytics/:userId',
+    'POST /api/webhooks/stripe',
+    'POST /api/auth/signup',
+    'POST /api/auth/login',
+    'POST /api/auth/logout',
+    'GET /api/auth/profile',
+    'GET /api/auth/verify',
+    'POST /api/auth/verify-email',
+    'POST /api/auth/forgot-password',
+    'GET /api/debug/data',
+    'POST /api/ai/generate-response',        // ADD THIS
+    'POST /api/ai/contextual-response',      // ADD THIS  
+    'GET /api/ai/health'                     // ADD THIS
+]
     });
 });
 // ====================================================================
