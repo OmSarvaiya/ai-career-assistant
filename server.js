@@ -77,20 +77,7 @@ app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
     next();
 });
-app.use((req, res, next) => {
-    console.log(`🔧 CORS request: ${req.method} ${req.path} from: ${req.headers.origin || 'no origin'}`);
-    
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    
-    if (req.method === 'OPTIONS') {
-        console.log('✅ Handling CORS preflight for:', req.path);
-        return res.status(200).end();
-    }
-    
-    next();
-});
+
 app.use(express.static('public'));
 
 // ====================================================================
