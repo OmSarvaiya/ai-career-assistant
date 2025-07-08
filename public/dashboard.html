@@ -149,6 +149,52 @@
             line-height: 1.6;
         }
 
+        /* Extension Available Banner */
+        .extension-banner {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            padding: 20px;
+            border-radius: 16px;
+            margin: 20px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s infinite;
+        }
+
+        .extension-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .extension-banner-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .extension-banner-subtitle {
+            margin-bottom: 16px;
+            opacity: 0.9;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
         .status-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -227,11 +273,6 @@
             height: 200%;
             background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
             animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .status-active {
@@ -363,255 +404,73 @@
             box-shadow: 0 15px 40px rgba(34, 197, 94, 0.6);
         }
 
-        /* Extension Available Banner */
-        .extension-banner {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: white;
-            padding: 20px;
-            border-radius: 16px;
-            margin: 20px 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            animation: pulse 2s infinite;
-        }
-
-        .extension-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        .extension-banner-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .extension-banner-subtitle {
-            margin-bottom: 16px;
-            opacity: 0.9;
-        }
-
-        /* Trial Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            animation: modalFadeIn 0.3s ease;
-        }
-
-        @keyframes modalFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes modalFadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        .trial-modal {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 40px;
-            max-width: 550px;
-            width: 90%;
-            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            position: relative;
-            overflow: hidden;
-            animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes modalSlideIn {
-            from { 
-                transform: translateY(50px) scale(0.9);
-                opacity: 0;
-            }
-            to { 
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-        }
-
-        .trial-modal::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .modal-close-btn {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .modal-close-btn:hover {
-            background: rgba(102, 126, 234, 0.2);
-            transform: scale(1.1);
-        }
-
-        .modal-header h2 {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .trial-highlight {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 24px;
-            border-radius: 16px;
-            margin: 24px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .trial-highlight::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        .trial-duration {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .btn-start-trial {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: white;
-            border: none;
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            margin: 10px;
-            width: calc(100% - 20px);
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
-        }
-
-        .btn-start-trial:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(34, 197, 94, 0.6);
-        }
-
         .pulse-animation {
             animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        .extension-guide {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .success-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
-            z-index: 10001;
-            font-weight: 500;
-            animation: slideInRight 0.3s ease;
+        .guide-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
-        @keyframes slideInRight {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
+        .guide-steps {
+            list-style: none;
+            counter-reset: step-counter;
         }
 
-        .trial-active-banner {
-            background: linear-gradient(135deg, #d4edda, #c3e6cb);
-            border: 1px solid #c3e6cb;
-            border-radius: 12px;
-            padding: 16px;
-            margin: 16px 0;
-            color: #155724;
-        }
-
-        .usage-progress {
-            background: #e9ecef;
-            height: 12px;
-            border-radius: 6px;
-            margin: 12px 0;
-            overflow: hidden;
-        }
-
-        .usage-progress-bar {
-            height: 100%;
-            background: linear-gradient(135deg, #28a745, #20c997);
-            border-radius: 6px;
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        .guide-steps li {
+            counter-increment: step-counter;
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
             position: relative;
-            overflow: hidden;
         }
 
-        .usage-progress-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: progressShine 2s infinite;
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 20px;
+            flex-shrink: 0;
         }
 
-        @keyframes progressShine {
-            0% { left: -100%; }
-            100% { left: 100%; }
+        .step-number::before {
+            content: counter(step-counter);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .step-description {
+            color: #718096;
+            line-height: 1.6;
         }
 
         /* Enhanced animations */
@@ -644,12 +503,7 @@
                 grid-template-columns: 1fr;
             }
 
-            .welcome-section, .cta-section {
-                padding: 30px 20px;
-            }
-
-            .trial-modal {
-                margin: 20px;
+            .welcome-section, .cta-section, .extension-guide {
                 padding: 30px 20px;
             }
         }
@@ -761,28 +615,28 @@
             <h3 class="guide-title">🚀 How to Get Started</h3>
             <ol class="guide-steps">
                 <li>
-                    <div class="step-number">1</div>
+                    <div class="step-number"></div>
                     <div class="step-content">
                         <div class="step-title">Install Chrome Extension</div>
                         <div class="step-description">Click the button above to install our Chrome extension from the Chrome Web Store</div>
                     </div>
                 </li>
                 <li>
-                    <div class="step-number">2</div>
+                    <div class="step-number"></div>
                     <div class="step-content">
                         <div class="step-title">Login to Extension</div>
                         <div class="step-description">Use your account credentials to authenticate the extension</div>
                     </div>
                 </li>
                 <li>
-                    <div class="step-number">3</div>
+                    <div class="step-number"></div>
                     <div class="step-content">
                         <div class="step-title">Join Video Interview</div>
                         <div class="step-description">Start your video interview on supported platforms (Zoom, Teams, Meet, etc.)</div>
                     </div>
                 </li>
                 <li>
-                    <div class="step-number">4</div>
+                    <div class="step-number"></div>
                     <div class="step-content">
                         <div class="step-title">Get AI Assistance</div>
                         <div class="step-description">Receive real-time suggestions and responses during your interview</div>
@@ -823,116 +677,13 @@
                         if (data.subscription.status === 'trial') {
                             this.showTrialActiveState(data.subscription);
                         } else if (data.subscription.status === 'expired' || data.subscription.status === 'none') {
-                            this.showTrialOfferModal();
+                            // Don't show trial modal for original UI
                         } else if (data.subscription.status === 'active') {
                             this.showActiveSubscriptionState();
                         }
-                    } else {
-                        // New user - offer trial
-                        this.showTrialOfferModal();
                     }
                 } catch (error) {
-                    console.log('Status check failed, showing trial offer');
-                    this.showTrialOfferModal();
-                }
-            }
-
-            showTrialOfferModal() {
-                // Hide any warning banners
-                const warningBanner = document.querySelector('.alert-warning');
-                if (warningBanner) {
-                    warningBanner.style.display = 'none';
-                }
-
-                // Create enhanced trial offer modal
-                const modal = document.createElement('div');
-                modal.id = 'trial-offer-modal';
-                modal.innerHTML = `
-                    <div class="modal-overlay" onclick="smartDashboard.closeModal(event)">
-                        <div class="trial-modal" onclick="event.stopPropagation()">
-                            <div class="modal-close-btn" onclick="smartDashboard.closeModal()">✕</div>
-                            <div class="modal-header">
-                                <h2>🎉 Welcome to AI Interview Assistant!</h2>
-                                <p>Get started with your free trial right away</p>
-                            </div>
-                            
-                            <div class="trial-offer">
-                                <div class="trial-highlight">
-                                    <div class="trial-duration">FREE 10-MINUTE TRIAL</div>
-                                    <div class="trial-subtitle">No credit card required • Instant access</div>
-                                </div>
-                                
-                                <div class="trial-features">
-                                    <h3>What you get instantly:</h3>
-                                    <ul style="text-align: left; margin: 16px 0;">
-                                        <li>✅ Real-time AI interview assistance</li>
-                                        <li>✅ Works on Zoom, Teams, Meet & more</li>
-                                        <li>✅ Professional response suggestions</li>
-                                        <li>✅ Platform auto-detection</li>
-                                        <li>✅ Instant setup - ready in 1 minute</li>
-                                    </ul>
-                                </div>
-                                
-                                <div class="trial-cta">
-                                    <button onclick="smartDashboard.startTrial()" class="btn-start-trial pulse-animation">
-                                        🚀 Start My Free Trial Now
-                                    </button>
-                                    <a href="https://chromewebstore.google.com/detail/fdecpalpgiogmfofgbjdphlpkpcdmmda?utm_source=item-share-cp" target="_blank" class="btn btn-success" style="width: calc(100% - 20px); margin: 10px; text-decoration: none;">
-                                        📥 Install Chrome Extension
-                                    </a>
-                                    <button onclick="smartDashboard.viewSubscriptions()" class="btn btn-secondary" style="width: calc(100% - 20px); margin: 10px;">
-                                        💎 View Premium Plans
-                                    </button>
-                                </div>
-                                
-                                <div class="trial-note">
-                                    <small>Try it risk-free! Upgrade anytime for unlimited access.</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                document.body.appendChild(modal);
-            }
-
-            async startTrial() {
-                try {
-                    const btn = document.querySelector('.btn-start-trial');
-                    btn.innerHTML = '🔄 Starting Trial...';
-                    btn.disabled = true;
-
-                    const userEmail = currentUser?.email || 'user@example.com';
-
-                    const response = await fetch(`${API_BASE}/trial/start`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                        },
-                        body: JSON.stringify({ 
-                            email: userEmail 
-                        })
-                    });
-
-                    const data = await response.json();
-
-                    if (data.success) {
-                        document.getElementById('trial-offer-modal').remove();
-                        this.showTrialActiveState(data.trial);
-                        this.showSuccessMessage('🎉 Trial activated! Install the Chrome extension to get started.');
-                    } else {
-                        throw new Error(data.error || 'Trial start failed');
-                    }
-
-                } catch (error) {
-                    console.error('Trial start failed:', error);
-                    
-                    const btn = document.querySelector('.btn-start-trial');
-                    btn.innerHTML = '🚀 Start My Free Trial Now';
-                    btn.disabled = false;
-                    
-                    alert('Trial start failed. Please try again or contact support.');
+                    console.log('Status check failed');
                 }
             }
 
@@ -943,56 +694,10 @@
                     statusElement.className = 'subscription-status status-trial';
                     statusElement.textContent = 'FREE TRIAL ACTIVE';
                 }
-
-                // Update account details with trial info
-                const accountDetails = document.getElementById('account-details');
-                if (accountDetails) {
-                    accountDetails.innerHTML += `
-                        <div class="trial-active-banner">
-                            <div style="font-weight: 600; margin-bottom: 8px;">⏰ ${trialData.minutesLeft || 10} minutes remaining</div>
-                            <div>10 AI responses included</div>
-                            <div class="usage-progress">
-                                <div class="usage-progress-bar" style="width: ${100 - (trialData.minutesLeft || 10) * 10}%"></div>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                // Highlight extension download
-                const downloadBtns = document.querySelectorAll('a[href*="chromewebstore.google.com"]');
-                downloadBtns.forEach(btn => {
-                    btn.classList.add('pulse-animation');
-                    btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
-                });
-            }
-
-            closeModal(event) {
-                // Close modal when clicking overlay or close button
-                if (event && event.target !== event.currentTarget) return;
-                
-                const modal = document.getElementById('trial-offer-modal');
-                if (modal) {
-                    modal.style.animation = 'modalFadeOut 0.3s ease forwards';
-                    setTimeout(() => {
-                        modal.remove();
-                    }, 300);
-                }
-            }
-
-            viewSubscriptions() {
-                this.closeModal();
-                window.location.href = '/pricing.html';
             }
 
             showSuccessMessage(message) {
-                const notification = document.createElement('div');
-                notification.className = 'success-notification';
-                notification.textContent = message;
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.remove();
-                }, 5000);
+                alert(message); // Simple alert for original UI
             }
         }
 
@@ -1082,7 +787,6 @@
                     statusElement.textContent = `Active: ${subscription.planName}`;
                     if (alertElement) {
                         alertElement.style.display = 'block';
-                        alertElement.className = 'alert alert-info';
                         alertElement.innerHTML = `<strong>Great!</strong> Your ${subscription.planName} subscription is active and ready to use.`;
                     }
                     break;
@@ -1090,17 +794,11 @@
                 case 'trial':
                     statusElement.className = 'subscription-status status-trial';
                     statusElement.textContent = 'Free Trial Active';
-                    if (alertElement) {
-                        alertElement.style.display = 'none'; // Hide for trial users
-                    }
                     break;
                     
                 default:
                     statusElement.className = 'subscription-status status-expired';
                     statusElement.textContent = 'No Active Subscription';
-                    if (alertElement) {
-                        alertElement.style.display = 'none'; // Will be handled by smart dashboard
-                    }
             }
         }
 
@@ -1137,19 +835,19 @@
                 
                 setTimeout(() => {
                     document.getElementById('extension-status').innerHTML = 'Connected ✅';
-                    showSuccessMessage('🎉 Chrome extension is connected and working!');
+                    alert('🎉 Chrome extension is connected and working!');
                 }, 2000);
                 
             } catch (error) {
                 document.getElementById('extension-status').innerHTML = 'Not detected ❌';
-                showAlert('Chrome extension not detected. Please install the extension from the Chrome Web Store.', 'warning');
+                alert('Chrome extension not detected. Please install the extension from the Chrome Web Store.');
             }
         }
 
         function downloadExtension() {
             // Direct link to Chrome Web Store
             window.open('https://chromewebstore.google.com/detail/fdecpalpgiogmfofgbjdphlpkpcdmmda?utm_source=item-share-cp', '_blank');
-            showSuccessMessage('🚀 Opening Chrome Web Store - Install the extension to get started!');
+            alert('🚀 Opening Chrome Web Store - Install the extension to get started!');
         }
 
         function getCurrentUserId() {
@@ -1180,7 +878,7 @@
             const userId = getCurrentUserId();
             
             if (!userId) {
-                showAlert('Please log in to view your subscription.', 'warning');
+                alert('Please log in to view your subscription.');
                 return;
             }
             
@@ -1188,19 +886,11 @@
         }
 
         function showAlert(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = 'success-notification';
-            notification.style.background = type === 'warning' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'linear-gradient(135deg, #22c55e, #16a34a)';
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 5000);
+            alert(message);
         }
 
         function showSuccessMessage(message) {
-            showAlert(message, 'success');
+            alert(message);
         }
 
         function updateLastActivity() {
@@ -1212,16 +902,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             initDashboard();
             updateLastActivity();
-            
-            // Close modal with Escape key
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape') {
-                    const modal = document.getElementById('trial-offer-modal');
-                    if (modal) {
-                        modal.remove();
-                    }
-                }
-            });
             
             // Update activity on page focus
             window.addEventListener('focus', updateLastActivity);
