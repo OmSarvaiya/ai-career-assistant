@@ -811,7 +811,6 @@ app.get('/api/health', (req, res) => {
 // AI ENDPOINTS - MAIN FUNCTIONALITY
 // ====================================================================
 
-// Main AI response generation endpoint
 app.post('/api/ai/generate-response', async (req, res) => {
     try {
         console.log('🤖 AI response request received');
@@ -826,6 +825,17 @@ app.post('/api/ai/generate-response', async (req, res) => {
         
         console.log('📝 Processing question:', question.substring(0, 50) + '...');
         console.log('👤 User ID:', user_id || 'guest');
+          console.log('🔍 Context fields received:', Object.keys(context || {}));
+        console.log('🔍 Has resumeContext:', !!(context && context.resumeContext));
+        console.log('🔍 Has resumeContent:', !!(context && context.resumeContent));
+        console.log('🔍 Resume context preview:', context?.resumeContext?.substring(0, 100) + '...');
+        
+        
+        // 🆕 NEW: Check for conversation history
+        const hasConversationHistory = context?.conversationHistory?.length > 0;
+        if (hasConversationHistory) {
+            console.log(`🔗 Found ${context.conversationHistory.length} previous exchanges for context`);
+        }
         
         let aiResponse;
         let tokensUsed = 0;
@@ -836,12 +846,8 @@ app.post('/api/ai/generate-response', async (req, res) => {
             try {
                 console.log('🔗 Calling OpenAI API...');
                 
-                const completion = await openai.chat.completions.create({
-                    model: 'gpt-4o-mini',
-                    messages: [
-                        {
-                            role: 'system',
-                            content: `You are an expert interview coach helping someone answer interview questions professionally and concisely.
+                // 🔥 BUILD RESUME-AWARE SYSTEM PROMPT (UNCHANGED)
+                let systemPrompt = `You are an expert interview coach helping someone answer interview questions professionally and concisely.
 
 Guidelines:
 - Provide specific, actionable responses in 1-2 sentences
@@ -850,25 +856,71 @@ Guidelines:
 - Focus on skills, experience, and value proposition
 - Keep responses under 150 words
 - Sound natural and conversational
-- Answer in first person as if you are the candidate
+- Answer in first person as if you are the candidate`;
 
-Context: ${context || 'Interview'} interview
-Current time: ${new Date().toLocaleString()}`
-                        },
-                        {
-                            role: 'user',
-                            content: `Interview Question: "${question}"
+                // 🔥 ADD RESUME CONTEXT IF AVAILABLE (UNCHANGED)
+                if (context && context.resumeContext) {
+                    systemPrompt += `\n\nCANDIDATE'S BACKGROUND:\n${context.resumeContext}\n\nIMPORTANT: Use this background to give personalized responses with specific examples from their actual experience. Reference their real skills, companies, and achievements when relevant.`;
+                    console.log('📄 Using resume context in AI prompt');
+                } else {
+                    console.log('💬 No resume context - using generic response');
+                }
+
+                systemPrompt += `\n\nContext: ${context?.timestamp ? 'Live Interview' : 'Interview'} interview
+Current time: ${new Date().toLocaleString()}`;
+
+                // 🆕 NEW: Build messages array with conversation history
+                const messages = [
+                    {
+                        role: 'system',
+                        content: systemPrompt
+                    }
+                ];
+
+                // 🆕 NEW: Add conversation history if available
+                if (hasConversationHistory) {
+                    context.conversationHistory.forEach(exchange => {
+                        if (exchange.question && exchange.response) {
+                            messages.push({
+                                role: 'user',
+                                content: `Interview question: "${exchange.question}"`
+                            });
+                            messages.push({
+                                role: 'assistant', 
+                                content: exchange.response
+                            });
+                        }
+                    });
+                    console.log(`📚 Added ${context.conversationHistory.length} conversation exchanges to context`);
+                }
+
+                // 🔥 BUILD USER PROMPT (UNCHANGED)
+                let userPrompt = `Interview Question: "${question}"
 
 Please provide a professional first-person response that:
 1. Directly answers the question
 2. Uses specific examples when possible
 3. Demonstrates relevant skills and experience
 4. Sounds natural and conversational
-5. Is concise (1-2 sentences, under 150 words)
+5. Is concise (1-2 sentences, under 150 words)`;
 
-Response:`
-                        }
-                    ],
+                // 🔥 ADD RESUME-SPECIFIC INSTRUCTIONS IF AVAILABLE (UNCHANGED)
+                if (context && context.resumeContext) {
+                    userPrompt += `\n6. Reference specific experiences, companies, or achievements from the candidate's background above when relevant`;
+                }
+
+                userPrompt += `\n\nResponse:`;
+
+                // Add current question
+                messages.push({
+                    role: 'user',
+                    content: userPrompt
+                });
+                
+                // 🆕 MODIFIED: Use messages array instead of simple system/user
+                const completion = await openai.chat.completions.create({
+                    model: 'gpt-4o-mini',
+                    messages: messages, // ← Now includes conversation history
                     max_tokens: 200,
                     temperature: 0.7,
                     top_p: 0.9
@@ -880,6 +932,7 @@ Response:`
                 
                 console.log('✅ OpenAI response generated successfully');
                 console.log('📊 Tokens used:', tokensUsed);
+                console.log('🔗 Used conversation context:', hasConversationHistory);
                 
             } catch (openaiError) {
                 console.error('❌ OpenAI API error:', openaiError.message);
@@ -892,7 +945,7 @@ Response:`
             responseSource = 'fallback_no_api';
         }
         
-        // Track usage if user provided
+        // Track usage if user provided (UNCHANGED)
         if (user_id) {
             try {
                 await subscriptionSystem.updateUsage(user_id, 'ai_response_generated', { 
@@ -900,7 +953,12 @@ Response:`
                     response_length: aiResponse.length,
                     tokens_used: tokensUsed,
                     source: responseSource,
-                    timestamp: new Date()
+                    timestamp: new Date(),
+                    // 🔥 TRACK RESUME USAGE (UNCHANGED)
+                    has_resume_context: !!(context && context.resumeContext),
+                    // 🆕 NEW: Track conversation context usage
+                    has_conversation_history: hasConversationHistory,
+                    conversation_history_length: context?.conversationHistory?.length || 0
                 });
                 console.log('📊 Usage tracked for user:', user_id);
             } catch (usageError) {
@@ -908,7 +966,7 @@ Response:`
             }
         }
         
-        // Return successful response
+        // Return successful response (ENHANCED)
         res.json({
             success: true,
             response: aiResponse,
@@ -916,13 +974,18 @@ Response:`
             source: responseSource,
             user_id: user_id || null,
             timestamp: new Date().toISOString(),
-            fallback: responseSource.includes('fallback')
+            fallback: responseSource.includes('fallback'),
+            // 🔥 INCLUDE RESUME STATUS IN RESPONSE (UNCHANGED)
+            used_resume_context: !!(context && context.resumeContext),
+            // 🆕 NEW: Include conversation context status
+            used_conversation_history: hasConversationHistory,
+            conversation_history_length: context?.conversationHistory?.length || 0
         });
         
     } catch (error) {
         console.error('❌ AI generation critical error:', error);
         
-        // Emergency fallback response
+        // Emergency fallback response (UNCHANGED)
         const emergencyResponse = generateSmartFallback(req.body.question || 'general interview question');
         
         res.json({
@@ -932,7 +995,9 @@ Response:`
             source: 'emergency_fallback',
             fallback: true,
             error_handled: true,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            used_resume_context: false,
+            used_conversation_history: false
         });
     }
 });
