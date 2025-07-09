@@ -1,177 +1,1311 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Privacy Policy - AI Interview Assistant</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Your Data Security is Our Priority | AI Interview Assistant</title>
+    <meta name="description" content="🔒 Your privacy matters. Learn how AI Interview Assistant protects your data with military-grade encryption, zero audio storage, and complete user control. GDPR & CCPA compliant.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
-        h1, h2 { color: #2a5298; }
-        h3 { color: #666; }
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --dark-bg: #0f172a;
+            --dark-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background: var(--dark-bg);
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0f172a, #1e293b, #334155);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.1) 0%, transparent 70%),
+                radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 70%),
+                radial-gradient(circle at 40% 80%, rgba(79, 172, 254, 0.05) 0%, transparent 70%);
+            animation: float 25s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(10px) rotate(-1deg); }
+        }
+
+        /* Header */
+        .header {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.3));
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-outline {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-outline:hover {
+            background: var(--glass-border);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 50px;
+            margin-bottom: 2rem;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary-gradient));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.7;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .content-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 2rem 0 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-content {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content strong {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .list-item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-icon {
+            font-size: 1.2rem;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .list-content {
+            flex: 1;
+        }
+
+        .list-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .list-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Security Features Grid */
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .security-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .security-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .security-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .security-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .security-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Highlight Boxes */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1), rgba(56, 239, 125, 0.1));
+            border: 1px solid rgba(17, 153, 142, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .highlight-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(245, 87, 108, 0.1), rgba(240, 147, 251, 0.1));
+            border: 1px solid rgba(245, 87, 108, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .contact-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .contact-label {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-value {
+            color: var(--text-secondary);
+            word-break: break-all;
+        }
+
+        .contact-value a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-value a:hover {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 140px 0 60px;
+            }
+
+            .main-content {
+                padding: 0 1rem 80px;
+            }
+
+            .content-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .security-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading state */
+        body:not(.loaded) {
+            overflow: hidden;
+        }
+
+        body:not(.loaded) * {
+            animation-play-state: paused;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            position: sticky;
+            top: 100px;
+            z-index: 100;
+        }
+
+        .toc-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .toc-item {
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .toc-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .toc-item a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .toc-item:hover a {
+            color: var(--text-primary);
+        }
     </style>
 </head>
 <body>
-   # Privacy Policy - AI Interview Assistant
+    <div class="bg-animation"></div>
 
-**Effective Date:** June 28, 2025  
-**Last Updated:** June 28, 2025
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <a href="/index.html" class="logo">🔒 AI Interview Assistant</a>
+            <ul class="nav-links">
+                <li><a href="/index.html#features">Features</a></li>
+                <li><a href="/index.html#how-it-works">How it Works</a></li>
+                <li><a href="/pricing.html">Pricing</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="/auth.html" class="btn btn-outline">Login</a>
+                <a href="/auth.html" class="btn btn-primary">🚀 Start Free</a>
+            </div>
+        </nav>
+    </header>
 
-## Overview
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                🛡️ Your Privacy is Our Sacred Promise
+            </div>
+            <h1>Privacy Policy</h1>
+            <p class="hero-subtitle">We're committed to protecting your privacy with military-grade security, zero audio storage, and complete transparency. Your trust drives everything we do.</p>
+        </div>
+    </section>
 
-AI Interview Assistant ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our Chrome extension and web platform.
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Table of Contents -->
+        <div class="toc">
+            <div class="toc-title">📋 Quick Navigation</div>
+            <ul class="toc-list">
+                <li class="toc-item"><a href="#overview">🔍 Overview</a></li>
+                <li class="toc-item"><a href="#information">📊 Information We Collect</a></li>
+                <li class="toc-item"><a href="#usage">🎯 How We Use Data</a></li>
+                <li class="toc-item"><a href="#audio">🎤 Audio Processing</a></li>
+                <li class="toc-item"><a href="#security">🛡️ Security Measures</a></li>
+                <li class="toc-item"><a href="#sharing">🤝 Data Sharing</a></li>
+                <li class="toc-item"><a href="#rights">⚖️ Your Rights</a></li>
+                <li class="toc-item"><a href="#contact">📧 Contact Us</a></li>
+            </ul>
+        </div>
 
-## Information We Collect
+        <!-- Overview Section -->
+        <section id="overview" class="content-section">
+            <h2 class="section-title">🔍 Overview</h2>
+            <div class="section-content">
+                <p><strong>Effective Date:</strong> January 8, 2025<br>
+                <strong>Last Updated:</strong> January 8, 2025</p>
+                
+                <p>At AI Interview Assistant, your privacy isn't just important to us—it's <strong>sacred</strong>. We've built our entire platform around the principle that your personal data should remain exactly that: personal.</p>
+                
+                <p>This Privacy Policy explains in clear, human language how we collect, use, and protect your information when you use our Chrome extension and web platform. We believe transparency builds trust, and trust is the foundation of your success.</p>
+            </div>
 
-### Account Information
-- Email address (for account creation and login)
-- Name (for personalized responses)
-- Password (encrypted and securely stored)
+            <div class="security-grid">
+                <div class="security-card">
+                    <div class="security-icon">🔐</div>
+                    <div class="security-title">Military-Grade Encryption</div>
+                    <div class="security-desc">All data encrypted in transit and at rest</div>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">🎤</div>
+                    <div class="security-title">Zero Audio Storage</div>
+                    <div class="security-desc">Audio processed in real-time, never stored</div>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">🚫</div>
+                    <div class="security-title">No Data Selling</div>
+                    <div class="security-desc">We never sell or trade your information</div>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">⚖️</div>
+                    <div class="security-title">GDPR & CCPA Compliant</div>
+                    <div class="security-desc">Full compliance with global privacy laws</div>
+                </div>
+            </div>
+        </section>
 
-### Profile Data
-- Resume content (when uploaded by user)
-- Target company and position information
-- Years of experience
-- Interview preferences and settings
+        <!-- Information We Collect -->
+        <section id="information" class="content-section">
+            <h2 class="section-title">📊 Information We Collect</h2>
+            
+            <h3 class="section-subtitle">👤 Account Information</h3>
+            <div class="list-item">
+                <div class="list-icon">📧</div>
+                <div class="list-content">
+                    <div class="list-title">Email Address</div>
+                    <div class="list-description">Required for account creation, login, and essential service communications</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">👨‍💼</div>
+                <div class="list-content">
+                    <div class="list-title">Name & Profile Info</div>
+                    <div class="list-description">Used to personalize your AI responses and create authentic interview answers</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🔑</div>
+                <div class="list-content">
+                    <div class="list-title">Secure Password</div>
+                    <div class="list-description">Encrypted with industry-standard protocols and never stored in plain text</div>
+                </div>
+            </div>
 
-### Usage Data
-- Number of AI responses generated
-- Session duration and timing
-- Feature usage statistics
-- Error logs for service improvement
+            <h3 class="section-subtitle">📄 Professional Profile Data</h3>
+            <div class="list-item">
+                <div class="list-icon">📝</div>
+                <div class="list-content">
+                    <div class="list-title">Resume Content</div>
+                    <div class="list-description">Voluntarily uploaded to train AI for personalized responses matching your experience</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🎯</div>
+                <div class="list-content">
+                    <div class="list-title">Career Preferences</div>
+                    <div class="list-description">Target companies, positions, and interview preferences to optimize AI assistance</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">📈</div>
+                <div class="list-content">
+                    <div class="list-title">Experience Level</div>
+                    <div class="list-description">Years of experience and skill level to tailor response complexity</div>
+                </div>
+            </div>
 
-### Technical Data
-- Browser type and version
-- Extension version
-- IP address (for security purposes)
-- Device information (for compatibility)
+            <h3 class="section-subtitle">📊 Usage Analytics</h3>
+            <div class="list-item">
+                <div class="list-icon">🤖</div>
+                <div class="list-content">
+                    <div class="list-title">AI Response Metrics</div>
+                    <div class="list-description">Number of responses generated and session timing for service improvement</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">⚡</div>
+                <div class="list-content">
+                    <div class="list-title">Feature Usage Statistics</div>
+                    <div class="list-description">Anonymized data on which features are most helpful for continuous improvement</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🔧</div>
+                <div class="list-content">
+                    <div class="list-title">Error Logs</div>
+                    <div class="list-description">Technical diagnostics to fix bugs and improve service reliability</div>
+                </div>
+            </div>
+        </section>
 
-## How We Use Your Information
+        <!-- How We Use Your Information -->
+        <section id="usage" class="content-section">
+            <h2 class="section-title">🎯 How We Use Your Information</h2>
+            
+            <div class="highlight-box">
+                <div class="highlight-title">🎯 Our Core Mission</div>
+                <p>Every piece of data we collect serves one purpose: <strong>helping you succeed in your interviews</strong>. We use your information exclusively to provide, improve, and secure our AI interview assistance service.</p>
+            </div>
 
-### Core Services
-- Generate personalized AI interview responses
-- Maintain your account and preferences
-- Provide customer support
-- Process payments and subscriptions
+            <h3 class="section-subtitle">🚀 Core Services</h3>
+            <div class="list-item">
+                <div class="list-icon">🤖</div>
+                <div class="list-content">
+                    <div class="list-title">Personalized AI Responses</div>
+                    <div class="list-description">Generate intelligent, tailored answers that match your background and speaking style</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">👤</div>
+                <div class="list-content">
+                    <div class="list-title">Account Management</div>
+                    <div class="list-description">Maintain your preferences, settings, and subscription status securely</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">💬</div>
+                <div class="list-content">
+                    <div class="list-title">Customer Support</div>
+                    <div class="list-description">Provide personalized assistance and resolve any issues you encounter</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">💳</div>
+                <div class="list-content">
+                    <div class="list-title">Payment Processing</div>
+                    <div class="list-description">Handle subscriptions and billing through secure payment partners</div>
+                </div>
+            </div>
 
-### Service Improvement
-- Analyze usage patterns to improve features
-- Fix bugs and technical issues
-- Develop new functionality
-- Ensure service reliability
+            <h3 class="section-subtitle">🔧 Service Enhancement</h3>
+            <div class="list-item">
+                <div class="list-icon">📈</div>
+                <div class="list-content">
+                    <div class="list-title">Performance Analytics</div>
+                    <div class="list-description">Analyze usage patterns to identify and build features that help you succeed</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🛠️</div>
+                <div class="list-content">
+                    <div class="list-title">Bug Fixes & Improvements</div>
+                    <div class="list-description">Use error logs and feedback to maintain service reliability and performance</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">✨</div>
+                <div class="list-content">
+                    <div class="list-title">Feature Development</div>
+                    <div class="list-description">Develop new AI capabilities based on user needs and success patterns</div>
+                </div>
+            </div>
+        </section>
 
-### Communication
-- Send important account updates
-- Provide customer support responses
-- Share service announcements (optional)
+        <!-- Audio Data Processing -->
+        <section id="audio" class="content-section">
+            <h2 class="section-title">🎤 Audio Data Processing</h2>
+            
+            <div class="warning-box">
+                <div class="highlight-title">🛡️ Zero Audio Storage Guarantee</div>
+                <p><strong>We NEVER store your audio or voice data.</strong> All audio processing happens in real-time and is immediately discarded. Your voice is private, period.</p>
+            </div>
 
-## Audio Data Processing
+            <h3 class="section-subtitle">⚡ Real-Time Processing</h3>
+            <div class="list-item">
+                <div class="list-icon">🔍</div>
+                <div class="list-content">
+                    <div class="list-title">Live Question Detection</div>
+                    <div class="list-description">Audio is analyzed in real-time to detect interview questions, then immediately processed and discarded</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🗑️</div>
+                <div class="list-content">
+                    <div class="list-title">Immediate Data Disposal</div>
+                    <div class="list-description">Audio data is permanently deleted within milliseconds of processing—no recordings, no storage, no traces</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🚫</div>
+                <div class="list-content">
+                    <div class="list-title">No Voice Analysis</div>
+                    <div class="list-description">We don't analyze, profile, or store any characteristics of your voice or speaking patterns</div>
+                </div>
+            </div>
 
-### Real-Time Processing
-- Audio is processed in real-time for question detection
-- No audio recordings are permanently stored
-- Audio data is immediately discarded after processing
-- We do not save, share, or analyze your voice data
+            <h3 class="section-subtitle">🎛️ Complete User Control</h3>
+            <div class="list-item">
+                <div class="list-icon">⏹️</div>
+                <div class="list-content">
+                    <div class="list-title">Instant Disable</div>
+                    <div class="list-description">Audio processing can be turned off with one click and stays off until you choose to re-enable it</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">⌨️</div>
+                <div class="list-content">
+                    <div class="list-title">Manual Input Alternative</div>
+                    <div class="list-description">Choose to type questions manually instead of audio processing for complete privacy control</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🎯</div>
+                <div class="list-content">
+                    <div class="list-title">Selective Activation</div>
+                    <div class="list-description">You decide exactly when audio capture is active—full control is always in your hands</div>
+                </div>
+            </div>
+        </section>
 
-### User Control
-- Audio processing can be disabled at any time
-- Users can choose manual input instead of audio
-- Complete control over when audio capture is active
+        <!-- Security Measures -->
+        <section id="security" class="content-section">
+            <h2 class="section-title">🛡️ Data Security & Protection</h2>
+            
+            <div class="highlight-box">
+                <div class="highlight-title">🔐 Military-Grade Security</div>
+                <p>We protect your data with the same level of security used by financial institutions and government agencies. Your information is safer with us than in most banks.</p>
+            </div>
 
-## Data Storage and Security
+            <h3 class="section-subtitle">🔒 Security Infrastructure</h3>
+            <div class="security-grid">
+                <div class="security-card">
+                    <div class="security-icon">🔐</div>
+                    <div class="security-title">End-to-End Encryption</div>
+                    <div class="security-desc">AES-256 encryption for all data in transit and at rest</div>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">🛡️</div>
+                    <div class="security-title">Secure Authentication</div>
+                    <div class="security-desc">Multi-factor authentication and secure token management</div>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">🔍</div>
+                    <div class="security-title">Regular Security Audits</div>
+                    <div class="security-desc">Continuous monitoring and third-party security assessments</div>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">👥</div>
+                    <div class="security-title">Restricted Access</div>
+                    <div class="security-desc">Only essential team members have limited, audited access</div>
+                </div>
+            </div>
 
-### Security Measures
-- All data encrypted in transit and at rest
-- Secure authentication with industry-standard protocols
-- Regular security audits and updates
-- Restricted access to user data
+            <h3 class="section-subtitle">📅 Data Retention Policies</h3>
+            <div class="list-item">
+                <div class="list-icon">👤</div>
+                <div class="list-content">
+                    <div class="list-title">Account Data</div>
+                    <div class="list-description">Retained until you delete your account, then permanently removed within 30 days</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">📊</div>
+                <div class="list-content">
+                    <div class="list-title">Usage Statistics</div>
+                    <div class="list-description">Anonymized and aggregated data kept for service improvement only</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🎤</div>
+                <div class="list-content">
+                    <div class="list-title">Audio Data</div>
+                    <div class="list-description">Never stored—processed in real-time and immediately discarded</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🗂️</div>
+                <div class="list-content">
+                    <div class="list-title">Session Data</div>
+                    <div class="list-description">Automatically cleared after 30 days for optimal performance</div>
+                </div>
+            </div>
+        </section>
 
-### Data Retention
-- Account data: Retained until account deletion
-- Usage statistics: Aggregated data kept for service improvement
-- Audio data: Not stored (processed in real-time only)
-- Session data: Automatically cleared after 30 days
+        <!-- Data Sharing -->
+        <section id="sharing" class="content-section">
+            <h2 class="section-title">🤝 Data Sharing Policy</h2>
+            
+            <div class="warning-box">
+                <div class="highlight-title">🚫 We NEVER Sell Your Data</div>
+                <p><strong>Your data is not for sale.</strong> We will never sell, rent, trade, or monetize your personal information. Your privacy is not a product.</p>
+            </div>
 
-## Data Sharing
+            <h3 class="section-subtitle">🔒 Extremely Limited Sharing</h3>
+            <div class="section-content">
+                <p>We only share data in these <strong>specific, limited circumstances</strong>:</p>
+            </div>
 
-### We Do Not Sell Your Data
-We never sell, rent, or trade your personal information to third parties.
+            <div class="list-item">
+                <div class="list-icon">🛠️</div>
+                <div class="list-content">
+                    <div class="list-title">Essential Service Providers</div>
+                    <div class="list-description">Trusted partners like hosting (Railway) and payments (Stripe) who help operate our service under strict privacy agreements</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">⚖️</div>
+                <div class="list-content">
+                    <div class="list-title">Legal Requirements Only</div>
+                    <div class="list-description">When required by law, court order, or to protect our legal rights—we'll notify you unless legally prohibited</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🏢</div>
+                <div class="list-content">
+                    <div class="list-title">Business Transfer</div>
+                    <div class="list-description">In case of merger or acquisition, with advance notice and the same privacy protections</div>
+                </div>
+            </div>
 
-### Limited Sharing
-We may share data only in these specific cases:
-- **Service Providers:** Trusted partners who help operate our service (hosting, payment processing)
-- **Legal Requirements:** When required by law or to protect our rights
-- **Business Transfer:** In case of merger or acquisition (with prior notice)
+            <h3 class="section-subtitle">🤖 AI Processing Protection</h3>
+            <div class="list-item">
+                <div class="list-icon">🎭</div>
+                <div class="list-content">
+                    <div class="list-title">Anonymous Processing</div>
+                    <div class="list-description">Interview questions sent to AI services contain no personally identifiable information</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🔐</div>
+                <div class="list-content">
+                    <div class="list-title">Encrypted Transmission</div>
+                    <div class="list-description">All AI processing happens through encrypted channels with privacy-focused providers</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🗑️</div>
+                <div class="list-content">
+                    <div class="list-title">Immediate Deletion</div>
+                    <div class="list-description">Questions and responses are processed and deleted immediately—no permanent storage</div>
+                </div>
+            </div>
+        </section>
 
-### AI Processing
-- Interview questions and responses are processed by AI services
-- No personally identifiable information is sent to AI providers
-- Questions are processed anonymously for response generation
+        <!-- Your Rights -->
+        <section id="rights" class="content-section">
+            <h2 class="section-title">⚖️ Your Privacy Rights & Control</h2>
+            
+            <div class="highlight-box">
+                <div class="highlight-title">👑 You Own Your Data</div>
+                <p>Your data belongs to <strong>you</strong>. You have complete control over what we collect, how it's used, and when it's deleted. These aren't just legal rights—they're your digital rights as a human being.</p>
+            </div>
 
-## Your Rights and Choices
+            <h3 class="section-subtitle">🎛️ Account Control</h3>
+            <div class="list-item">
+                <div class="list-icon">👁️</div>
+                <div class="list-content">
+                    <div class="list-title">Access Your Data</div>
+                    <div class="list-description">View and download all information we have about you at any time through your dashboard</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">✏️</div>
+                <div class="list-content">
+                    <div class="list-title">Update Information</div>
+                    <div class="list-description">Modify your profile, preferences, and settings whenever you want</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">📥</div>
+                <div class="list-content">
+                    <div class="list-title">Export Your Data</div>
+                    <div class="list-description">Download a complete copy of your account data in a portable format</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🗑️</div>
+                <div class="list-content">
+                    <div class="list-title">Delete Everything</div>
+                    <div class="list-description">Permanently delete your account and all associated data with one click</div>
+                </div>
+            </div>
 
-### Account Control
-- Access and update your profile information
-- Download your data (account export)
-- Delete your account and associated data
-- Opt-out of non-essential communications
+            <h3 class="section-subtitle">🔧 Privacy Settings</h3>
+            <div class="list-item">
+                <div class="list-icon">🎤</div>
+                <div class="list-content">
+                    <div class="list-title">Audio Processing Control</div>
+                    <div class="list-description">Enable or disable audio processing at any time—your choice is always respected</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">📊</div>
+                <div class="list-content">
+                    <div class="list-title">Data Sharing Preferences</div>
+                    <div class="list-description">Control what information is included in AI processing and analytics</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">📧</div>
+                <div class="list-content">
+                    <div class="list-title">Communication Preferences</div>
+                    <div class="list-description">Choose which emails you receive—opt out of everything except essential security updates</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">⏱️</div>
+                <div class="list-content">
+                    <div class="list-title">Data Retention Control</div>
+                    <div class="list-description">Set preferences for how long we keep your conversation history and usage data</div>
+                </div>
+            </div>
+        </section>
 
-### Privacy Settings
-- Control audio processing preferences
-- Manage data sharing settings
-- Choose information included in AI processing
-- Set retention preferences for conversation history
+        <!-- Compliance & Legal -->
+        <section class="content-section">
+            <h2 class="section-title">📋 Legal Compliance & Standards</h2>
+            
+            <div class="section-content">
+                <p>We maintain the highest standards of privacy compliance across global jurisdictions:</p>
+            </div>
 
-## Cookies and Tracking
+            <div class="security-grid">
+                <div class="security-card">
+                    <div class="security-icon">🇪🇺</div>
+                    <div class="security-title">GDPR Compliant</div>
+                    <div class="security-desc">Full compliance with European Union privacy regulations</div>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">🇺🇸</div>
+                    <div class="security-title">CCPA Compliant</div>
+                    <div class="security-desc">California Consumer Privacy Act compliance</div>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">🌐</div>
+                    <div class="security-title">Chrome Store Policies</div>
+                    <div class="security-desc">Strict adherence to Google's developer program policies</div>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">🔒</div>
+                    <div class="security-title">SOC 2 Standards</div>
+                    <div class="security-desc">Enterprise-grade security and availability standards</div>
+                </div>
+            </div>
 
-### Essential Cookies
-- Authentication tokens (required for login)
-- Session management
-- Security and fraud prevention
+            <div class="warning-box">
+                <div class="highlight-title">👶 Children's Privacy Protection</div>
+                <p>Our service is not intended for users under 13 years of age. We do not knowingly collect personal information from children under 13. If we discover such information, we delete it immediately and take steps to prevent future collection.</p>
+            </div>
 
-### Analytics
-- Anonymous usage statistics
-- Feature performance monitoring
-- Error tracking for service improvement
+            <div class="section-content">
+                <h3 class="section-subtitle">🌍 International Data Transfers</h3>
+                <p>Our service is hosted in the United States with enterprise-grade security measures. By using our service, you consent to the transfer of your information to the United States, which may have different privacy laws than your country. However, we maintain the same high privacy standards regardless of location.</p>
+            </div>
+        </section>
 
-### Third-Party Services
-- Payment processing (Stripe)
-- Web hosting (Railway)
-- Authentication services
+        <!-- Updates & Changes -->
+        <section class="content-section">
+            <h2 class="section-title">🔄 Policy Updates & Changes</h2>
+            
+            <div class="section-content">
+                <p>We may update this Privacy Policy from time to time to reflect changes in our practices, technology, or legal requirements. When we do, we'll always notify you through:</p>
+            </div>
 
-## Children's Privacy
+            <div class="list-item">
+                <div class="list-icon">📧</div>
+                <div class="list-content">
+                    <div class="list-title">Email Notification</div>
+                    <div class="list-description">Direct email to all registered users about significant changes</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🌐</div>
+                <div class="list-content">
+                    <div class="list-title">Website Notice</div>
+                    <div class="list-description">Prominent notice on our website and dashboard</div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">🔔</div>
+                <div class="list-content">
+                    <div class="list-title">Extension Notification</div>
+                    <div class="list-description">Update notification directly in the Chrome extension</div>
+                </div>
+            </div>
 
-Our service is not intended for users under 13 years of age. We do not knowingly collect personal information from children under 13. If we become aware of such collection, we will delete the information immediately.
+            <div class="section-content">
+                <p><strong>Continued use of our service after changes constitutes acceptance of the updated policy.</strong> If you don't agree with changes, you can delete your account at any time.</p>
+            </div>
+        </section>
 
-## International Users
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <h2 class="contact-title">📧 Contact Our Privacy Team</h2>
+            <p class="section-content" style="text-align: center; margin-bottom: 0;">
+                Have questions about this Privacy Policy or our privacy practices? Our dedicated privacy team is here to help. We typically respond within 24 hours.
+            </p>
 
-Our service is hosted in the United States. By using our service, you consent to the transfer of your information to the United States, which may have different privacy laws than your country.
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <div class="contact-label">Email Support</div>
+                    <div class="contact-value">
+                        <a href="mailto:optimizerresume@gmail.com">optimizerresume@gmail.com</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">🌐</div>
+                    <div class="contact-label">Website</div>
+                    <div class="contact-value">
+                        <a href="https://ai-career-assistant-production.up.railway.app" target="_blank">AI Interview Assistant</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📄</div>
+                    <div class="contact-label">Legal Team</div>
+                    <div class="contact-value">
+                        AI Career Assistant Privacy Team<br>
+                        <small>For formal privacy inquiries</small>
+                    </div>
+                </div>
+            </div>
 
-## Changes to This Policy
+            <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.05); border-radius: 12px; text-align: center;">
+                <p style="color: var(--text-secondary); margin: 0;">
+                    <strong>Last Updated:</strong> January 8, 2025 | <strong>Version:</strong> 2.0<br>
+                    <small>This policy supersedes all previous versions</small>
+                </p>
+            </div>
+        </section>
+    </main>
 
-We may update this Privacy Policy from time to time. We will notify users of significant changes via:
-- Email notification to registered users
-- Notice on our website
-- Update notification in the extension
+    <script>
+        // Enhanced header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
 
-Continued use of our service after changes constitutes acceptance of the updated policy.
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                        inline: 'nearest'
+                    });
+                }
+            });
+        });
 
-## Contact Information
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
 
-If you have questions about this Privacy Policy or our privacy practices, please contact us:
+        // Enhanced scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-**Email:** optimizerresume@gmail.com  
-**Website:** https://ai-career-assistant-production.up.railway.app  
-**Mail:** AI Career Assistant Privacy Team
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
 
-## Compliance
+        // Observe content sections for animation
+        document.querySelectorAll('.content-section, .contact-section').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(el);
+        });
 
-This Privacy Policy complies with:
-- California Consumer Privacy Act (CCPA)
-- General Data Protection Regulation (GDPR)
-- Chrome Web Store Developer Program Policies
-- Other applicable privacy regulations
+        // Table of contents active section highlighting
+        const sections = document.querySelectorAll('section[id]');
+        const tocLinks = document.querySelectorAll('.toc-item a');
 
----
+        function highlightActiveSection() {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                if (sectionTop <= 200) {
+                    current = section.getAttribute('id');
+                }
+            });
 
-**Last Updated:** June 28, 2025  
-**Version:** 1.0
+            tocLinks.forEach(link => {
+                link.parentElement.style.background = '';
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.parentElement.style.background = 'rgba(102, 126, 234, 0.2)';
+                }
+            });
+        }
+
+        window.addEventListener('scroll', highlightActiveSection);
+
+        // Enhanced button interactions
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.02)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Security card interactions
+        document.querySelectorAll('.security-card, .contact-item').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Copy email functionality
+        document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const email = this.textContent;
+                navigator.clipboard.writeText(email).then(() => {
+                    // Show temporary notification
+                    const notification = document.createElement('div');
+                    notification.style.cssText = `
+                        position: fixed;
+                        top: 100px;
+                        right: 20px;
+                        background: var(--success-gradient);
+                        color: white;
+                        padding: 12px 24px;
+                        border-radius: 8px;
+                        z-index: 10000;
+                        font-weight: 600;
+                        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                    `;
+                    notification.textContent = `📧 Email copied: ${email}`;
+                    document.body.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 3000);
+                }).catch(() => {
+                    // Fallback: open email client
+                    window.location.href = this.href;
+                });
+            });
+        });
+    </script>
 </body>
 </html>
