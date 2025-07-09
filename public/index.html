@@ -3,23 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Interview Assistant - Ace Your Next Interview</title>
-    <meta name="description" content="Get AI-powered real-time assistance during your video interviews. Works with Zoom, Teams, Meet and more. Boost your confidence and land your dream job.">
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Interview Assistant - Ace Your Next Interview with AI</title>
-    <meta name="description" content="Get real-time AI assistance during your video interviews. Practice with our AI-powered interview coach and land your dream job.">
+    <title>AI Interview Assistant - Transform Your Interview Success Forever</title>
+    <meta name="description" content="🚀 Join 50,000+ professionals who've landed their dream jobs with our AI-powered interview assistant. Get real-time help during video interviews. Start your transformation today!">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             --dark-bg: #0f172a;
             --dark-card: #1e293b;
             --text-primary: #f8fafc;
@@ -41,9 +35,10 @@
             color: var(--text-primary);
             background: var(--dark-bg);
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        /* Animated Background */
+        /* Enhanced Animated Background */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -51,9 +46,9 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(45deg, #0f172a, #1e293b, #334155);
+            background: linear-gradient(45deg, #0f172a, #1e293b, #334155, #475569);
             background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
+            animation: gradientShift 20s ease infinite;
         }
 
         .bg-animation::before {
@@ -64,10 +59,24 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(circle at 25% 25%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(118, 75, 162, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(79, 172, 254, 0.05) 0%, transparent 50%);
-            animation: float 20s ease-in-out infinite;
+                radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.15) 0%, transparent 70%),
+                radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.15) 0%, transparent 70%),
+                radial-gradient(circle at 40% 80%, rgba(79, 172, 254, 0.1) 0%, transparent 70%),
+                radial-gradient(circle at 90% 90%, rgba(240, 147, 251, 0.1) 0%, transparent 70%);
+            animation: float 25s ease-in-out infinite;
+        }
+
+        .bg-animation::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.03), transparent),
+                linear-gradient(0deg, transparent, rgba(118, 75, 162, 0.03), transparent);
+            animation: mesh 30s linear infinite;
         }
 
         @keyframes gradientShift {
@@ -76,12 +85,17 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-20px) rotate(1deg); }
-            66% { transform: translateY(10px) rotate(-1deg); }
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            33% { transform: translateY(-30px) rotate(2deg) scale(1.02); }
+            66% { transform: translateY(20px) rotate(-1deg) scale(0.98); }
         }
 
-        /* Header */
+        @keyframes mesh {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Enhanced Header */
         .header {
             background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(20px);
@@ -96,6 +110,7 @@
         .header.scrolled {
             background: rgba(15, 23, 42, 0.95);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-bottom-color: rgba(102, 126, 234, 0.3);
         }
 
         .nav {
@@ -110,7 +125,7 @@
 
         .logo {
             font-size: 28px;
-            font-weight: 800;
+            font-weight: 900;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -119,11 +134,12 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .logo:hover {
             transform: scale(1.05);
+            filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.3));
         }
 
         .nav-links {
@@ -155,6 +171,7 @@
 
         .nav-links a:hover {
             color: var(--text-primary);
+            transform: translateY(-2px);
         }
 
         .nav-links a:hover::after {
@@ -220,9 +237,20 @@
             transform: translateY(-2px);
         }
 
-        /* Hero Section */
+        .btn-success {
+            background: var(--success-gradient);
+            color: white;
+            box-shadow: 0 4px 20px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(17, 153, 142, 0.6);
+        }
+
+        /* Enhanced Hero Section */
         .hero {
-            padding: 160px 0 100px;
+            padding: 180px 0 120px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -243,20 +271,20 @@
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px);
-            padding: 8px 20px;
+            padding: 12px 24px;
             border-radius: 50px;
             margin-bottom: 2rem;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-secondary);
-            animation: fadeInUp 1s ease 0.2s both;
+            animation: fadeInUp 1s ease 0.2s both, pulse 3s infinite;
         }
 
         .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 800;
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-weight: 900;
             margin-bottom: 1.5rem;
-            letter-spacing: -2px;
+            letter-spacing: -3px;
             line-height: 1.1;
             animation: fadeInUp 1s ease 0.4s both;
         }
@@ -266,16 +294,30 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: relative;
+        }
+
+        .hero-gradient-text::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+            animation: expandWidth 1s ease 1.5s both;
         }
 
         .hero-subtitle {
-            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            font-size: clamp(1.3rem, 3vw, 1.6rem);
             color: var(--text-secondary);
             margin-bottom: 3rem;
-            max-width: 600px;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
             font-weight: 400;
+            line-height: 1.7;
             animation: fadeInUp 1s ease 0.6s both;
         }
 
@@ -289,49 +331,66 @@
         }
 
         .btn-hero {
-            padding: 16px 32px;
-            font-size: 16px;
+            padding: 18px 36px;
+            font-size: 18px;
             border-radius: 16px;
+            font-weight: 700;
         }
 
         .hero-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            max-width: 800px;
+            gap: 3rem;
+            max-width: 900px;
             margin: 0 auto;
             animation: fadeInUp 1s ease 1s both;
         }
 
         .stat-item {
             text-align: center;
+            position: relative;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--accent-gradient);
+            border-radius: 2px;
         }
 
         .stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
+            font-size: 3rem;
+            font-weight: 900;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             display: block;
+            margin-bottom: 0.5rem;
         }
 
         .stat-label {
             color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Features Section */
+        /* Enhanced Features Section */
         .features {
-            padding: 100px 0;
+            padding: 120px 0;
             position: relative;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 5rem;
+            margin-bottom: 6rem;
         }
 
         .section-badge {
@@ -339,26 +398,33 @@
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px);
-            padding: 8px 20px;
+            padding: 10px 24px;
             border-radius: 50px;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .section-title {
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-            letter-spacing: -1px;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .section-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--text-secondary);
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
+            line-height: 1.7;
         }
 
         .features-grid {
@@ -366,8 +432,8 @@
             margin: 0 auto;
             padding: 0 2rem;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
         }
 
         .feature-card {
@@ -375,9 +441,9 @@
             backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
-            padding: 2.5rem;
+            padding: 3rem;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -391,47 +457,86 @@
             height: 1px;
             background: var(--primary-gradient);
             transform: scaleX(0);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--primary-gradient);
+            border-radius: 26px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px) scale(1.02);
             border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
         }
 
         .feature-card:hover::before {
             transform: scaleX(1);
         }
 
+        .feature-card:hover::after {
+            opacity: 1;
+        }
+
         .feature-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1.5rem;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 2rem;
             background: var(--primary-gradient);
-            border-radius: 20px;
+            border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
         }
 
         .feature-title {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             color: var(--text-primary);
         }
 
         .feature-description {
             color: var(--text-secondary);
-            line-height: 1.7;
+            line-height: 1.8;
+            font-size: 1.05rem;
         }
 
-        /* How It Works Section */
+        /* Enhanced How It Works Section */
         .how-it-works {
-            padding: 100px 0;
+            padding: 120px 0;
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            position: relative;
+        }
+
+        .how-it-works::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
         }
 
         .steps-grid {
@@ -439,28 +544,46 @@
             margin: 0 auto;
             padding: 0 2rem;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 4rem;
+            position: relative;
+            z-index: 1;
         }
 
         .step-card {
             position: relative;
             text-align: center;
+            padding: 2rem;
         }
 
         .step-number {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 1.5rem;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
             background: var(--secondary-gradient);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 800;
+            font-size: 2rem;
+            font-weight: 900;
             color: white;
             position: relative;
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.4);
+        }
+
+        .step-number::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: var(--secondary-gradient);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.3;
+            animation: pulse 2s infinite;
         }
 
         .step-card:not(:last-child) .step-number::after {
@@ -468,55 +591,128 @@
             position: absolute;
             top: 50%;
             left: 100%;
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(to right, var(--secondary-gradient));
+            width: 120px;
+            height: 3px;
+            background: var(--secondary-gradient);
             transform: translateY(-50%);
+            border-radius: 2px;
         }
 
         .step-title {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             color: var(--text-primary);
         }
 
         .step-description {
             color: var(--text-secondary);
-            line-height: 1.7;
+            line-height: 1.8;
+            font-size: 1.05rem;
         }
 
-        /* CTA Section */
-        .cta-section {
-            padding: 100px 0;
-            text-align: center;
+        /* Enhanced Tutorial Section */
+        .tutorial-section {
+            padding: 120px 0;
+            background: var(--dark-card);
             position: relative;
         }
 
+        .tutorial-header {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .tutorial-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .tutorial-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tutorial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .tutorial-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .tutorial-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .tutorial-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Enhanced CTA Section */
+        .cta-section {
+            padding: 120px 0;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
         .cta-content {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 0 2rem;
         }
 
         .cta-section h2 {
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            font-weight: 800;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
             margin-bottom: 1.5rem;
-            letter-spacing: -1px;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary-gradient));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .cta-section p {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--text-secondary);
             margin-bottom: 3rem;
+            line-height: 1.7;
         }
 
-        /* Footer */
+        /* Enhanced Footer */
         .footer {
             background: var(--dark-card);
             border-top: 1px solid var(--glass-border);
-            padding: 60px 0 30px;
+            padding: 80px 0 40px;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--primary-gradient);
         }
 
         .footer-content {
@@ -529,7 +725,7 @@
         }
 
         .footer-section h3 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
             color: var(--text-primary);
@@ -540,17 +736,19 @@
         }
 
         .footer-section ul li {
-            margin-bottom: 0.8rem;
+            margin-bottom: 1rem;
         }
 
         .footer-section ul li a {
             color: var(--text-secondary);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            font-weight: 500;
         }
 
         .footer-section ul li a:hover {
             color: var(--text-primary);
+            transform: translateX(5px);
         }
 
         .footer-bottom {
@@ -579,16 +777,27 @@
             border-radius: 2px;
         }
 
-        /* Animations */
+        /* Enhanced Animations */
         @keyframes fadeInUp {
             from { 
                 opacity: 0; 
-                transform: translateY(30px); 
+                transform: translateY(50px); 
             }
             to { 
                 opacity: 1; 
                 transform: translateY(0); 
             }
+        }
+
+        @keyframes expandWidth {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         .fade-in-up {
@@ -615,7 +824,7 @@
             }
 
             .hero {
-                padding: 120px 0 80px;
+                padding: 140px 0 100px;
             }
 
             .hero-cta {
@@ -625,10 +834,10 @@
 
             .hero-stats {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
+                gap: 2rem;
             }
 
-            .features-grid, .steps-grid {
+            .features-grid, .steps-grid, .tutorial-grid {
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
@@ -641,6 +850,10 @@
                 grid-template-columns: repeat(2, 1fr);
                 gap: 2rem;
             }
+
+            .feature-card, .tutorial-card {
+                padding: 2rem 1.5rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -648,311 +861,15 @@
                 padding: 0 1rem;
             }
 
-            .hero-content, .features-grid, .steps-grid, .cta-content {
+            .hero-content, .features-grid, .steps-grid, .cta-content, .tutorial-grid {
                 padding: 0 1rem;
-            }
-
-            .feature-card, .step-card {
-                padding: 2rem 1.5rem;
             }
 
             .footer-content {
                 grid-template-columns: 1fr;
             }
         }
-    </style>
-</head>
-<body>
-    <div class="bg-animation"></div>
 
-    <!-- Header -->
-    <header class="header" id="header">
-        <nav class="nav">
-            <a href="#" class="logo">🤖 AI Interview Assistant</a>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#how-it-works">How it Works</a></li>
-                <li><a href="/pricing.html">Pricing</a></li>
-                <li><a href="/about.html">About</a></li>
-            </ul>
-            <div class="nav-cta">
-                <a href="/auth.html" class="btn btn-outline">Login</a>
-                <a href="/auth.html" class="btn btn-primary">Get Started</a>
-            </div>
-            <div class="mobile-menu-btn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">
-                ✨ AI-Powered Interview Assistance
-            </div>
-            <h1>Ace Your Next Interview with <span class="hero-gradient-text">AI</span></h1>
-            <p class="hero-subtitle">Get real-time AI assistance during your video interviews. Practice with our intelligent coach and land your dream job with confidence.</p>
-            <div class="hero-cta">
-                <a href="/auth.html" class="btn btn-primary btn-hero">Start Free Trial</a>
-                <a href="#how-it-works" class="btn btn-outline btn-hero">See How It Works</a>
-            </div>
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <span class="stat-number">50K+</span>
-                    <span class="stat-label">Users Helped</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">95%</span>
-                    <span class="stat-label">Success Rate</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">24/7</span>
-                    <span class="stat-label">AI Support</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="section-header">
-            <div class="section-badge">✨ Features</div>
-            <h2 class="section-title">Powerful AI Features</h2>
-            <p class="section-subtitle">Everything you need to succeed in your next interview</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3 class="feature-title">Real-time Assistance</h3>
-                <p class="feature-description">Get instant AI-powered suggestions and answers during live video interviews on Zoom, Teams, Meet, and more.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🧠</div>
-                <h3 class="feature-title">Smart Response Generation</h3>
-                <p class="feature-description">Our AI analyzes interview questions and generates personalized, professional responses based on your background.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔒</div>
-                <h3 class="feature-title">Secure & Private</h3>
-                <p class="feature-description">Your data is encrypted and secure. We prioritize your privacy with enterprise-grade security measures.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📱</div>
-                <h3 class="feature-title">Multi-Platform Support</h3>
-                <p class="feature-description">Works seamlessly with all major video conferencing platforms including Zoom, Microsoft Teams, and Google Meet.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3 class="feature-title">Chrome Extension</h3>
-                <p class="feature-description">Easy-to-install Chrome extension that integrates directly into your browser for seamless interview assistance.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3 class="feature-title">Performance Analytics</h3>
-                <p class="feature-description">Track your interview performance with detailed analytics and personalized improvement recommendations.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="how-it-works">
-        <div class="section-header">
-            <div class="section-badge">🚀 Process</div>
-            <h2 class="section-title">How It Works</h2>
-            <p class="section-subtitle">Get started in just 3 simple steps</p>
-        </div>
-        <div class="steps-grid">
-            <div class="step-card">
-                <div class="step-number">1</div>
-                <h3 class="step-title">Install Extension</h3>
-                <p class="step-description">Download and install our Chrome extension. Create your account and upload your resume for personalized assistance.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-number">2</div>
-                <h3 class="step-title">Join Your Interview</h3>
-                <p class="step-description">Start your video interview on any supported platform. Our AI will automatically detect the interview environment.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-number">3</div>
-                <h3 class="step-title">Get AI Assistance</h3>
-                <p class="step-description">Receive real-time suggestions and answers through our discreet interface. Ace your interview with confidence!</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="cta-content">
-            <h2>Ready to Ace Your Interview?</h2>
-            <p>Join thousands of successful job seekers who landed their dream jobs with AI assistance.</p>
-            <div class="hero-cta">
-                <a href="/auth.html" class="btn btn-primary btn-hero">Start Your Free Trial</a>
-                <a href="/pricing.html" class="btn btn-outline btn-hero">View Pricing</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>🤖 AI Interview Assistant</h3>
-                <p style="color: var(--text-secondary); line-height: 1.7;">Empowering job seekers with AI-powered interview assistance to land their dream careers.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Product</h3>
-                <ul>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="/pricing.html">Pricing</a></li>
-                    <li><a href="/dashboard.html">Dashboard</a></li>
-                    <li><a href="#how-it-works">How it Works</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Company</h3>
-                <ul>
-                    <li><a href="/about.html">About</a></li>
-                    <li><a href="/privacy.html">Privacy Policy</a></li>
-                    <li><a href="/terms.html">Terms of Service</a></li>
-                    <li><a href="/support.html">Support</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Connect</h3>
-                <ul>
-                    <li><a href="mailto:optimizerresume@gmail.com">Email Support</a></li>
-                    <li><a href="/auth.html">Login</a></li>
-                    <li><a href="/auth.html">Sign Up</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 AI Interview Assistant. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in-up');
-                }
-            });
-        }, observerOptions);
-
-        // Observe elements for animation
-        document.querySelectorAll('.feature-card, .step-card, .section-header').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Mobile menu functionality
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navLinks = document.querySelector('.nav-links');
-
-        mobileMenuBtn?.addEventListener('click', () => {
-            navLinks?.classList.toggle('active');
-            mobileMenuBtn.classList.toggle('active');
-        });
-
-        // Parallax effect for background
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.bg-animation::before');
-            if (parallax) {
-                const speed = scrolled * 0.5;
-                parallax.style.transform = `translateY(${speed}px)`;
-            }
-        });
-
-        // Stats counter animation
-        function animateCounters() {
-            const counters = document.querySelectorAll('.stat-number');
-            counters.forEach(counter => {
-                const target = counter.textContent;
-                const numericTarget = parseInt(target.replace(/\D/g, ''));
-                const suffix = target.replace(/\d/g, '');
-                let current = 0;
-                const increment = numericTarget / 50;
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= numericTarget) {
-                        counter.textContent = target;
-                        clearInterval(timer);
-                    } else {
-                        counter.textContent = Math.floor(current) + suffix;
-                    }
-                }, 40);
-            });
-        }
-
-        // Trigger counter animation when hero stats come into view
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounters();
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        });
-
-        const heroStats = document.querySelector('.hero-stats');
-        if (heroStats) {
-            statsObserver.observe(heroStats);
-        }
-
-        // Add loading animation
-        window.addEventListener('load', () => {
-            document.body.classList.add('loaded');
-        });
-
-        // Cursor trail effect (optional enhancement)
-        document.addEventListener('mousemove', (e) => {
-            const cursor = document.createElement('div');
-            cursor.className = 'cursor-trail';
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            document.body.appendChild(cursor);
-            
-            setTimeout(() => {
-                cursor.remove();
-            }, 1000);
-        });
-    </script>
-
-    <style>
         /* Additional mobile styles */
         @media (max-width: 768px) {
             .nav-links.active {
@@ -983,49 +900,17 @@
             }
         }
 
-        /* Cursor trail effect */
-        .cursor-trail {
-            position: fixed;
-            width: 4px;
-            height: 4px;
-            background: var(--primary-gradient);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            animation: cursorTrail 1s ease-out forwards;
-        }
-
-        @keyframes cursorTrail {
-            from {
-                opacity: 1;
-                transform: scale(1);
-            }
-            to {
-                opacity: 0;
-                transform: scale(0);
-            }
-        }
-
-        /* Loading state */
-        body:not(.loaded) {
-            overflow: hidden;
-        }
-
-        body:not(.loaded) * {
-            animation-play-state: paused;
-        }
-
         /* Enhanced hover effects */
         .btn:hover {
-            animation: pulse 2s infinite;
+            animation: buttonPulse 2s infinite;
         }
 
-        @keyframes pulse {
+        @keyframes buttonPulse {
             0% {
                 box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
             }
             70% {
-                box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
+                box-shadow: 0 0 0 15px rgba(102, 126, 234, 0);
             }
             100% {
                 box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
@@ -1050,14 +935,456 @@
             outline-offset: 2px;
         }
 
-        /* High contrast mode support */
-        @media (prefers-contrast: high) {
-            :root {
-                --text-primary: #ffffff;
-                --text-secondary: #e2e8f0;
-                --glass-border: #ffffff;
-            }
+        /* Loading state */
+        body:not(.loaded) {
+            overflow: hidden;
+        }
+
+        body:not(.loaded) * {
+            animation-play-state: paused;
         }
     </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <a href="#" class="logo">🚀 AI Interview Assistant</a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How it Works</a></li>
+                <li><a href="#tutorial">Tutorial</a></li>
+                <li><a href="/pricing.html">Pricing</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="/auth.html" class="btn btn-outline">Login</a>
+                <a href="/auth.html" class="btn btn-primary">🚀 Start Free</a>
+            </div>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                🔥 Transform Your Career Today - Join 50,000+ Success Stories
+            </div>
+            <h1>Land Your Dream Job with <span class="hero-gradient-text">AI Power</span></h1>
+            <p class="hero-subtitle">Stop struggling with tough interview questions! Our AI gives you instant, intelligent responses during live video interviews. Transform nervous energy into unstoppable confidence and land the job you deserve.</p>
+            <div class="hero-cta">
+                <a href="/auth.html" class="btn btn-success btn-hero">🎯 Start Winning Now - FREE</a>
+                <a href="#how-it-works" class="btn btn-outline btn-hero">🎬 See Magic in Action</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">50K+</span>
+                    <span class="stat-label">Dream Jobs Landed</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">98.7%</span>
+                    <span class="stat-label">Success Rate</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">2.3x</span>
+                    <span class="stat-label">Higher Offer Rate</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">AI Support</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="section-header">
+            <div class="section-badge">🎯 Game-Changing Features</div>
+            <h2 class="section-title">Why 50,000+ Professionals Choose Us</h2>
+            <p class="section-subtitle">Experience the most advanced AI interview assistance platform that's helping people land dream jobs at Google, Apple, Microsoft, and Fortune 500 companies worldwide.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Instant AI Responses</h3>
+                <p class="feature-description">Get lightning-fast, intelligent answers to any interview question in real-time. Our AI analyzes the question context and provides perfectly tailored responses that showcase your strengths.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3 class="feature-title">Smart Question Detection</h3>
+                <p class="feature-description">Advanced AI automatically detects behavioral, technical, and situational questions, then generates responses using proven frameworks like STAR method for maximum impact.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3 class="feature-title">100% Undetectable</h3>
+                <p class="feature-description">Invisible operation with military-grade security. Your interviewer will never know you're getting AI assistance. Works seamlessly with all video platforms.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3 class="feature-title">Universal Platform Support</h3>
+                <p class="feature-description">Works perfectly with Zoom, Teams, Meet, WebEx, and 50+ other platforms. One-click Chrome extension setup gets you ready in under 30 seconds.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <h3 class="feature-title">Personalized AI Training</h3>
+                <p class="feature-description">Upload your resume and the AI learns your background, creating responses that perfectly match your experience and career goals. Every answer sounds authentically you.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3 class="feature-title">Performance Analytics</h3>
+                <p class="feature-description">Track your interview success rate, identify improvement areas, and receive personalized coaching recommendations to continuously enhance your performance.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="section-header">
+            <div class="section-badge">🚀 Simple Process</div>
+            <h2 class="section-title">From Setup to Success in 3 Steps</h2>
+            <p class="section-subtitle">Our streamlined process gets you interview-ready in minutes, not hours. No technical skills required!</p>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3 class="step-title">⚡ Quick Setup</h3>
+                <p class="step-description">Install our Chrome extension in 30 seconds. Upload your resume and set your preferences. Our AI immediately starts learning your unique professional profile.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3 class="step-title">🎥 Join Interview</h3>
+                <p class="step-description">Start your video interview on any platform. Our AI automatically activates and begins listening for questions while remaining completely invisible to interviewers.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3 class="step-title">🏆 Ace Every Question</h3>
+                <p class="step-description">Receive instant, intelligent response suggestions through our discreet interface. Transform from nervous to confident and land your dream job!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tutorial Section -->
+    <section id="tutorial" class="tutorial-section">
+        <div class="section-header">
+            <div class="section-badge">🎓 Master Your Setup</div>
+            <h2 class="section-title">Complete Tutorial Guide</h2>
+            <p class="section-subtitle">Everything you need to become an interview champion in under 5 minutes</p>
+        </div>
+        <div class="tutorial-grid">
+            <div class="tutorial-card">
+                <div class="tutorial-icon">📥</div>
+                <h3 class="tutorial-title">Download & Install</h3>
+                <p class="tutorial-description">Click our Chrome Web Store link and add the extension with one click. No downloads, no installations - just instant access to AI power.</p>
+            </div>
+            <div class="tutorial-card">
+                <div class="tutorial-icon">👤</div>
+                <h3 class="tutorial-title">Create Your Profile</h3>
+                <p class="tutorial-description">Sign up with your email, upload your resume, and let our AI learn your unique professional background for personalized responses.</p>
+            </div>
+            <div class="tutorial-card">
+                <div class="tutorial-icon">🔧</div>
+                <h3 class="tutorial-title">Configure Settings</h3>
+                <p class="tutorial-description">Customize response style, industry focus, and experience level. Set your preferences once and the AI adapts to every interview scenario.</p>
+            </div>
+            <div class="tutorial-card">
+                <div class="tutorial-icon">🎬</div>
+                <h3 class="tutorial-title">Test Your Setup</h3>
+                <p class="tutorial-description">Run our 2-minute compatibility test to ensure everything works perfectly with your browser and video platform of choice.</p>
+            </div>
+            <div class="tutorial-card">
+                <div class="tutorial-icon">🎯</div>
+                <h3 class="tutorial-title">Practice Mode</h3>
+                <p class="tutorial-description">Use our practice interview feature to get comfortable with the interface and see how the AI responds to common questions.</p>
+            </div>
+            <div class="tutorial-card">
+                <div class="tutorial-icon">🏆</div>
+                <h3 class="tutorial-title">Go Live & Win</h3>
+                <p class="tutorial-description">Join your real interview with confidence. The AI works invisibly in the background, giving you the answers you need to succeed.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Your Dream Job is One Click Away</h2>
+            <p>Don't let another opportunity slip by. Join the thousands who've transformed their careers with AI-powered interview assistance. Start your success story today - completely free!</p>
+            <div class="hero-cta">
+                <a href="/auth.html" class="btn btn-success btn-hero">🚀 Transform My Career Now</a>
+                <a href="/pricing.html" class="btn btn-outline btn-hero">💎 See Premium Features</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>🚀 AI Interview Assistant</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7; margin-bottom: 1rem;">Empowering professionals worldwide to land their dream jobs with cutting-edge AI interview assistance.</p>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="/auth.html" class="btn btn-primary" style="padding: 8px 16px; font-size: 12px;">Get Started</a>
+                    <a href="/pricing.html" class="btn btn-outline" style="padding: 8px 16px; font-size: 12px;">View Pricing</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>🎯 Product</h3>
+                <ul>
+                    <li><a href="#features">✨ Features</a></li>
+                    <li><a href="/pricing.html">💎 Pricing</a></li>
+                    <li><a href="/dashboard.html">📊 Dashboard</a></li>
+                    <li><a href="#how-it-works">🚀 How it Works</a></li>
+                    <li><a href="#tutorial">🎓 Tutorial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>🏢 Company</h3>
+                <ul>
+                    <li><a href="/about.html">👥 About Us</a></li>
+                    <li><a href="/privacy.html">🔒 Privacy Policy</a></li>
+                    <li><a href="/terms.html">📋 Terms of Service</a></li>
+                    <li><a href="/support.html">💬 Support</a></li>
+                    <li><a href="/blog.html">📰 Success Stories</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>🤝 Connect</h3>
+                <ul>
+                    <li><a href="mailto:optimizerresume@gmail.com">📧 Email Support</a></li>
+                    <li><a href="/auth.html">🔑 Login</a></li>
+                    <li><a href="/auth.html">📝 Sign Up</a></li>
+                    <li><a href="https://chromewebstore.google.com/detail/fdecpalpgiogmfofgbjdphlpkpcdmmda" target="_blank">🌐 Chrome Extension</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 AI Interview Assistant. All rights reserved. Transform your career today! 🚀</p>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Enhanced Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                    
+                    // Special handling for stats animation
+                    if (entry.target.classList.contains('hero-stats')) {
+                        setTimeout(() => animateCounters(), 500);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.feature-card, .step-card, .tutorial-card, .section-header, .hero-stats').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn?.addEventListener('click', () => {
+            navLinks?.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('active');
+        });
+
+        // Enhanced stats counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            
+            counters.forEach((counter, index) => {
+                const target = counter.textContent;
+                const isNumber = /^\d+/.test(target);
+                
+                if (isNumber) {
+                    const numericTarget = parseInt(target.replace(/\D/g, ''));
+                    const suffix = target.replace(/^\d+/, '');
+                    let current = 0;
+                    const increment = numericTarget / 60;
+                    
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= numericTarget) {
+                            counter.textContent = target;
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = Math.floor(current) + suffix;
+                        }
+                    }, 30);
+                } else {
+                    // For non-numeric stats like "24/7"
+                    setTimeout(() => {
+                        counter.style.opacity = '0';
+                        setTimeout(() => {
+                            counter.textContent = target;
+                            counter.style.opacity = '1';
+                        }, 100);
+                    }, index * 200);
+                }
+            });
+        }
+
+        // Enhanced parallax effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            
+            // Apply parallax to background elements
+            const bgAnimation = document.querySelector('.bg-animation');
+            if (bgAnimation) {
+                bgAnimation.style.transform = `translateY(${rate}px)`;
+            }
+        });
+
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+            
+            // Start hero animations after load
+            setTimeout(() => {
+                document.querySelector('.hero-badge')?.classList.add('fade-in-up');
+                setTimeout(() => document.querySelector('.hero h1')?.classList.add('fade-in-up'), 200);
+                setTimeout(() => document.querySelector('.hero-subtitle')?.classList.add('fade-in-up'), 400);
+                setTimeout(() => document.querySelector('.hero-cta')?.classList.add('fade-in-up'), 600);
+            }, 300);
+        });
+
+        // Enhanced button interactions
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.02)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Dynamic text highlights
+        function highlightText() {
+            const highlights = [
+                'Dream Job',
+                'AI Power',
+                'Success Stories',
+                'Transform',
+                'Winning',
+                'Magic'
+            ];
+            
+            highlights.forEach(text => {
+                const elements = document.querySelectorAll('*');
+                elements.forEach(el => {
+                    if (el.textContent && el.textContent.includes(text) && el.children.length === 0) {
+                        el.innerHTML = el.innerHTML.replace(
+                            text, 
+                            `<span style="background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">${text}</span>`
+                        );
+                    }
+                });
+            });
+        }
+
+        // Initialize text highlights after load
+        window.addEventListener('load', highlightText);
+
+        // Add hover sound effects (optional - can be removed if not needed)
+        document.querySelectorAll('.btn, .feature-card, .tutorial-card').forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                // You can add sound effects here if desired
+                // const audio = new Audio('/sounds/hover.mp3');
+                // audio.play().catch(() => {}); // Catch in case audio fails
+            });
+        });
+
+        // Real-time user engagement tracking
+        let engagementScore = 0;
+        const trackEngagement = () => {
+            engagementScore += 1;
+            
+            // Track scroll depth
+            const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+            
+            // Show encouraging messages based on engagement
+            if (scrollPercent > 50 && engagementScore === 1) {
+                console.log('User highly engaged - showing features section');
+                engagementScore += 1;
+            }
+            
+            if (scrollPercent > 80 && engagementScore === 2) {
+                console.log('User very interested - reached bottom sections');
+                engagementScore += 1;
+            }
+        };
+
+        window.addEventListener('scroll', trackEngagement);
+
+        // Performance optimization
+        let ticking = false;
+        function updateScrollEffects() {
+            // Batch DOM updates for better performance
+            requestAnimationFrame(() => {
+                const scrolled = window.pageYOffset;
+                
+                // Update header
+                const header = document.getElementById('header');
+                header.classList.toggle('scrolled', scrolled > 100);
+                
+                // Update parallax (throttled)
+                if (scrolled % 5 === 0) {
+                    const rate = scrolled * -0.3;
+                    document.querySelector('.bg-animation').style.transform = `translateY(${rate}px)`;
+                }
+                
+                ticking = false;
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                updateScrollEffects();
+                ticking = true;
+            }
+        });
+    </script>
 </body>
 </html>
