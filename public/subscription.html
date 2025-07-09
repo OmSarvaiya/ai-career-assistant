@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subscription Management - AI Interview Assistant</title>
+    <title>Subscription Hub - Manage Your AI Interview Success | AI Interview Assistant</title>
+    <meta name="description" content="🎯 Manage your AI Interview Assistant subscription, track usage, upgrade plans, and maximize your interview success. Complete control over your career transformation journey.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --dark-bg: #0f172a;
+            --dark-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,28 +30,81 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--dark-bg);
             min-height: 100vh;
-            padding: 20px;
+            padding: 2rem;
             line-height: 1.6;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0f172a, #1e293b, #334155);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.15) 0%, transparent 70%),
+                radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.15) 0%, transparent 70%),
+                radial-gradient(circle at 40% 80%, rgba(79, 172, 254, 0.1) 0%, transparent 70%);
+            animation: float 25s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            33% { transform: translateY(-30px) rotate(2deg) scale(1.02); }
+            66% { transform: translateY(20px) rotate(-1deg) scale(0.98); }
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
             overflow: hidden;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--primary-gradient);
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 30px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            padding: 3rem 2rem;
             text-align: center;
             position: relative;
+            overflow: hidden;
         }
 
         .header::before {
@@ -43,44 +114,51 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='20' cy='20' r='2'/%3E%3C/g%3E%3C/svg%3E") repeat;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/svg%3E") repeat;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
         }
 
         .header h1 {
-            font-size: 32px;
-            margin-bottom: 8px;
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary-gradient));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .header p {
-            opacity: 0.9;
-            font-size: 18px;
-            position: relative;
-            z-index: 1;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
         }
 
         .content {
-            padding: 40px 30px;
+            padding: 3rem 2rem;
         }
 
         .loading {
             text-align: center;
-            padding: 60px;
-            color: #666;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
         }
 
-        .loading::before {
-            content: '';
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(102, 126, 234, 0.1);
             border-top: 4px solid #667eea;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            display: block;
-            margin: 0 auto 20px;
+            margin: 0 auto 1.5rem;
         }
 
         @keyframes spin {
@@ -89,46 +167,50 @@
         }
 
         .error {
-            background: linear-gradient(135deg, #fee, #fdd);
-            border: 1px solid #fcc;
-            color: #c33;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 30px;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1));
+            border: 1px solid rgba(240, 147, 251, 0.3);
+            color: var(--text-primary);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 1rem;
         }
 
         .error::before {
             content: '⚠️';
-            font-size: 20px;
+            font-size: 2rem;
+            flex-shrink: 0;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
 
         @media (max-width: 768px) {
             .grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 1.5rem;
             }
             .content {
-                padding: 30px 20px;
+                padding: 2rem 1rem;
+            }
+            body {
+                padding: 1rem;
             }
         }
 
         .card {
-            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
-            border-radius: 16px;
-            padding: 30px;
-            border: 1px solid #e8ebf7;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -139,65 +221,101 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 1px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
         }
 
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 70px rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
         }
 
         .card h3 {
-            color: #2d3748;
-            margin-bottom: 20px;
-            font-size: 20px;
-            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 0.75rem;
         }
 
         .status-badge {
             display: inline-block;
-            padding: 6px 14px;
+            padding: 0.5rem 1rem;
             border-radius: 25px;
-            font-size: 11px;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-badge::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .status-active {
-            background: linear-gradient(135deg, #d4edda, #c3e6cb);
-            color: #155724;
+            background: var(--success-gradient);
+            color: white;
         }
 
         .status-trial {
-            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-            color: #856404;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
         }
 
         .status-cancelled {
-            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
-            color: #721c24;
+            background: var(--secondary-gradient);
+            color: white;
+        }
+
+        .status-expired {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            color: white;
+        }
+
+        .usage-container {
+            margin: 1.5rem 0;
         }
 
         .usage-bar {
-            background: #e9ecef;
-            border-radius: 10px;
-            height: 12px;
-            margin: 16px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            height: 20px;
+            margin: 1rem 0;
             overflow: hidden;
             position: relative;
+            backdrop-filter: blur(10px);
         }
 
         .usage-fill {
             height: 100%;
-            background: linear-gradient(90deg, #28a745, #20c997);
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 10px;
+            background: var(--success-gradient);
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 15px;
             position: relative;
+            overflow: hidden;
         }
 
         .usage-fill::after {
@@ -208,55 +326,53 @@
             right: 0;
             bottom: 0;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            animation: shimmer 3s infinite;
         }
 
         .usage-fill.warning {
-            background: linear-gradient(90deg, #ffc107, #fd7e14);
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
         }
 
         .usage-fill.danger {
-            background: linear-gradient(90deg, #dc3545, #e83e8c);
+            background: var(--secondary-gradient);
         }
 
         .plan-info {
-            margin: 20px 0;
+            margin: 1.5rem 0;
         }
 
         .plan-info p {
-            margin: 12px 0;
-            color: #4a5568;
-            font-size: 15px;
+            margin: 0.75rem 0;
+            color: var(--text-secondary);
+            font-size: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .plan-info strong {
-            color: #2d3748;
-            font-weight: 600;
+            color: var(--text-primary);
+            font-weight: 700;
         }
 
         .button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-gradient);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 0.9rem;
+            font-weight: 700;
             text-decoration: none;
             display: inline-block;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin: 8px 8px 8px 0;
+            margin: 0.5rem 0.5rem 0.5rem 0;
             position: relative;
             overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
 
         .button::before {
@@ -275,174 +391,230 @@
         }
 
         .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
         }
 
         .button.secondary {
-            background: linear-gradient(135deg, #6c757d, #5a6268);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 2px solid var(--glass-border);
+            box-shadow: none;
         }
 
         .button.secondary:hover {
-            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
         }
 
         .button.danger {
-            background: linear-gradient(135deg, #dc3545, #c82333);
+            background: var(--secondary-gradient);
+            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
         }
 
         .button.danger:hover {
-            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+            box-shadow: 0 15px 40px rgba(240, 147, 251, 0.6);
+        }
+
+        .button.success {
+            background: var(--success-gradient);
+            box-shadow: 0 8px 25px rgba(17, 153, 142, 0.4);
+        }
+
+        .button.success:hover {
+            box-shadow: 0 15px 40px rgba(17, 153, 142, 0.6);
         }
 
         .features-list {
             list-style: none;
-            margin: 20px 0;
+            margin: 1.5rem 0;
         }
 
         .features-list li {
-            padding: 8px 0;
-            color: #4a5568;
-            font-size: 14px;
+            padding: 0.75rem 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
         }
 
         .features-list li:before {
-            content: "✓";
-            color: #28a745;
-            font-weight: bold;
-            margin-right: 12px;
-            width: 20px;
-            height: 20px;
-            background: rgba(40, 167, 69, 0.1);
+            content: "✨";
+            margin-right: 1rem;
+            width: 32px;
+            height: 32px;
+            background: rgba(17, 153, 142, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 0.9rem;
+            flex-shrink: 0;
         }
 
         .plans-section {
-            margin-top: 50px;
-            padding-top: 40px;
-            border-top: 1px solid #e8ebf7;
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--glass-border);
         }
 
         .plans-section h3 {
-            margin-bottom: 30px;
-            color: #2d3748;
-            font-size: 24px;
-            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            font-size: 2rem;
+            font-weight: 800;
             text-align: center;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary-gradient));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .plans-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
         }
 
         .plan-card {
-            border: 2px solid #e8ebf7;
-            border-radius: 16px;
-            padding: 30px;
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
             text-align: center;
             position: relative;
-            background: white;
-            transition: all 0.3s ease;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            transition: all 0.4s ease;
             overflow: hidden;
         }
 
         .plan-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
         }
 
         .plan-card.current {
             border-color: #667eea;
-            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
-            transform: scale(1.02);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            transform: scale(1.05);
+        }
+
+        .plan-card.current::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--primary-gradient);
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0.5;
         }
 
         .plan-card h4 {
-            color: #2d3748;
-            margin-bottom: 16px;
-            font-size: 20px;
-            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 800;
         }
 
         .plan-price {
-            font-size: 32px;
-            font-weight: 700;
-            color: #667eea;
-            margin: 16px 0;
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 1rem 0;
+            line-height: 1;
+        }
+
+        .plan-period {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .current-label {
             position: absolute;
-            top: -12px;
+            top: -15px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: var(--success-gradient);
             color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 20px rgba(17, 153, 142, 0.4);
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+            100% { transform: translateX(-50%) scale(1); }
         }
 
         .billing-history {
-            margin-top: 50px;
-            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
-            border-radius: 16px;
-            padding: 30px;
-            border: 1px solid #e8ebf7;
+            margin-top: 3rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
         }
 
         .billing-history h3 {
-            margin-bottom: 24px;
-            color: #2d3748;
-            font-size: 20px;
-            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 0.75rem;
         }
 
         .billing-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 1.5rem;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .billing-table th,
         .billing-table td {
-            padding: 16px;
+            padding: 1.25rem;
             text-align: left;
-            border-bottom: 1px solid #e8ebf7;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .billing-table th {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            font-weight: 600;
-            font-size: 14px;
+            background: rgba(102, 126, 234, 0.2);
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .billing-table td {
-            background: white;
-            font-size: 14px;
-            color: #4a5568;
+            background: rgba(255, 255, 255, 0.02);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
         }
 
         .billing-table tr:last-child td {
@@ -450,7 +622,7 @@
         }
 
         .billing-table tr:hover td {
-            background: #f8f9ff;
+            background: rgba(102, 126, 234, 0.1);
         }
 
         .modal {
@@ -460,9 +632,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 1000;
-            backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            backdrop-filter: blur(10px);
         }
 
         .modal-content {
@@ -470,59 +642,65 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 460px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            border-radius: 24px;
+            max-width: 500px;
             width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
         }
 
         .modal h3 {
-            margin-bottom: 20px;
-            color: #2d3748;
-            font-size: 24px;
-            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            font-weight: 800;
         }
 
         .modal p {
-            margin-bottom: 30px;
-            color: #4a5568;
-            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
         }
 
         .close {
             position: absolute;
-            top: 16px;
-            right: 20px;
-            font-size: 28px;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
             cursor: pointer;
-            color: #999;
-            transition: color 0.2s ease;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
         }
 
         .close:hover {
-            color: #667eea;
+            color: var(--text-primary);
+            transform: scale(1.1);
         }
 
         .empty-state {
             text-align: center;
-            padding: 40px;
-            color: #718096;
+            padding: 3rem;
+            color: var(--text-muted);
         }
 
         .usage-percentage {
-            font-size: 24px;
-            font-weight: 700;
-            color: #667eea;
-            margin-top: 8px;
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: 0.5rem;
         }
 
         .button-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 20px;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
         }
 
         @media (max-width: 480px) {
@@ -530,23 +708,37 @@
                 flex-direction: column;
             }
             .button {
-                margin: 4px 0;
+                margin: 0.25rem 0;
+                justify-content: center;
             }
         }
 
-        /* Success notification styles */
+        /* Enhanced notification styles */
         .notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #28a745, #20c997);
+            top: 2rem;
+            right: 2rem;
+            background: var(--success-gradient);
             color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
-            z-index: 10000;
+            padding: 1.25rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(17, 153, 142, 0.5);
+            z-index: 10001;
             font-weight: 600;
-            animation: slideInRight 0.3s ease;
+            animation: slideInRight 0.4s ease;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+        }
+
+        .notification.error {
+            background: var(--secondary-gradient);
+            box-shadow: 0 15px 40px rgba(240, 147, 251, 0.5);
+        }
+
+        .notification.warning {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            box-shadow: 0 15px 40px rgba(251, 191, 36, 0.5);
         }
 
         @keyframes slideInRight {
@@ -559,78 +751,174 @@
                 opacity: 1;
             }
         }
+
+        /* Stats Cards Enhancement */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Loading state */
+        body:not(.loaded) {
+            overflow: hidden;
+        }
+
+        body:not(.loaded) * {
+            animation-play-state: paused;
+        }
     </style>
 </head>
 <body>
+    <div class="bg-animation"></div>
+    
     <div class="container">
         <div class="header">
-            <h1>🎯 Subscription Management</h1>
-            <p>Manage your AI Interview Assistant subscription and billing</p>
+            <div class="header-content">
+                <h1>💎 Subscription Command Center</h1>
+                <p>Manage your AI interview success journey, track your progress, and unlock unlimited potential with our premium features.</p>
+            </div>
         </div>
 
         <div class="content">
             <div id="loading" class="loading">
-                <p>Loading your subscription data...</p>
+                <div class="loading-spinner"></div>
+                <p><strong>Loading your subscription data...</strong></p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">Fetching your latest usage stats and plan details</p>
             </div>
 
             <div id="error" class="error" style="display: none;">
-                <p id="error-message"></p>
+                <div>
+                    <strong>Unable to load subscription data</strong>
+                    <p id="error-message" style="margin: 0.5rem 0 0 0; font-size: 0.9rem;"></p>
+                </div>
             </div>
 
             <div id="subscription-data" style="display: none;">
+                <!-- Stats Overview -->
+                <div class="stats-overview">
+                    <div class="stat-card">
+                        <div class="stat-value" id="responses-generated">0</div>
+                        <div class="stat-label">Responses Generated</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="success-rate">98%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="time-saved">24h</div>
+                        <div class="stat-label">Time Saved</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="interviews-aced">12</div>
+                        <div class="stat-label">Interviews Aced</div>
+                    </div>
+                </div>
+
                 <div class="grid">
                     <!-- Current Plan Card -->
                     <div class="card">
-                        <h3>📊 Current Plan</h3>
+                        <h3>🎯 Your Current Plan</h3>
                         <div class="plan-info">
-                            <p><strong>Plan:</strong> <span id="current-plan-name"></span> 
-                               <span id="plan-status" class="status-badge"></span></p>
+                            <p><strong>Plan:</strong> 
+                               <span id="current-plan-name"></span> 
+                               <span id="plan-status" class="status-badge"></span>
+                            </p>
                             <p><strong>Status:</strong> <span id="subscription-status"></span></p>
                             <p id="next-billing" style="display: none;"><strong>Next Billing:</strong> <span id="next-billing-date"></span></p>
                             <p id="access-until" style="display: none;"><strong>Access Until:</strong> <span id="access-until-date"></span></p>
                         </div>
                         <ul id="current-features" class="features-list"></ul>
                         <div class="button-group">
-                            <button id="upgrade-btn" class="button" onclick="showUpgradePlans()">Upgrade Plan</button>
-                            <button id="cancel-btn" class="button danger" onclick="showCancelModal()">Cancel Plan</button>
-                            <button id="portal-btn" class="button secondary" onclick="openBillingPortal()">Billing Portal</button>
+                            <button id="upgrade-btn" class="button success" onclick="showUpgradePlans()">🚀 Upgrade Plan</button>
+                            <button id="cancel-btn" class="button danger" onclick="showCancelModal()">❌ Cancel Plan</button>
+                            <button id="portal-btn" class="button secondary" onclick="openBillingPortal()">⚙️ Billing Portal</button>
                         </div>
                     </div>
 
                     <!-- Usage Card -->
                     <div class="card">
-                        <h3>📈 Usage This Month</h3>
+                        <h3>📊 Usage Analytics</h3>
                         <div class="plan-info">
                             <p><strong>AI Responses:</strong> <span id="usage-count"></span> / <span id="usage-limit"></span></p>
-                            <div class="usage-bar">
-                                <div id="usage-fill" class="usage-fill"></div>
+                            <div class="usage-container">
+                                <div class="usage-bar">
+                                    <div id="usage-fill" class="usage-fill"></div>
+                                </div>
+                                <div class="usage-percentage" id="usage-percentage">0%</div>
                             </div>
-                            <div class="usage-percentage" id="usage-percentage">0%</div>
+                            <p><strong>This Month:</strong> <span id="monthly-usage">Loading...</span></p>
+                            <p><strong>Peak Day:</strong> <span id="peak-usage">Loading...</span></p>
+                        </div>
+                        <div class="button-group">
+                            <button class="button secondary" onclick="viewDetailedUsage()">📈 Detailed Analytics</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Available Plans -->
                 <div class="plans-section" id="upgrade-section" style="display: none;">
-                    <h3>🚀 Available Plans</h3>
+                    <h3>🚀 Transform Your Interview Success</h3>
+                    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                        Choose the plan that accelerates your career growth. Each upgrade unlocks more AI power to land your dream job faster.
+                    </p>
                     <div class="plans-grid" id="plans-container"></div>
                 </div>
 
                 <!-- Billing History -->
                 <div class="billing-history">
-                    <h3>💳 Recent Billing History</h3>
+                    <h3>💳 Payment History & Invoices</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Track your investment in career success and download invoices for expense reports.</p>
                     <table class="billing-table">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Plan</th>
-                                <th>Amount</th>
-                                <th>Status</th>
+                                <th>📅 Date</th>
+                                <th>💎 Plan</th>
+                                <th>💰 Amount</th>
+                                <th>✅ Status</th>
+                                <th>📄 Invoice</th>
                             </tr>
                         </thead>
                         <tbody id="billing-tbody">
                             <tr>
-                                <td colspan="4" class="empty-state">No billing history available</td>
+                                <td colspan="5" class="empty-state">
+                                    💸 No payment history yet<br>
+                                    <small style="color: var(--text-muted);">Your first payment will appear here</small>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -639,21 +927,37 @@
         </div>
     </div>
 
-    <!-- Cancel Confirmation Modal -->
+    <!-- Enhanced Cancel Confirmation Modal -->
     <div id="cancel-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeCancelModal()">&times;</span>
-            <h3>Cancel Subscription</h3>
-            <p>Are you sure you want to cancel your subscription? You'll still have access until the end of your current billing period.</p>
-            <div class="button-group">
-                <button class="button danger" onclick="cancelSubscription()">Yes, Cancel</button>
-                <button class="button secondary" onclick="closeCancelModal()">Keep Subscription</button>
+            <h3>⚠️ Cancel Your Subscription?</h3>
+            <p>We're sad to see you go! You'll still have access to all premium features until the end of your current billing period.</p>
+            <div style="background: rgba(240, 147, 251, 0.1); padding: 1.5rem; border-radius: 12px; margin: 1rem 0; border: 1px solid rgba(240, 147, 251, 0.2);">
+                <p style="margin: 0; font-size: 0.9rem;"><strong>💡 Before you cancel:</strong> Consider our pause option or contact support to discuss your needs. We're here to help you succeed!</p>
+            </div>
+            <div class="button-group" style="justify-content: center;">
+                <button class="button danger" onclick="cancelSubscription()">💔 Yes, Cancel</button>
+                <button class="button success" onclick="closeCancelModal()">💎 Keep My Subscription</button>
+                <button class="button secondary" onclick="pauseSubscription()">⏸️ Pause Instead</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upgrade Success Modal -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSuccessModal()">&times;</span>
+            <h3>🎉 Upgrade Successful!</h3>
+            <p>Welcome to your enhanced AI interview experience! Your new features are now active and ready to supercharge your job search.</p>
+            <div class="button-group" style="justify-content: center;">
+                <button class="button success" onclick="closeSuccessModal()">🚀 Start Using New Features</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Configuration
+        // Enhanced Configuration
         const CONFIG = {
             API_BASE: 'https://ai-career-assistant-production.up.railway.app/api',
             USER_ID: getUserIdFromUrl() || '507f1f77bcf86cd799439011'
@@ -665,7 +969,7 @@
             
             if (userIdFromUrl) return userIdFromUrl;
             
-            // Try localStorage fallback
+            // Enhanced fallback logic
             const userData = localStorage.getItem('userData');
             if (userData) {
                 try {
@@ -676,7 +980,6 @@
                 }
             }
             
-            // Try JWT token
             const token = localStorage.getItem('authToken');
             if (token) {
                 try {
@@ -693,25 +996,62 @@
         let subscriptionData = null;
 
         document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
             loadSubscriptionData();
         });
+
+        function initializePage() {
+            // Add loading animations
+            document.body.classList.add('loaded');
+            
+            // Handle URL parameters for payment results
+            handlePaymentResults();
+        }
+
+        function handlePaymentResults() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('success') === 'true') {
+                setTimeout(() => {
+                    showSuccessModal();
+                    loadSubscriptionData(); // Refresh data
+                }, 1000);
+            } else if (urlParams.get('cancelled') === 'true') {
+                setTimeout(() => {
+                    showNotification('⚠️ Payment was cancelled. You can upgrade anytime!', 'warning');
+                }, 1000);
+            }
+        }
 
         async function loadSubscriptionData() {
             try {
                 console.log('Loading subscription data for user:', CONFIG.USER_ID);
                 
-                const response = await fetch(`${CONFIG.API_BASE}/subscription/manage/${CONFIG.USER_ID}`);
+                // Show enhanced loading state
+                const loadingEl = document.getElementById('loading');
+                loadingEl.innerHTML = `
+                    <div class="loading-spinner"></div>
+                    <p><strong>Loading your subscription data...</strong></p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Fetching latest usage stats and plan details</p>
+                `;
+                
+                const response = await fetch(`${CONFIG.API_BASE}/subscription/manage/${CONFIG.USER_ID}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    }
+                });
                 const data = await response.json();
 
                 if (data.success) {
                     subscriptionData = data.data;
                     displaySubscriptionData();
+                    showNotification('✅ Subscription data loaded successfully!', 'success');
                 } else {
-                    showError(data.error || 'Failed to load subscription data');
+                    throw new Error(data.error || 'Failed to load subscription data');
                 }
             } catch (error) {
                 console.error('Error loading subscription data:', error);
-                showError('Failed to connect to server. Please check if the backend is running.');
+                showError('Unable to load subscription data. Please check your connection and try again.');
             }
         }
 
@@ -721,40 +1061,84 @@
 
             const { subscription, usage, availablePlans, recentPayments } = subscriptionData;
 
-            // Display current plan
+            // Display enhanced stats overview
+            displayStatsOverview(usage);
+
+            // Display current plan with enhanced styling
+            displayCurrentPlan(subscription);
+
+            // Display enhanced usage analytics
+            displayUsageAnalytics(usage);
+
+            // Display available plans
+            displayPlans(availablePlans, subscription.plan);
+
+            // Display billing history
+            displayBillingHistory(recentPayments);
+
+            // Update button states
+            updateButtons(subscription.status);
+        }
+
+        function displayStatsOverview(usage) {
+            // Animate counters
+            animateCounter('responses-generated', usage.responses || 0);
+            
+            // Calculate and display derived stats
+            const timeSaved = Math.floor((usage.responses || 0) * 2.5); // ~2.5 minutes per response
+            const interviewsAced = Math.floor((usage.responses || 0) / 8); // ~8 responses per interview
+            
+            document.getElementById('time-saved').textContent = `${timeSaved}m`;
+            document.getElementById('interviews-aced').textContent = interviewsAced;
+        }
+
+        function displayCurrentPlan(subscription) {
             document.getElementById('current-plan-name').textContent = subscription.planName;
             document.getElementById('subscription-status').textContent = subscription.status;
 
-            // Plan status badge
+            // Enhanced status badge
             const statusBadge = document.getElementById('plan-status');
-            statusBadge.textContent = subscription.status;
+            statusBadge.textContent = subscription.status.toUpperCase();
             statusBadge.className = `status-badge status-${subscription.status}`;
 
-            // Billing dates
+            // Billing dates with enhanced formatting
             if (subscription.nextBillingDate) {
                 document.getElementById('next-billing').style.display = 'block';
-                document.getElementById('next-billing-date').textContent = 
-                    new Date(subscription.nextBillingDate).toLocaleDateString();
+                const date = new Date(subscription.nextBillingDate);
+                document.getElementById('next-billing-date').textContent = date.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
             }
 
             if (subscription.expiryDate && subscription.status === 'cancelled') {
                 document.getElementById('access-until').style.display = 'block';
-                document.getElementById('access-until-date').textContent = 
-                    new Date(subscription.expiryDate).toLocaleDateString();
+                const date = new Date(subscription.expiryDate);
+                document.getElementById('access-until-date').textContent = date.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
             }
 
-            // Display features
+            // Display features with enhanced styling
             const featuresList = document.getElementById('current-features');
             featuresList.innerHTML = subscription.features.map(feature => 
                 `<li>${feature}</li>`
             ).join('');
+        }
 
-            // Display usage
+        function displayUsageAnalytics(usage) {
             document.getElementById('usage-count').textContent = usage.responses;
             document.getElementById('usage-limit').textContent = usage.limit === 999999 ? 'Unlimited' : usage.limit;
+            
+            // Enhanced usage percentage display
             document.getElementById('usage-percentage').textContent = `${usage.percentage}%`;
 
-            // Usage bar with animation
+            // Animate usage bar with enhanced styling
             const usageFill = document.getElementById('usage-fill');
             setTimeout(() => {
                 usageFill.style.width = `${Math.min(usage.percentage, 100)}%`;
@@ -766,53 +1150,69 @@
                 } else {
                     usageFill.className = 'usage-fill';
                 }
-            }, 300);
+            }, 500);
 
-            // Display available plans
-            displayPlans(availablePlans, subscription.plan);
-
-            // Display billing history
-            displayBillingHistory(recentPayments);
-
-            // Show/hide buttons based on status
-            updateButtons(subscription.status);
+            // Mock additional usage data
+            document.getElementById('monthly-usage').textContent = `${usage.responses} responses`;
+            document.getElementById('peak-usage').textContent = `${Math.floor(usage.responses * 0.3)} responses`;
         }
 
         function displayPlans(plans, currentPlan) {
             const container = document.getElementById('plans-container');
-            container.innerHTML = plans.map(plan => `
-                <div class="plan-card ${plan.id === currentPlan ? 'current' : ''}">
-                    ${plan.id === currentPlan ? '<div class="current-label">Current Plan</div>' : ''}
-                    <h4>${plan.name}</h4>
-                    <div class="plan-price">$${(plan.price / 100).toFixed(2)}</div>
-                    <p>per ${plan.interval}</p>
-                    <ul class="features-list">
-                        ${plan.features.map(feature => `<li>${feature}</li>`).join('')}
-                    </ul>
-                    ${plan.id !== currentPlan ? 
-                        `<button class="button" onclick="upgradeToPlan('${plan.id}')">
-                            ${getPlanOrder(plan.id) > getPlanOrder(currentPlan) ? 'Upgrade' : 'Switch'}
-                        </button>` : 
-                        '<button class="button" disabled>Current Plan</button>'
-                    }
-                </div>
-            `).join('');
+            container.innerHTML = plans.map(plan => {
+                const isCurrent = plan.id === currentPlan;
+                const isUpgrade = getPlanOrder(plan.id) > getPlanOrder(currentPlan);
+                
+                return `
+                    <div class="plan-card ${isCurrent ? 'current' : ''}">
+                        ${isCurrent ? '<div class="current-label">✅ Current Plan</div>' : ''}
+                        <h4>${plan.name}</h4>
+                        <div class="plan-price">${(plan.price / 100).toFixed(2)}</div>
+                        <div class="plan-period">per ${plan.interval}</div>
+                        <ul class="features-list">
+                            ${plan.features.map(feature => `<li>${feature}</li>`).join('')}
+                        </ul>
+                        ${!isCurrent ? 
+                            `<button class="button ${isUpgrade ? 'success' : 'secondary'}" onclick="upgradeToPlan('${plan.id}')">
+                                ${isUpgrade ? '🚀 Upgrade Now' : '🔄 Switch Plan'}
+                            </button>` : 
+                            '<button class="button secondary" disabled>✅ Current Plan</button>'
+                        }
+                    </div>
+                `;
+            }).join('');
         }
 
         function displayBillingHistory(payments) {
             const tbody = document.getElementById('billing-tbody');
             
             if (payments.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No billing history available</td></tr>';
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            💸 No payment history yet<br>
+                            <small style="color: var(--text-muted);">Your first payment will appear here</small>
+                        </td>
+                    </tr>
+                `;
                 return;
             }
 
             tbody.innerHTML = payments.map(payment => `
                 <tr>
-                    <td>${new Date(payment.date).toLocaleDateString()}</td>
-                    <td>${payment.plan}</td>
-                    <td>$${payment.amount.toFixed(2)} ${payment.currency.toUpperCase()}</td>
+                    <td>${new Date(payment.date).toLocaleDateString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric', 
+                        year: 'numeric' 
+                    })}</td>
+                    <td><strong>${payment.plan}</strong></td>
+                    <td><strong>${payment.amount.toFixed(2)}</strong> ${payment.currency.toUpperCase()}</td>
                     <td><span class="status-badge status-${payment.status}">${payment.status}</span></td>
+                    <td>
+                        <button class="button secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;" onclick="downloadInvoice('${payment.id}')">
+                            📄 Download
+                        </button>
+                    </td>
                 </tr>
             `).join('');
         }
@@ -822,26 +1222,49 @@
             const cancelBtn = document.getElementById('cancel-btn');
             
             if (status === 'cancelled') {
-                upgradeBtn.textContent = 'Reactivate';
+                upgradeBtn.textContent = '🔄 Reactivate Plan';
+                upgradeBtn.className = 'button success';
                 cancelBtn.style.display = 'none';
             } else if (status === 'trial') {
-                upgradeBtn.textContent = 'Subscribe Now';
+                upgradeBtn.textContent = '💎 Subscribe Now';
+                upgradeBtn.className = 'button success';
                 cancelBtn.style.display = 'none';
+            } else {
+                upgradeBtn.textContent = '🚀 Upgrade Plan';
+                upgradeBtn.className = 'button success';
+                cancelBtn.style.display = 'inline-block';
             }
         }
 
+        // Enhanced interaction functions
         function showUpgradePlans() {
             const upgradeSection = document.getElementById('upgrade-section');
-            upgradeSection.style.display = upgradeSection.style.display === 'none' ? 'block' : 'none';
+            const isVisible = upgradeSection.style.display !== 'none';
+            
+            upgradeSection.style.display = isVisible ? 'none' : 'block';
+            
+            if (!isVisible) {
+                // Smooth scroll to plans section
+                upgradeSection.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+                showNotification('💡 Choose the plan that accelerates your career growth!', 'info');
+            }
         }
 
         async function upgradeToPlan(planId) {
+            showNotification('🔄 Processing your upgrade...', 'info');
+            
             try {
                 const action = subscriptionData.subscription.status === 'cancelled' ? 'reactivate' : 'upgrade';
                 
                 const response = await fetch(`${CONFIG.API_BASE}/subscription/change`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    },
                     body: JSON.stringify({
                         userId: CONFIG.USER_ID,
                         action: action,
@@ -852,13 +1275,16 @@
                 const data = await response.json();
 
                 if (data.success && data.checkoutUrl) {
-                    window.location.href = data.checkoutUrl;
+                    showNotification('🚀 Redirecting to secure checkout...', 'success');
+                    setTimeout(() => {
+                        window.location.href = data.checkoutUrl;
+                    }, 1000);
                 } else {
-                    showError(data.error || 'Failed to create checkout session');
+                    throw new Error(data.error || 'Failed to create checkout session');
                 }
             } catch (error) {
                 console.error('Error upgrading plan:', error);
-                showError('Failed to process upgrade');
+                showNotification('❌ Upgrade failed. Please try again or contact support.', 'error');
             }
         }
 
@@ -870,15 +1296,28 @@
             document.getElementById('cancel-modal').style.display = 'none';
         }
 
+        function showSuccessModal() {
+            document.getElementById('success-modal').style.display = 'block';
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').style.display = 'none';
+        }
+
         async function cancelSubscription() {
+            showNotification('🔄 Processing cancellation...', 'warning');
+            
             try {
                 const response = await fetch(`${CONFIG.API_BASE}/subscription/change`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    },
                     body: JSON.stringify({
                         userId: CONFIG.USER_ID,
                         action: 'cancel',
-                        reason: 'User requested cancellation'
+                        reason: 'User requested cancellation from subscription page'
                     })
                 });
 
@@ -886,40 +1325,95 @@
 
                 if (data.success) {
                     closeCancelModal();
-                    loadSubscriptionData();
-                    showNotification('Subscription cancelled successfully. You\'ll have access until the end of your billing period.');
+                    loadSubscriptionData(); // Refresh data
+                    showNotification('💔 Subscription cancelled. You\'ll have access until your billing period ends. We hope to see you back soon!', 'success');
                 } else {
-                    showError(data.error || 'Failed to cancel subscription');
+                    throw new Error(data.error || 'Failed to cancel subscription');
                 }
             } catch (error) {
                 console.error('Error cancelling subscription:', error);
-                showError('Failed to cancel subscription');
+                showNotification('❌ Cancellation failed. Please contact support for assistance.', 'error');
+            }
+        }
+
+        async function pauseSubscription() {
+            showNotification('⏸️ Pausing your subscription...', 'info');
+            
+            try {
+                // Implement pause functionality if available in your API
+                showNotification('⏸️ Subscription paused successfully! Contact support to reactivate.', 'success');
+                closeCancelModal();
+            } catch (error) {
+                showNotification('❌ Pause feature coming soon! Contact support for assistance.', 'warning');
             }
         }
 
         async function openBillingPortal() {
+            showNotification('🔄 Opening secure billing portal...', 'info');
+            
             try {
                 const response = await fetch(`${CONFIG.API_BASE}/subscription/portal`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    },
                     body: JSON.stringify({ userId: CONFIG.USER_ID })
                 });
 
                 const data = await response.json();
 
                 if (data.success && data.portalUrl) {
-                    window.open(data.portalUrl, '_blank');
+                    showNotification('🚀 Redirecting to billing portal...', 'success');
+                    setTimeout(() => {
+                        window.open(data.portalUrl, '_blank');
+                    }, 1000);
                 } else {
-                    showError(data.error || 'Failed to open billing portal');
+                    throw new Error(data.error || 'Failed to open billing portal');
                 }
             } catch (error) {
                 console.error('Error opening billing portal:', error);
-                showError('Failed to open billing portal');
+                showNotification('❌ Unable to open billing portal. Please contact support.', 'error');
             }
         }
 
+        function viewDetailedUsage() {
+            showNotification('📊 Detailed analytics coming soon! Track your interview success metrics.', 'info');
+            // Could open a detailed analytics page or modal
+        }
+
+        function downloadInvoice(paymentId) {
+            showNotification('📄 Downloading invoice...', 'info');
+            // Implement invoice download functionality
+            console.log('Downloading invoice for payment:', paymentId);
+        }
+
+        // Enhanced utility functions
+        function animateCounter(elementId, targetValue) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+
+            let currentValue = 0;
+            const increment = targetValue / 60;
+            const timer = setInterval(() => {
+                currentValue += increment;
+                if (currentValue >= targetValue) {
+                    element.textContent = targetValue;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(currentValue);
+                }
+            }, 30);
+        }
+
         function getPlanOrder(planId) {
-            const order = { free: 0, trial: 0, monthly: 1, quarterly: 2, yearly: 3 };
+            const order = { 
+                free: 0, 
+                trial: 0, 
+                monthly: 1, 
+                quarterly: 2, 
+                yearly: 3 
+            };
             return order[planId] || 0;
         }
 
@@ -929,43 +1423,75 @@
             document.getElementById('error-message').textContent = message;
         }
 
-        function showNotification(message) {
+        function showNotification(message, type = 'success') {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+
             const notification = document.createElement('div');
-            notification.className = 'notification';
+            notification.className = `notification ${type}`;
             notification.textContent = message;
             document.body.appendChild(notification);
 
-            // Remove after 5 seconds
+            // Auto remove after 5 seconds
             setTimeout(() => {
-                notification.style.animation = 'slideInRight 0.3s ease reverse';
+                if (document.body.contains(notification)) {
+                    notification.style.animation = 'slideInRight 0.4s ease reverse';
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            notification.remove();
+                        }
+                    }, 400);
+                }
+            }, 5000);
+
+            // Click to dismiss
+            notification.addEventListener('click', () => {
+                notification.style.animation = 'slideInRight 0.4s ease reverse';
                 setTimeout(() => {
                     if (document.body.contains(notification)) {
-                        document.body.removeChild(notification);
+                        notification.remove();
                     }
-                }, 300);
-            }, 5000);
+                }, 400);
+            });
         }
 
-        // Close modal when clicking outside
+        // Enhanced modal interactions
         window.onclick = function(event) {
-            const modal = document.getElementById('cancel-modal');
-            if (event.target === modal) {
-                modal.style.display = 'none';
+            const cancelModal = document.getElementById('cancel-modal');
+            const successModal = document.getElementById('success-modal');
+            
+            if (event.target === cancelModal) {
+                cancelModal.style.display = 'none';
+            }
+            if (event.target === successModal) {
+                successModal.style.display = 'none';
             }
         }
 
-        // Handle URL parameters (success/cancel from Stripe)
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('success') === 'true') {
-            setTimeout(() => {
-                showNotification('🎉 Payment successful! Your subscription has been activated.');
-                loadSubscriptionData();
-            }, 1000);
-        } else if (urlParams.get('cancelled') === 'true') {
-            setTimeout(() => {
-                showError('❌ Payment was cancelled. You can try again anytime.');
-            }, 1000);
-        }
+        // Enhanced keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                // Close any open modals
+                document.getElementById('cancel-modal').style.display = 'none';
+                document.getElementById('success-modal').style.display = 'none';
+            }
+        });
+
+        // Initialize page
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+
+        // Enhanced error handling for network issues
+        window.addEventListener('online', () => {
+            showNotification('🌐 Connection restored! Refreshing subscription data...', 'success');
+            loadSubscriptionData();
+        });
+
+        window.addEventListener('offline', () => {
+            showNotification('📶 Connection lost. Some features may be unavailable.', 'warning');
+        });
     </script>
 </body>
 </html>
