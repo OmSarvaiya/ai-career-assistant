@@ -3,26 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings - Customize Your AI Interview Experience | AI Interview Assistant</title>
-    <meta name="description" content="🎯 Personalize your AI interview assistant. Manage profile, subscription, privacy settings, and optimize your interview success. Complete control at your fingertips.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Settings - AI Interview Assistant</title>
+    <meta name="description" content="Manage your account settings, preferences, and profile information.">
     <style>
-        :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            --dark-bg: #0f172a;
-            --dark-card: #1e293b;
-            --text-primary: #f8fafc;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -30,73 +13,28 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--dark-bg);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
             min-height: 100vh;
             line-height: 1.6;
-            color: var(--text-primary);
-            overflow-x: hidden;
-        }
-
-        /* Enhanced Animated Background */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(45deg, #0f172a, #1e293b, #334155);
-            background-size: 400% 400%;
-            animation: gradientShift 20s ease infinite;
-        }
-
-        .bg-animation::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.1) 0%, transparent 70%),
-                radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 70%),
-                radial-gradient(circle at 40% 80%, rgba(79, 172, 254, 0.05) 0%, transparent 70%);
-            animation: float 25s ease-in-out infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-20px) rotate(1deg); }
-            66% { transform: translateY(10px) rotate(-1deg); }
+            color: #2d3748;
         }
 
         /* Header */
         .header {
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .header.scrolled {
-            background: rgba(15, 23, 42, 0.95);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .nav {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -104,153 +42,102 @@
         }
 
         .logo {
-            font-size: 28px;
-            font-weight: 900;
-            background: var(--primary-gradient);
+            font-size: 26px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-            filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.3));
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2.5rem;
+            gap: 40px;
             align-items: center;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-secondary);
+            color: #4a5568;
             font-weight: 500;
-            font-size: 15px;
             transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary-gradient);
-            transition: width 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: var(--text-primary);
-            transform: translateY(-2px);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
+            color: #667eea;
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary-gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 16px;
+            gap: 20px;
         }
 
         .user-name {
-            font-weight: 600;
-            color: var(--text-primary);
+            font-weight: 500;
+            color: #2d3748;
         }
 
         .btn {
-            padding: 12px 24px;
-            border-radius: 12px;
+            padding: 10px 20px;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .btn-primary {
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
 
         .btn-outline {
-            background: var(--glass-bg);
-            color: var(--text-primary);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
         }
 
         .btn-outline:hover {
-            background: var(--glass-border);
-            transform: translateY(-2px);
+            background: #667eea;
+            color: white;
         }
 
         /* Main Content */
         .main-content {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 120px 2rem 60px;
+            padding: 120px 20px 40px;
             display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 3rem;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
         }
 
-        /* Enhanced Sidebar */
+        /* Sidebar */
         .sidebar {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(102, 126, 234, 0.1);
             height: fit-content;
             position: sticky;
             top: 120px;
         }
 
         .sidebar h3 {
-            color: var(--text-primary);
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #2d3748;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
         }
 
         .sidebar-menu {
@@ -258,42 +145,37 @@
         }
 
         .sidebar-menu li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 8px;
         }
 
         .sidebar-menu a {
             display: flex;
             align-items: center;
-            padding: 1rem 1.5rem;
-            color: var(--text-secondary);
+            padding: 12px 16px;
+            color: #4a5568;
             text-decoration: none;
-            border-radius: 16px;
+            border-radius: 10px;
             transition: all 0.3s ease;
-            gap: 1rem;
-            font-weight: 500;
+            gap: 12px;
         }
 
         .sidebar-menu a:hover, .sidebar-menu a.active {
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            transform: translateX(8px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            transform: translateX(4px);
         }
 
         .sidebar-menu .icon {
-            font-size: 20px;
-            width: 24px;
-            text-align: center;
+            font-size: 18px;
         }
 
-        /* Enhanced Content Area */
+        /* Content Area */
         .content-area {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 3rem;
-            min-height: 600px;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(102, 126, 234, 0.1);
         }
 
         .content-section {
@@ -302,190 +184,156 @@
 
         .content-section.active {
             display: block;
-            animation: fadeInUp 0.6s ease;
         }
 
         .section-header {
-            margin-bottom: 2.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f7fafc;
         }
 
         .section-title {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-            letter-spacing: -1px;
-            background: linear-gradient(135deg, var(--text-primary), var(--primary-gradient));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
         .section-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            line-height: 1.6;
+            color: #718096;
+            font-size: 16px;
         }
 
-        /* Enhanced Form Styles */
+        /* Form Styles */
         .form-group {
-            margin-bottom: 2rem;
+            margin-bottom: 25px;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 0.75rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            font-size: 1rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
         }
 
         .form-input {
             width: 100%;
-            padding: 1rem 1.25rem;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            backdrop-filter: blur(10px);
-        }
-
-        .form-input::placeholder {
-            color: var(--text-muted);
+            background: #ffffff;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: rgba(102, 126, 234, 0.5);
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-            background: rgba(255, 255, 255, 0.1);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .form-input:disabled {
-            background: rgba(255, 255, 255, 0.02);
-            color: var(--text-muted);
+            background: #f7fafc;
+            color: #a0aec0;
             cursor: not-allowed;
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+            gap: 20px;
         }
 
         .form-textarea {
             min-height: 120px;
             resize: vertical;
-            font-family: inherit;
         }
 
         .form-select {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23cbd5e1' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 1rem center;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
             background-repeat: no-repeat;
             background-size: 16px;
-            padding-right: 3rem;
+            padding-right: 40px;
         }
 
-        /* Enhanced Cards */
+        /* Cards */
         .info-card {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            border: 1px solid rgba(102, 126, 234, 0.2);
-            padding: 2rem;
-            border-radius: 20px;
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .info-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            margin-bottom: 25px;
         }
 
         .info-card h4 {
-            color: var(--text-primary);
-            font-weight: 700;
-            font-size: 1.3rem;
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            color: #2d3748;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
         .info-card p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            line-height: 1.6;
+            color: #4a5568;
+            font-size: 14px;
         }
 
-        /* Enhanced Buttons */
+        /* Buttons */
         .btn-save {
-            background: var(--success-gradient);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1rem 2rem;
+            padding: 12px 24px;
             border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 8px 25px rgba(17, 153, 142, 0.4);
-        }
-
-        .btn-save:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(17, 153, 142, 0.6);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-            padding: 1rem 2rem;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-right: 1rem;
-            backdrop-filter: blur(10px);
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 15px;
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
-            transform: translateY(-2px);
+            background: #cbd5e0;
         }
 
         .btn-danger {
-            background: var(--secondary-gradient);
+            background: #e53e3e;
             color: white;
-            padding: 1rem 2rem;
+            padding: 12px 24px;
             border: none;
-            border-radius: 12px;
-            font-weight: 700;
+            border-radius: 10px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
         }
 
         .btn-danger:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(240, 147, 251, 0.6);
+            background: #c53030;
+            transform: translateY(-2px);
         }
 
-        /* Enhanced Toggle Switch */
+        /* Toggle Switch */
         .toggle-switch {
             position: relative;
             display: inline-block;
             width: 60px;
-            height: 32px;
+            height: 34px;
         }
 
         .toggle-switch input {
@@ -501,196 +349,103 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(255, 255, 255, 0.2);
+            background-color: #ccc;
             transition: .4s;
-            border-radius: 32px;
-            backdrop-filter: blur(10px);
+            border-radius: 34px;
         }
 
         .slider:before {
             position: absolute;
             content: "";
-            height: 24px;
-            width: 24px;
+            height: 26px;
+            width: 26px;
             left: 4px;
             bottom: 4px;
             background-color: white;
             transition: .4s;
             border-radius: 50%;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         input:checked + .slider {
-            background: var(--success-gradient);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         input:checked + .slider:before {
-            transform: translateX(28px);
+            transform: translateX(26px);
         }
 
-        /* Enhanced Subscription Card */
+        /* Subscription Card */
         .subscription-card {
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .subscription-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/svg%3E") repeat;
-        }
-
-        .subscription-card-content {
-            position: relative;
-            z-index: 1;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
         }
 
         .subscription-card h4 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 0.75rem;
+            font-size: 20px;
+            margin-bottom: 10px;
         }
 
         .subscription-card p {
             opacity: 0.9;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
+            margin-bottom: 20px;
         }
 
         .btn-white {
             background: white;
             color: #667eea;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 10px;
-            font-weight: 700;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .btn-white:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
         }
 
-        /* Enhanced Stats Cards */
+        /* Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            border-radius: 20px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            padding: 25px;
+            border-radius: 12px;
             text-align: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-8px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(102, 126, 234, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.1);
         }
 
         .stat-number {
-            font-size: 2.5rem;
-            font-weight: 900;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-            display: block;
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
         }
 
         .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            color: #718096;
+            font-size: 14px;
         }
 
         /* Success Message */
         .success-message {
-            background: rgba(17, 153, 142, 0.2);
-            color: var(--text-primary);
-            border: 1px solid rgba(17, 153, 142, 0.3);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid #c3e6cb;
+            margin-bottom: 20px;
             display: none;
-            font-weight: 600;
-        }
-
-        /* Danger Zone */
-        .danger-zone {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 2px solid rgba(240, 147, 251, 0.2);
-        }
-
-        .danger-zone h4 {
-            color: #f093fb;
-            font-weight: 700;
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .danger-zone p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        /* Settings Groups */
-        .setting-group {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .setting-group:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(102, 126, 234, 0.3);
-        }
-
-        .setting-info {
-            flex: 1;
-        }
-
-        .setting-title {
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .setting-description {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
         }
 
         /* Mobile Responsive */
@@ -701,127 +456,103 @@
 
             .main-content {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
-                padding: 100px 1rem 40px;
+                gap: 20px;
+                padding: 100px 20px 40px;
             }
 
             .sidebar {
                 position: static;
                 order: 2;
-                padding: 1.5rem;
             }
 
             .content-area {
                 order: 1;
-                padding: 1.5rem;
+                padding: 20px;
             }
 
             .form-row {
                 grid-template-columns: 1fr;
-                gap: 1rem;
+                gap: 15px;
             }
 
             .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
             }
         }
 
         /* Animations */
-        @keyframes fadeInUp {
-            from { 
-                opacity: 0; 
-                transform: translateY(30px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Loading state */
-        body:not(.loaded) {
-            overflow: hidden;
-        }
-
-        body:not(.loaded) * {
-            animation-play-state: paused;
+        .content-section.active {
+            animation: fadeIn 0.5s ease;
         }
     </style>
 </head>
 <body>
-    <div class="bg-animation"></div>
-
     <!-- Header -->
-    <header class="header" id="header">
+    <header class="header">
         <nav class="nav">
-            <a href="/index.html" class="logo">⚙️ AI Interview Assistant</a>
+            <a href="/index.html" class="logo">🤖 AI Interview Assistant</a>
             <ul class="nav-links">
-                <li><a href="/dashboard.html">📊 Dashboard</a></li>
-                <li><a href="/pricing.html">💎 Pricing</a></li>
-                <li><a href="/index.html#features">✨ Features</a></li>
+                <li><a href="/dashboard.html">Dashboard</a></li>
+                <li><a href="/pricing.html">Pricing</a></li>
+                <li><a href="/index.html#features">Features</a></li>
             </ul>
             <div class="user-info">
-                <div class="user-avatar" id="user-avatar">U</div>
                 <span class="user-name" id="user-name">Loading...</span>
-                <a href="/dashboard.html" class="btn btn-primary">📊 Dashboard</a>
+                <a href="/dashboard.html" class="btn btn-primary">Dashboard</a>
             </div>
         </nav>
     </header>
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Enhanced Sidebar -->
+        <!-- Sidebar -->
         <aside class="sidebar">
-            <h3>🎯 Settings Hub</h3>
+            <h3>Settings</h3>
             <ul class="sidebar-menu">
                 <li><a href="#" class="active" onclick="showSection('profile')">
                     <span class="icon">👤</span>
-                    Profile & Info
+                    Profile
                 </a></li>
                 <li><a href="#" onclick="showSection('account')">
-                    <span class="icon">🔐</span>
-                    Account Security
+                    <span class="icon">⚙️</span>
+                    Account
                 </a></li>
                 <li><a href="#" onclick="showSection('subscription')">
-                    <span class="icon">💎</span>
+                    <span class="icon">💳</span>
                     Subscription
                 </a></li>
                 <li><a href="#" onclick="showSection('preferences')">
-                    <span class="icon">⚡</span>
-                    AI Preferences
+                    <span class="icon">🔔</span>
+                    Preferences
                 </a></li>
                 <li><a href="#" onclick="showSection('privacy')">
-                    <span class="icon">🛡️</span>
-                    Privacy & Data
+                    <span class="icon">🔒</span>
+                    Privacy
                 </a></li>
                 <li><a href="#" onclick="showSection('support')">
                     <span class="icon">💬</span>
-                    Help & Support
+                    Support
                 </a></li>
             </ul>
         </aside>
 
-        <!-- Enhanced Content Area -->
+        <!-- Content Area -->
         <main class="content-area">
             <!-- Profile Section -->
             <section id="profile" class="content-section active">
                 <div class="section-header">
-                    <h2 class="section-title">👤 Your Professional Profile</h2>
-                    <p class="section-subtitle">Personalize your AI interview assistant with your professional details for more accurate and tailored responses.</p>
+                    <h2 class="section-title">Profile Information</h2>
+                    <p class="section-subtitle">Update your personal information and profile details</p>
                 </div>
 
                 <div class="success-message" id="profile-success">
-                    🎉 Profile updated successfully! Your AI responses will now be more personalized.
-                </div>
-
-                <div class="info-card">
-                    <h4>🎯 Why This Matters</h4>
-                    <p>Your profile information helps our AI generate responses that sound authentically like you, matching your experience level and industry background for maximum interview impact.</p>
+                    Profile updated successfully!
                 </div>
 
                 <form id="profile-form">
@@ -838,443 +569,275 @@
 
                     <div class="form-group">
                         <label for="email" class="form-label">Email Address</label>
-                        <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email address">
+                        <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email">
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label for="job-title" class="form-label">Current Job Title</label>
-                            <input type="text" id="job-title" name="jobTitle" class="form-input" placeholder="e.g., Senior Software Engineer">
+                            <input type="text" id="job-title" name="jobTitle" class="form-input" placeholder="e.g., Software Engineer">
                         </div>
                         <div class="form-group">
                             <label for="company" class="form-label">Company</label>
-                            <input type="text" id="company" name="company" class="form-input" placeholder="Enter your current company">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="industry" class="form-label">Industry</label>
-                            <select id="industry" name="industry" class="form-input form-select">
-                                <option value="">Select your industry</option>
-                                <option value="technology">🖥️ Technology</option>
-                                <option value="finance">💰 Finance & Banking</option>
-                                <option value="healthcare">🏥 Healthcare</option>
-                                <option value="education">🎓 Education</option>
-                                <option value="marketing">📊 Marketing & Sales</option>
-                                <option value="consulting">💼 Consulting</option>
-                                <option value="retail">🛍️ Retail & E-commerce</option>
-                                <option value="manufacturing">🏭 Manufacturing</option>
-                                <option value="other">🌟 Other</option>
-                            </select>
-                        </div>
-                         <div class="form-group">
-                            <label for="experience-level" class="form-label">Experience Level</label>
-                            <select id="experience-level" name="experienceLevel" class="form-input form-select">
-                                <option value="">Select your level</option>
-                                <option value="entry">🌱 Entry Level (0-2 years)</option>
-                                <option value="mid">🚀 Mid Level (3-5 years)</option>
-                                <option value="senior">⭐ Senior Level (6-10 years)</option>
-                                <option value="lead">🏆 Lead/Principal (10+ years)</option>
-                                <option value="executive">👑 Executive/C-Level</option>
-                            </select>
+                            <input type="text" id="company" name="company" class="form-input" placeholder="Enter your company">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="bio" class="form-label">Professional Summary</label>
-                        <textarea id="bio" name="bio" class="form-input form-textarea" placeholder="Brief summary of your professional background, key skills, and career highlights..."></textarea>
+                        <label for="industry" class="form-label">Industry</label>
+                        <select id="industry" name="industry" class="form-input form-select">
+                            <option value="">Select your industry</option>
+                            <option value="technology">Technology</option>
+                            <option value="finance">Finance</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="education">Education</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="sales">Sales</option>
+                            <option value="other">Other</option>
+                        </select>
                     </div>
 
-                    <button type="submit" class="btn-save">💾 Save Profile Changes</button>
+                    <div class="form-group">
+                        <label for="bio" class="form-label">Professional Bio</label>
+                        <textarea id="bio" name="bio" class="form-input form-textarea" placeholder="Tell us about your professional background..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-save">Save Changes</button>
                 </form>
             </section>
 
             <!-- Account Section -->
             <section id="account" class="content-section">
                 <div class="section-header">
-                    <h2 class="section-title">🔐 Account Security</h2>
-                    <p class="section-subtitle">Manage your account security settings and login credentials to keep your data safe.</p>
+                    <h2 class="section-title">Account Settings</h2>
+                    <p class="section-subtitle">Manage your account security and login information</p>
                 </div>
 
                 <div class="info-card">
-                    <h4>📅 Account Information</h4>
-                    <p>Your account was created on <strong id="member-since">Loading...</strong> and is secured with industry-standard encryption.</p>
+                    <h4>Account Information</h4>
+                    <p>Your account was created on <strong id="member-since">Loading...</strong></p>
                 </div>
 
                 <form id="password-form">
                     <div class="form-group">
                         <label for="current-password" class="form-label">Current Password</label>
-                        <input type="password" id="current-password" name="currentPassword" class="form-input" placeholder="Enter your current password">
+                        <input type="password" id="current-password" name="currentPassword" class="form-input" placeholder="Enter current password">
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label for="new-password" class="form-label">New Password</label>
-                            <input type="password" id="new-password" name="newPassword" class="form-input" placeholder="Enter new secure password">
+                            <input type="password" id="new-password" name="newPassword" class="form-input" placeholder="Enter new password">
                         </div>
                         <div class="form-group">
-                            <label for="confirm-password" class="form-label">Confirm New Password</label>
-                            <input type="password" id="confirm-password" name="confirmPassword" class="form-input" placeholder="Confirm your new password">
+                            <label for="confirm-password" class="form-label">Confirm Password</label>
+                            <input type="password" id="confirm-password" name="confirmPassword" class="form-input" placeholder="Confirm new password">
                         </div>
                     </div>
 
-                    <div class="info-card">
-                        <h4>🛡️ Password Security Tips</h4>
-                        <p>Use a strong password with at least 8 characters, including uppercase letters, lowercase letters, numbers, and special characters. Avoid using personal information.</p>
-                    </div>
-
-                    <button type="submit" class="btn-save">🔄 Update Password</button>
+                    <button type="submit" class="btn-save">Update Password</button>
                 </form>
 
-                <div class="danger-zone">
-                    <h4>⚠️ Danger Zone</h4>
-                    <p>Once you delete your account, there is no going back. All your data, settings, and interview history will be permanently removed.</p>
-                    <button class="btn-danger" onclick="confirmDeleteAccount()">🗑️ Delete Account Permanently</button>
+                <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #f7fafc;">
+                    <h4 style="color: #e53e3e; margin-bottom: 15px;">Danger Zone</h4>
+                    <p style="color: #718096; margin-bottom: 20px;">Once you delete your account, there is no going back. Please be certain.</p>
+                    <button class="btn-danger" onclick="confirmDeleteAccount()">Delete Account</button>
                 </div>
             </section>
 
             <!-- Subscription Section -->
             <section id="subscription" class="content-section">
                 <div class="section-header">
-                    <h2 class="section-title">💎 Subscription & Usage</h2>
-                    <p class="section-subtitle">Manage your subscription plan and monitor your AI assistant usage statistics.</p>
+                    <h2 class="section-title">Subscription & Billing</h2>
+                    <p class="section-subtitle">Manage your subscription and view usage statistics</p>
                 </div>
 
                 <div class="subscription-card">
-                    <div class="subscription-card-content">
-                        <h4>🚀 Current Plan: <span id="current-plan">Loading...</span></h4>
-                        <p id="plan-description">Loading subscription details...</p>
-                        <button class="btn-white" onclick="openSubscriptionManager()">⚙️ Manage Subscription</button>
-                    </div>
+                    <h4>Current Plan: <span id="current-plan">Loading...</span></h4>
+                    <p id="plan-description">Loading subscription details...</p>
+                    <button class="btn-white" onclick="openSubscriptionManager()">Manage Subscription</button>
                 </div>
 
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-number" id="usage-count">0</div>
-                        <div class="stat-label">AI Responses Generated</div>
+                        <div class="stat-label">AI Responses This Month</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-number" id="total-sessions">0</div>
-                        <div class="stat-label">Interview Sessions</div>
+                        <div class="stat-label">Total Interview Sessions</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number" id="success-rate">98%</div>
+                        <div class="stat-number" id="success-rate">0%</div>
                         <div class="stat-label">Success Rate</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="time-saved">24h</div>
-                        <div class="stat-label">Time Saved</div>
-                    </div>
-                </div>
-
-                <div class="info-card">
-                    <h4>📊 Usage Insights</h4>
-                    <p>Your AI assistant has helped you prepare for interviews more effectively. Upgrade to unlock unlimited responses and advanced features for even better results.</p>
                 </div>
             </section>
 
             <!-- Preferences Section -->
             <section id="preferences" class="content-section">
                 <div class="section-header">
-                    <h2 class="section-title">⚡ AI Preferences</h2>
-                    <p class="section-subtitle">Customize how your AI interview assistant behaves and responds to optimize your interview performance.</p>
+                    <h2 class="section-title">Preferences</h2>
+                    <p class="section-subtitle">Customize your AI interview assistant experience</p>
                 </div>
 
                 <form id="preferences-form">
-                    <div class="setting-group">
-                        <div class="setting-info">
-                            <div class="setting-title">📧 Email Notifications</div>
-                            <div class="setting-description">Get notified about interview reminders and important updates</div>
+                    <div class="form-group">
+                        <label class="form-label">Email Notifications</label>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-top: 10px;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="email-notifications" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <span>Receive email notifications about interviews and updates</span>
                         </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="email-notifications" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="setting-group">
-                        <div class="setting-info">
-                            <div class="setting-title">⏰ Interview Reminders</div>
-                            <div class="setting-description">Receive reminders before scheduled interviews and preparation tips</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="interview-reminders" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="setting-group">
-                        <div class="setting-info">
-                            <div class="setting-title">🔊 Audio Processing</div>
-                            <div class="setting-description">Enable real-time audio processing for automatic question detection</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="audio-processing" checked>
-                            <span class="slider"></span>
-                        </label>
                     </div>
 
                     <div class="form-group">
-                        <label for="response-speed" class="form-label">⚡ AI Response Speed</label>
+                        <label class="form-label">Interview Reminders</label>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-top: 10px;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="interview-reminders" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <span>Get reminders before scheduled interviews</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="response-speed" class="form-label">AI Response Speed</label>
                         <select id="response-speed" name="responseSpeed" class="form-input form-select">
-                            <option value="fast">🚀 Fast (1-2 seconds) - Quick suggestions</option>
-                            <option value="balanced" selected>⚖️ Balanced (2-3 seconds) - Optimal quality</option>
-                            <option value="detailed">🧠 Detailed (3-4 seconds) - Comprehensive responses</option>
+                            <option value="fast">Fast (1-2 seconds)</option>
+                            <option value="balanced" selected>Balanced (2-3 seconds)</option>
+                            <option value="detailed">Detailed (3-4 seconds)</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="suggestion-style" class="form-label">🎯 Response Style</label>
+                        <label for="suggestion-style" class="form-label">Suggestion Style</label>
                         <select id="suggestion-style" name="suggestionStyle" class="form-input form-select">
-                            <option value="concise">✨ Concise - Brief and to the point</option>
-                            <option value="detailed" selected>📋 Detailed - Full explanations and examples</option>
-                            <option value="bullet-points">🔢 Bullet Points - Structured and easy to follow</option>
-                            <option value="conversational">💬 Conversational - Natural and flowing</option>
+                            <option value="concise">Concise</option>
+                            <option value="detailed" selected>Detailed</option>
+                            <option value="bullet-points">Bullet Points</option>
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="confidence-level" class="form-label">💪 Confidence Tone</label>
-                        <select id="confidence-level" name="confidenceLevel" class="form-input form-select">
-                            <option value="humble">🙏 Humble - Modest and respectful</option>
-                            <option value="balanced" selected>⚖️ Balanced - Professional confidence</option>
-                            <option value="assertive">🦾 Assertive - Strong and confident</option>
-                            <option value="executive">👑 Executive - Leadership presence</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn-save">💾 Save AI Preferences</button>
+                    <button type="submit" class="btn-save">Save Preferences</button>
                 </form>
             </section>
 
             <!-- Privacy Section -->
             <section id="privacy" class="content-section">
                 <div class="section-header">
-                    <h2 class="section-title">🛡️ Privacy & Data Control</h2>
-                    <p class="section-subtitle">Take complete control over your data privacy and how your information is used to improve our service.</p>
+                    <h2 class="section-title">Privacy & Data</h2>
+                    <p class="section-subtitle">Control how your data is used and stored</p>
                 </div>
 
                 <div class="info-card">
-                    <h4>🔒 Your Data Protection</h4>
-                    <p>We take your privacy seriously. Your interview conversations are processed in real-time and are never permanently stored on our servers. You have complete control over your data.</p>
+                    <h4>Data Protection</h4>
+                    <p>We take your privacy seriously. Your interview conversations are processed locally and are never stored on our servers.</p>
                 </div>
 
                 <form id="privacy-form">
-                    <div class="setting-group">
-                        <div class="setting-info">
-                            <div class="setting-title">📊 Usage Analytics</div>
-                            <div class="setting-description">Allow anonymous usage data collection to help improve our AI service</div>
+                    <div class="form-group">
+                        <label class="form-label">Usage Analytics</label>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-top: 10px;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="usage-analytics" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <span>Allow us to collect anonymous usage data to improve the service</span>
                         </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="usage-analytics" checked>
-                            <span class="slider"></span>
-                        </label>
                     </div>
 
-                    <div class="setting-group">
-                        <div class="setting-info">
-                            <div class="setting-title">📧 Marketing Communications</div>
-                            <div class="setting-description">Receive product updates, tips, and special offers via email</div>
+                    <div class="form-group">
+                        <label class="form-label">Marketing Communications</label>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-top: 10px;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="marketing-emails">
+                                <span class="slider"></span>
+                            </label>
+                            <span>Receive marketing emails and product updates</span>
                         </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="marketing-emails">
-                            <span class="slider"></span>
-                        </label>
                     </div>
 
-                    <div class="setting-group">
-                        <div class="setting-info">
-                            <div class="setting-title">🧠 AI Training Data</div>
-                            <div class="setting-description">Allow anonymized response patterns to improve AI quality (no personal data shared)</div>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="ai-training" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn-save">🛡️ Save Privacy Settings</button>
+                    <button type="submit" class="btn-save">Save Privacy Settings</button>
                 </form>
 
-                <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid rgba(255, 255, 255, 0.1);">
-                    <h4 style="margin-bottom: 1rem; color: var(--text-primary); font-weight: 700;">📥 Data Management</h4>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-                        <button class="btn-secondary" onclick="requestDataExport()">📄 Export My Data</button>
-                        <button class="btn-secondary" onclick="viewPrivacyPolicy()">📜 Privacy Policy</button>
-                        <button class="btn-secondary" onclick="deleteAllData()">🗑️ Delete All Data</button>
-                    </div>
+                <div style="margin-top: 40px;">
+                    <h4 style="margin-bottom: 15px;">Download Your Data</h4>
+                    <p style="color: #718096; margin-bottom: 20px;">Request a copy of all your personal data stored in our system.</p>
+                    <button class="btn-secondary" onclick="requestDataExport()">Request Data Export</button>
                 </div>
             </section>
 
             <!-- Support Section -->
             <section id="support" class="content-section">
                 <div class="section-header">
-                    <h2 class="section-title">💬 Help & Support</h2>
-                    <p class="section-subtitle">Get help with your account, report issues, or request new features. Our support team is here to help you succeed.</p>
+                    <h2 class="section-title">Help & Support</h2>
+                    <p class="section-subtitle">Get help with your account and report issues</p>
                 </div>
 
                 <div class="stats-grid">
-                    <div class="stat-card" onclick="openKnowledgeBase()">
+                    <div class="stat-card">
                         <div class="stat-number">📚</div>
                         <div class="stat-label">Knowledge Base</div>
                     </div>
-                    <div class="stat-card" onclick="openLiveChat()">
+                    <div class="stat-card">
                         <div class="stat-number">💬</div>
-                        <div class="stat-label">Live Chat Support</div>
+                        <div class="stat-label">Live Chat</div>
                     </div>
-                    <div class="stat-card" onclick="openEmailSupport()">
+                    <div class="stat-card">
                         <div class="stat-number">📧</div>
                         <div class="stat-label">Email Support</div>
                     </div>
-                    <div class="stat-card" onclick="scheduleCall()">
-                        <div class="stat-number">📞</div>
-                        <div class="stat-label">Schedule Call</div>
-                    </div>
-                </div>
-
-                <div class="info-card">
-                    <h4>🎯 Quick Tips</h4>
-                    <p>For fastest support, check our Knowledge Base first. For technical issues, include your browser version and any error messages. For billing questions, have your subscription details ready.</p>
                 </div>
 
                 <form id="support-form">
                     <div class="form-group">
                         <label for="support-subject" class="form-label">Subject</label>
-                        <input type="text" id="support-subject" name="subject" class="form-input" placeholder="Brief description of your issue or question">
+                        <input type="text" id="support-subject" name="subject" class="form-input" placeholder="Brief description of your issue">
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="support-category" class="form-label">Category</label>
-                            <select id="support-category" name="category" class="form-input form-select">
-                                <option value="">Select a category</option>
-                                <option value="technical">🔧 Technical Issue</option>
-                                <option value="billing">💳 Billing Question</option>
-                                <option value="feature">✨ Feature Request</option>
-                                <option value="bug">🐛 Bug Report</option>
-                                <option value="account">👤 Account Help</option>
-                                <option value="other">❓ Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="support-priority" class="form-label">Priority</label>
-                            <select id="support-priority" name="priority" class="form-input form-select">
-                                <option value="low">🟢 Low - General question</option>
-                                <option value="medium" selected>🟡 Medium - Need help soon</option>
-                                <option value="high">🔴 High - Urgent issue</option>
-                                <option value="critical">🚨 Critical - Service down</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label for="support-category" class="form-label">Category</label>
+                        <select id="support-category" name="category" class="form-input form-select">
+                            <option value="">Select a category</option>
+                            <option value="technical">Technical Issue</option>
+                            <option value="billing">Billing Question</option>
+                            <option value="feature">Feature Request</option>
+                            <option value="bug">Bug Report</option>
+                            <option value="other">Other</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
                         <label for="support-message" class="form-label">Message</label>
-                        <textarea id="support-message" name="message" class="form-input form-textarea" placeholder="Please describe your issue or question in detail. Include any error messages, steps to reproduce, or specific features you need help with..."></textarea>
+                        <textarea id="support-message" name="message" class="form-input form-textarea" placeholder="Describe your issue or question in detail..."></textarea>
                     </div>
 
-                    <button type="submit" class="btn-save">📤 Send Support Request</button>
+                    <button type="submit" class="btn-save">Send Message</button>
                 </form>
             </section>
         </main>
     </div>
 
     <script>
-        const API_BASE = 'https://ai-career-assistant-production.up.railway.app/api';
+     const API_BASE = 'https://ai-career-assistant-production.up.railway.app/api';
         let currentUser = null;
 
         // Initialize settings page
         document.addEventListener('DOMContentLoaded', function() {
             loadUserData();
             loadSubscriptionInfo();
-            initializeEnhancements();
         });
 
-        // Enhanced initialization
-        function initializeEnhancements() {
-            // Add loading animation
-            document.body.classList.add('loaded');
-            
-            // Initialize tooltips and interactions
-            initializeInteractions();
-            
-            // Setup form validations
-            setupFormValidations();
-        }
-
-        // Enhanced user interactions
-        function initializeInteractions() {
-            // Enhanced button hover effects
-            document.querySelectorAll('.btn, .stat-card').forEach(el => {
-                el.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-3px) scale(1.02)';
-                });
-                
-                el.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0) scale(1)';
-                });
-            });
-
-            // Enhanced sidebar interactions
-            document.querySelectorAll('.sidebar-menu a').forEach(link => {
-                link.addEventListener('click', function() {
-                    // Add click feedback
-                    this.style.transform = 'translateX(12px) scale(1.05)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 200);
-                });
-            });
-        }
-
-        // Enhanced form validations
-        function setupFormValidations() {
-            // Real-time password strength checking
-            const newPasswordInput = document.getElementById('new-password');
-            if (newPasswordInput) {
-                newPasswordInput.addEventListener('input', function() {
-                    const strength = checkPasswordStrength(this.value);
-                    updatePasswordStrengthIndicator(strength);
-                });
-            }
-
-            // Email validation
-            const emailInput = document.getElementById('email');
-            if (emailInput) {
-                emailInput.addEventListener('blur', function() {
-                    validateEmail(this.value);
-                });
-            }
-        }
-
-        // Password strength checker
-        function checkPasswordStrength(password) {
-            let strength = 0;
-            if (password.length >= 8) strength++;
-            if (/[a-z]/.test(password)) strength++;
-            if (/[A-Z]/.test(password)) strength++;
-            if (/[0-9]/.test(password)) strength++;
-            if (/[^A-Za-z0-9]/.test(password)) strength++;
-            return strength;
-        }
-
-        function updatePasswordStrengthIndicator(strength) {
-            // You can add a visual password strength indicator here
-            console.log('Password strength:', strength);
-        }
-
-        function validateEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        // Load user data with enhanced error handling
+        // Load user data
         async function loadUserData() {
             const token = localStorage.getItem('authToken');
             
             if (!token) {
-                showNotification('Please log in to access settings', 'error');
-                setTimeout(() => window.location.href = '/auth.html', 2000);
+                window.location.href = '/auth.html';
                 return;
             }
 
@@ -1290,133 +853,57 @@
                 if (data.success) {
                     currentUser = data.user;
                     populateUserData(data.user);
-                    showNotification('Profile loaded successfully', 'success');
                 } else {
-                    throw new Error(data.message || 'Failed to load profile');
+                    localStorage.removeItem('authToken');
+                    window.location.href = '/auth.html';
                 }
             } catch (error) {
                 console.error('Error loading user data:', error);
-                showNotification('Failed to load profile data', 'error');
-                localStorage.removeItem('authToken');
-                setTimeout(() => window.location.href = '/auth.html', 2000);
             }
         }
 
-        // Enhanced user data population
+        // Populate user data in forms
         function populateUserData(user) {
-            // Update header
-            document.getElementById('user-name').textContent = user.name || user.email.split('@')[0];
-            const avatar = document.getElementById('user-avatar');
-            avatar.textContent = (user.name || user.email).charAt(0).toUpperCase();
+            document.getElementById('user-name').textContent = user.name;
             
-            // Populate form fields
-            const nameParts = (user.name || '').split(' ');
+            // Split name into first and last name
+            const nameParts = user.name.split(' ');
             document.getElementById('first-name').value = nameParts[0] || '';
             document.getElementById('last-name').value = nameParts.slice(1).join(' ') || '';
-            document.getElementById('email').value = user.email || '';
             
-            // Format member since date
-            const memberSince = new Date(user.createdAt || Date.now()).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            document.getElementById('member-since').textContent = memberSince;
-
-            // Load user preferences if available
-            if (user.preferences) {
-                loadUserPreferences(user.preferences);
-            }
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('member-since').textContent = new Date(user.createdAt).toLocaleDateString();
         }
 
-        function loadUserPreferences(preferences) {
-            // Load saved preferences
-            Object.keys(preferences).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    if (element.type === 'checkbox') {
-                        element.checked = preferences[key];
-                    } else {
-                        element.value = preferences[key];
-                    }
-                }
-            });
-        }
-
-        // Enhanced subscription loading
+        // Load subscription information
         async function loadSubscriptionInfo() {
             const userId = getCurrentUserId();
             if (!userId) return;
 
             try {
-                const response = await fetch(`${API_BASE}/subscription/manage/${userId}`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                });
+                const response = await fetch(`${API_BASE}/subscription/manage/${userId}`);
                 const data = await response.json();
 
                 if (data.success) {
                     updateSubscriptionDisplay(data.data);
-                } else {
-                    updateSubscriptionDisplay({
-                        subscription: { planName: 'Free Trial', status: 'trial' },
-                        usage: { responses: 0, limit: 10 }
-                    });
                 }
             } catch (error) {
                 console.error('Error loading subscription info:', error);
-                showNotification('Could not load subscription details', 'warning');
             }
         }
 
-        // Enhanced subscription display
+        // Update subscription display
         function updateSubscriptionDisplay(subscriptionData) {
             const { subscription, usage } = subscriptionData;
             
-            document.getElementById('current-plan').textContent = subscription.planName || 'Free Trial';
-            
-            let statusText = '';
-            switch(subscription.status) {
-                case 'active':
-                    statusText = `Your ${subscription.planName} subscription is active and ready to supercharge your interviews!`;
-                    break;
-                case 'trial':
-                    statusText = 'Your free trial is active. Upgrade for unlimited access and premium features.';
-                    break;
-                default:
-                    statusText = 'Upgrade to unlock unlimited AI assistance and premium features.';
-            }
-            document.getElementById('plan-description').textContent = statusText;
-            
-            // Update usage stats with animations
-            animateCounter('usage-count', usage.responses || 0);
-            animateCounter('total-sessions', Math.floor(Math.random() * 50) + 15);
-            
-            // Calculate time saved (rough estimate)
-            const timeSaved = Math.floor((usage.responses || 0) * 2.5); // ~2.5 minutes per response
-            document.getElementById('time-saved').textContent = `${timeSaved}m`;
+            document.getElementById('current-plan').textContent = subscription.planName;
+            document.getElementById('plan-description').textContent = `Your ${subscription.planName} is ${subscription.status}`;
+            document.getElementById('usage-count').textContent = usage.responses || 0;
+            document.getElementById('total-sessions').textContent = Math.floor(Math.random() * 50) + 10; // Mock data
+            document.getElementById('success-rate').textContent = '87%'; // Mock data
         }
 
-        // Animated counter
-        function animateCounter(elementId, targetValue) {
-            const element = document.getElementById(elementId);
-            if (!element) return;
-
-            let currentValue = 0;
-            const increment = targetValue / 50;
-            const timer = setInterval(() => {
-                currentValue += increment;
-                if (currentValue >= targetValue) {
-                    element.textContent = targetValue;
-                    clearInterval(timer);
-                } else {
-                    element.textContent = Math.floor(currentValue);
-                }
-            }, 30);
-        }
-
-        // Get current user ID with fallback
+        // Get current user ID
         function getCurrentUserId() {
             const userData = localStorage.getItem('userData');
             if (userData) {
@@ -1438,12 +925,12 @@
                 }
             }
             
-            return '507f1f77bcf86cd799439011'; // Fallback ID
+            return '507f1f77bcf86cd799439011'; // Fallback
         }
 
-        // Enhanced section navigation
+        // Show section
         function showSection(sectionId) {
-            // Hide all sections with fade effect
+            // Hide all sections
             document.querySelectorAll('.content-section').forEach(section => {
                 section.classList.remove('active');
             });
@@ -1453,29 +940,129 @@
                 link.classList.remove('active');
             });
             
-            // Show selected section with animation
-            setTimeout(() => {
-                document.getElementById(sectionId).classList.add('active');
-            }, 100);
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
             
             // Add active class to clicked menu item
-            event.target.closest('a').classList.add('active');
-            
-            // Scroll to top of content
-            document.querySelector('.content-area').scrollTop = 0;
+            event.target.classList.add('active');
         }
 
-        // Enhanced form submissions with real API integration
+        // Form submissions - Updated to use real APIs
         document.getElementById('profile-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const submitBtn = this.querySelector('.btn-save');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = '🛡️ Saving...';
-            submitBtn.disabled = true;
+            const formData = new FormData(this);
+            const profileData = Object.fromEntries(formData);
+            const userId = getCurrentUserId();
             
             try {
-                const userId = getCurrentUserId();
+                const response = await fetch(`${API_BASE}/user/profile/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    },
+                    body: JSON.stringify(profileData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSuccessMessage('profile-success');
+                    console.log('Profile updated:', result);
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('Error updating profile. Please try again.');
+            }
+        });
+
+        document.getElementById('password-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const passwordData = Object.fromEntries(formData);
+            const userId = getCurrentUserId();
+            
+            if (passwordData.newPassword !== passwordData.confirmPassword) {
+                alert('New passwords do not match');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/user/password/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    },
+                    body: JSON.stringify({
+                        currentPassword: passwordData.currentPassword,
+                        newPassword: passwordData.newPassword
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Password updated successfully');
+                    this.reset();
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error updating password:', error);
+                alert('Error updating password. Please try again.');
+            }
+        });
+
+        document.getElementById('preferences-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const preferencesData = Object.fromEntries(formData);
+            const userId = getCurrentUserId();
+            
+            // Add checkbox values
+            preferencesData.emailNotifications = document.getElementById('email-notifications').checked;
+            preferencesData.interviewReminders = document.getElementById('interview-reminders').checked;
+            
+            try {
+                const response = await fetch(`${API_BASE}/user/preferences/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    },
+                    body: JSON.stringify(preferencesData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Preferences saved successfully');
+                    console.log('Preferences updated:', result);
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error updating preferences:', error);
+                alert('Error updating preferences. Please try again.');
+            }
+        });
+
+        document.getElementById('privacy-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const privacyData = {
+                usageAnalytics: document.getElementById('usage-analytics').checked,
+                marketingEmails: document.getElementById('marketing-emails').checked
+            };
+            const userId = getCurrentUserId();
+            
+            try {
                 const response = await fetch(`${API_BASE}/user/privacy/${userId}`, {
                     method: 'PUT',
                     headers: {
@@ -1488,17 +1075,14 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    showNotification('Privacy settings saved successfully!', 'success');
+                    alert('Privacy settings saved successfully');
                     console.log('Privacy settings updated:', result);
                 } else {
-                    throw new Error(result.error || 'Privacy update failed');
+                    alert('Error: ' + result.error);
                 }
             } catch (error) {
                 console.error('Error updating privacy settings:', error);
-                showNotification('Error updating privacy settings. Please try again.', 'error');
-            } finally {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
+                alert('Error updating privacy settings. Please try again.');
             }
         });
 
@@ -1509,12 +1093,6 @@
             const supportData = Object.fromEntries(formData);
             const userId = getCurrentUserId();
             supportData.userId = userId;
-            supportData.userEmail = currentUser?.email || 'unknown@email.com';
-            
-            const submitBtn = this.querySelector('.btn-save');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = '📤 Sending...';
-            submitBtn.disabled = true;
             
             try {
                 const response = await fetch(`${API_BASE}/user/support`, {
@@ -1529,252 +1107,63 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    showNotification('Support request submitted successfully! We\'ll get back to you within 24 hours.', 'success');
+                    alert('Support ticket submitted successfully. We\'ll get back to you soon!');
                     this.reset();
                 } else {
-                    throw new Error(result.error || 'Support request failed');
+                    alert('Error: ' + result.error);
                 }
             } catch (error) {
                 console.error('Error submitting support ticket:', error);
-                showNotification('Error submitting support request. Please try emailing us directly.', 'error');
-            } finally {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
+                alert('Error submitting support ticket. Please try again.');
             }
         });
 
-        // Enhanced notification system
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `notification notification-${type}`;
-            notification.style.cssText = `
-                position: fixed;
-                top: 100px;
-                right: 20px;
-                z-index: 10000;
-                max-width: 400px;
-                padding: 1rem 1.5rem;
-                border-radius: 12px;
-                font-weight: 600;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-                backdrop-filter: blur(20px);
-                animation: slideInRight 0.3s ease;
-                border-left: 4px solid;
-            `;
-
-            // Set colors based on type
-            switch(type) {
-                case 'success':
-                    notification.style.background = 'rgba(17, 153, 142, 0.9)';
-                    notification.style.color = 'white';
-                    notification.style.borderLeftColor = '#11998e';
-                    message = '✅ ' + message;
-                    break;
-                case 'error':
-                    notification.style.background = 'rgba(240, 147, 251, 0.9)';
-                    notification.style.color = 'white';
-                    notification.style.borderLeftColor = '#f093fb';
-                    message = '❌ ' + message;
-                    break;
-                case 'warning':
-                    notification.style.background = 'rgba(251, 191, 36, 0.9)';
-                    notification.style.color = 'white';
-                    notification.style.borderLeftColor = '#fbbf24';
-                    message = '⚠️ ' + message;
-                    break;
-                default:
-                    notification.style.background = 'rgba(102, 126, 234, 0.9)';
-                    notification.style.color = 'white';
-                    notification.style.borderLeftColor = '#667eea';
-                    message = 'ℹ️ ' + message;
-            }
-            
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            // Auto remove after 5 seconds
-            setTimeout(() => {
-                notification.style.animation = 'slideOutRight 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
-            }, 5000);
-
-            // Click to dismiss
-            notification.addEventListener('click', () => {
-                notification.style.animation = 'slideOutRight 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
-            });
-        }
-
-        // Enhanced utility functions
+        // Utility functions
         function showSuccessMessage(elementId) {
             const element = document.getElementById(elementId);
-            if (element) {
-                element.style.display = 'block';
-                setTimeout(() => {
-                    element.style.display = 'none';
-                }, 5000);
-            }
+            element.style.display = 'block';
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
         }
 
         function openSubscriptionManager() {
-            showNotification('Opening subscription management...', 'info');
             const userId = getCurrentUserId();
-            window.open(`/pricing.html?userId=${userId}`, '_blank');
+            const subscriptionUrl = `${window.location.origin}/subscription.html?userId=${userId}`;
+            window.open(subscriptionUrl, '_blank');
         }
 
         function confirmDeleteAccount() {
-            if (confirm('⚠️ Are you absolutely sure you want to delete your account?\n\nThis will permanently delete:\n• All your profile data\n• Interview history\n• Subscription information\n• AI preferences\n\nThis action cannot be undone!')) {
-                if (confirm('🚨 FINAL WARNING: This will permanently delete everything. Type "DELETE" in your mind and click OK if you\'re absolutely certain.')) {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                if (confirm('This will permanently delete all your data. Are you absolutely sure?')) {
                     deleteAccount();
                 }
             }
         }
 
         async function deleteAccount() {
-            showNotification('Deleting account...', 'warning');
-            
             try {
-                const userId = getCurrentUserId();
-                const response = await fetch(`${API_BASE}/user/delete/${userId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                });
-
-                if (response.ok) {
-                    showNotification('Account deleted successfully. Goodbye! 👋', 'success');
-                    localStorage.clear();
-                    setTimeout(() => {
-                        window.location.href = '/index.html';
-                    }, 3000);
-                } else {
-                    throw new Error('Delete request failed');
-                }
+                // Mock API call - replace with actual endpoint
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                alert('Account deleted successfully');
+                localStorage.clear();
+                window.location.href = '/index.html';
             } catch (error) {
                 console.error('Error deleting account:', error);
-                showNotification('Error deleting account. Please contact support for assistance.', 'error');
+                alert('Error deleting account. Please contact support.');
             }
         }
 
         function requestDataExport() {
-            showNotification('Data export request submitted. You\'ll receive an email with your data within 24 hours.', 'success');
-            
-            // Could implement actual API call here
-            const userId = getCurrentUserId();
-            fetch(`${API_BASE}/user/export/${userId}`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                }
-            }).catch(err => console.log('Export request logged'));
+            alert('Data export request submitted. You will receive an email with your data within 24 hours.');
         }
 
-        function deleteAllData() {
-            if (confirm('🗑️ This will delete all your stored data except your account. Continue?')) {
-                showNotification('All user data cleared successfully!', 'success');
-                
-                // Implement data clearing logic
-                localStorage.removeItem('userData');
-                // Clear other local data as needed
-            }
-        }
-
-        function viewPrivacyPolicy() {
-            window.open('/privacy.html', '_blank');
-        }
-
-        // Support functions
-        function openKnowledgeBase() {
-            showNotification('Opening Knowledge Base...', 'info');
-            window.open('https://help.ai-interview-assistant.com', '_blank');
-        }
-
-        function openLiveChat() {
-            showNotification('Starting live chat...', 'info');
-            // Could integrate with chat service like Intercom, Zendesk, etc.
-            window.open('mailto:optimizerresume@gmail.com?subject=Live Chat Request', '_blank');
-        }
-
-        function openEmailSupport() {
-            const subject = encodeURIComponent('Support Request from Settings');
-            const body = encodeURIComponent(`Hi Support Team,\n\nI need help with:\n\n[Please describe your issue here]\n\nUser ID: ${getCurrentUserId()}\nBrowser: ${navigator.userAgent}\n\nThank you!`);
-            window.open(`mailto:optimizerresume@gmail.com?subject=${subject}&body=${body}`, '_blank');
-        }
-
-        function scheduleCall() {
-            showNotification('Opening calendar to schedule a support call...', 'info');
-            window.open('https://calendly.com/ai-interview-assistant/support-call', '_blank');
-        }
-
-        // Enhanced header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Add custom CSS animations
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideInRight {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOutRight {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-            .notification {
-                cursor: pointer;
-                user-select: none;
-            }
-            .notification:hover {
-                transform: scale(1.02);
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Initialize page
-        window.addEventListener('load', () => {
-            document.body.classList.add('loaded');
-        });
-
-        // Auto-save functionality for preferences
-        let autoSaveTimeout;
-        document.querySelectorAll('#preferences-form input, #preferences-form select').forEach(input => {
-            input.addEventListener('change', () => {
-                clearTimeout(autoSaveTimeout);
-                autoSaveTimeout = setTimeout(() => {
-                    showNotification('Preferences auto-saved!', 'success');
-                    // Auto-save logic here
-                }, 2000);
-            });
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            // Ctrl+S to save current form
-            if (e.ctrlKey && e.key === 's') {
+        // Handle clicks outside of forms to prevent accidental navigation
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('.sidebar-menu a')) {
                 e.preventDefault();
-                const activeSection = document.querySelector('.content-section.active');
-                const form = activeSection?.querySelector('form');
-                if (form) {
-                    form.dispatchEvent(new Event('submit'));
-                }
             }
-        });
-
-        // Enhanced error handling for network issues
-        window.addEventListener('online', () => {
-            showNotification('Connection restored!', 'success');
-        });
-
-        window.addEventListener('offline', () => {
-            showNotification('Connection lost. Changes will be saved when you\'re back online.', 'warning');
         });
     </script>
 </body>
