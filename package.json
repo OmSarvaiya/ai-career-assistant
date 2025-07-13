@@ -23,7 +23,7 @@
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.0",
-    "multer": "^1.4.5",
+    "multer": "^1.4.4",
     "nodemailer": "^6.9.7",
     "openai": "^5.8.2",
     "sqlite3": "^5.1.6",
