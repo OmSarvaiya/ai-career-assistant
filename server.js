@@ -811,6 +811,8 @@ app.get('/api/health', (req, res) => {
 // AI ENDPOINTS - MAIN FUNCTIONALITY
 // ====================================================================
 
+// ✅ COMPLETE ERROR-FREE CODE - Replace your existing endpoints with this
+
 app.post('/api/ai/generate-response', async (req, res) => {
     try {
         console.log('🤖 AI response request received');
@@ -825,11 +827,10 @@ app.post('/api/ai/generate-response', async (req, res) => {
         
         console.log('📝 Processing question:', question.substring(0, 50) + '...');
         console.log('👤 User ID:', user_id || 'guest');
-          console.log('🔍 Context fields received:', Object.keys(context || {}));
+        console.log('🔍 Context fields received:', Object.keys(context || {}));
         console.log('🔍 Has resumeContext:', !!(context && context.resumeContext));
         console.log('🔍 Has resumeContent:', !!(context && context.resumeContent));
         console.log('🔍 Resume context preview:', context?.resumeContext?.substring(0, 100) + '...');
-        
         
         // 🆕 NEW: Check for conversation history
         const hasConversationHistory = context?.conversationHistory?.length > 0;
@@ -1001,6 +1002,64 @@ Please provide a professional first-person response that:
         });
     }
 });
+
+// 🎤 NEW TRANSCRIPTION ENDPOINT
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
+
+app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
+    try {
+        console.log('🎤 Transcription request received');
+        
+        if (!req.file || req.file.size < 1000) {
+            console.log('⚠️ No audio file or file too small');
+            return res.json({ success: false, transcript: null });
+        }
+
+        console.log('📁 Audio file size:', req.file.size, 'bytes');
+        
+        const FormData = require('form-data');
+        const formData = new FormData();
+        formData.append('file', req.file.buffer, 'audio.wav');
+        formData.append('model', 'whisper-1');
+        formData.append('language', 'en');
+        formData.append('response_format', 'json');
+        formData.append('temperature', '0');
+
+        console.log('🗣️ Sending audio to OpenAI Whisper API...');
+        const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                ...formData.getHeaders()
+            },
+            body: formData
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            const transcript = result.text ? result.text.trim() : null;
+            
+            console.log('✅ Whisper transcription:', transcript);
+            res.json({ 
+                success: true, 
+                transcript: transcript,
+                confidence: result.confidence || null,
+                duration: result.duration || null
+            });
+        } else {
+            const errorText = await response.text();
+            console.error('❌ Whisper API error:', response.status, errorText);
+            res.json({ success: false, transcript: null, error: `API error: ${response.status}` });
+        }
+    } catch (error) {
+        console.error('❌ Transcription error:', error);
+        res.json({ success: false, transcript: null, error: error.message });
+    }
+});
+
+// Continue with the rest of your server.js file...
+// (any other endpoints, then app.listen() at the very bottom)
 
 // AI health check endpoint
 app.get('/api/ai/health', (req, res) => {
