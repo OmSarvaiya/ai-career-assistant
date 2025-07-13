@@ -19,9 +19,11 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-rate-limit": "^6.10.0",
+    "form-data": "^4.0.0",
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.0",
+    "multer": "^1.4.5",
     "nodemailer": "^6.9.7",
     "openai": "^5.8.2",
     "sqlite3": "^5.1.6",
@@ -38,7 +40,9 @@
     "api",
     "interview",
     "ai-assistant",
-    "payment-processing"
+    "payment-processing",
+    "transcription",
+    "whisper"
   ],
   "author": "Your Name",
   "license": "MIT",
