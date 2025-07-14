@@ -1007,26 +1007,49 @@ Please provide a professional first-person response that:
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 
+// 🔧 FIXED /api/transcribe ENDPOINT - Replace your existing one with this
 app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
     try {
         console.log('🎤 Transcription request received');
         
-        if (!req.file || req.file.size < 1000) {
-            console.log('⚠️ No audio file or file too small');
-            return res.json({ success: false, transcript: null });
+        // Check if audio file exists and is large enough
+        if (!req.file) {
+            console.log('⚠️ No audio file received');
+            return res.json({ 
+                success: false, 
+                transcript: null, 
+                error: 'No audio file provided' 
+            });
+        }
+        
+        if (req.file.size < 100) {
+            console.log('⚠️ Audio file too small:', req.file.size, 'bytes');
+            return res.json({ 
+                success: false, 
+                transcript: null, 
+                error: `Audio file too small: ${req.file.size} bytes` 
+            });
         }
 
         console.log('📁 Audio file size:', req.file.size, 'bytes');
+        console.log('📁 Audio file type:', req.file.mimetype);
         
+        // Create FormData with proper formatting
         const FormData = require('form-data');
         const formData = new FormData();
-        formData.append('file', req.file.buffer, 'audio.wav');
+        
+        // ✅ IMPROVED: Add file with proper content type and filename
+        formData.append('file', req.file.buffer, {
+            filename: 'audio.wav',
+            contentType: 'audio/wav'
+        });
         formData.append('model', 'whisper-1');
         formData.append('language', 'en');
         formData.append('response_format', 'json');
         formData.append('temperature', '0');
 
         console.log('🗣️ Sending audio to OpenAI Whisper API...');
+        
         const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
             method: 'POST',
             headers: {
@@ -1036,11 +1059,13 @@ app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
             body: formData
         });
 
+        console.log('📡 Whisper API response status:', response.status);
+
         if (response.ok) {
             const result = await response.json();
             const transcript = result.text ? result.text.trim() : null;
             
-            console.log('✅ Whisper transcription:', transcript);
+            console.log('✅ Whisper transcription successful:', transcript);
             res.json({ 
                 success: true, 
                 transcript: transcript,
@@ -1048,13 +1073,109 @@ app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
                 duration: result.duration || null
             });
         } else {
+            // ✅ CRITICAL FIX: Return the ACTUAL error from OpenAI
             const errorText = await response.text();
-            console.error('❌ Whisper API error:', response.status, errorText);
-            res.json({ success: false, transcript: null, error: `API error: ${response.status}` });
+            console.error('❌ Whisper API error details:');
+            console.error('  Status:', response.status);
+            console.error('  Raw error:', errorText);
+            
+            let parsedError;
+            try {
+                parsedError = JSON.parse(errorText);
+                console.error('  Parsed error:', parsedError);
+            } catch (e) {
+                parsedError = { error: { message: errorText } };
+            }
+            
+            // Return detailed error based on status code
+            let detailedError;
+            switch (response.status) {
+                case 400:
+                    detailedError = `Bad Request: ${parsedError.error?.message || errorText}`;
+                    break;
+                case 401:
+                    detailedError = 'Unauthorized: Invalid or missing API key';
+                    break;
+                case 402:
+                    detailedError = 'Payment Required: Insufficient credits or billing issue';
+                    break;
+                case 413:
+                    detailedError = 'File too large for Whisper API';
+                    break;
+                case 415:
+                    detailedError = 'Unsupported audio format';
+                    break;
+                case 429:
+                    detailedError = 'Rate limit exceeded';
+                    break;
+                default:
+                    detailedError = `API error ${response.status}: ${parsedError.error?.message || errorText}`;
+            }
+            
+            res.json({ 
+                success: false, 
+                transcript: null, 
+                error: detailedError,
+                details: {
+                    status: response.status,
+                    raw_error: errorText,
+                    parsed_error: parsedError
+                }
+            });
         }
     } catch (error) {
-        console.error('❌ Transcription error:', error);
-        res.json({ success: false, transcript: null, error: error.message });
+        console.error('❌ Transcription endpoint error:', error);
+        res.json({ 
+            success: false, 
+            transcript: null, 
+            error: `Server error: ${error.message}`,
+            details: {
+                error_type: error.name,
+                stack: error.stack
+            }
+        });
+    }
+});
+
+// ✅ BONUS: Add test endpoint to verify API key and Whisper access
+app.get('/api/test-whisper', async (req, res) => {
+    try {
+        console.log('🔑 Testing Whisper API access...');
+        
+        // Test API key with models endpoint
+        const modelsResponse = await fetch('https://api.openai.com/v1/models', {
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+            }
+        });
+        
+        if (!modelsResponse.ok) {
+            const errorText = await modelsResponse.text();
+            return res.json({
+                success: false,
+                error: `API key test failed: ${modelsResponse.status}`,
+                details: errorText
+            });
+        }
+        
+        const models = await modelsResponse.json();
+        const whisperModel = models.data.find(m => m.id === 'whisper-1');
+        
+        res.json({
+            success: true,
+            api_key_valid: true,
+            whisper_available: !!whisperModel,
+            whisper_model: whisperModel || null,
+            total_models: models.data.length
+        });
+        
+    } catch (error) {
+        console.error('❌ API key test error:', error);
+        res.json({
+            success: false,
+            error: `Test failed: ${error.message}`,
+            details: error.stack
+        });
     }
 });
 
