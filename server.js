@@ -1034,22 +1034,18 @@ app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
         console.log('📁 Audio file size:', req.file.size, 'bytes');
         console.log('📁 Audio file type:', req.file.mimetype);
         
-        // Create FormData with proper formatting
+        // ✅ FIXED: Simple FormData creation (no complex options object)
         const FormData = require('form-data');
         const formData = new FormData();
         
-        // ✅ IMPROVED: Add file with proper content type and filename
-        formData.append('file', req.file.buffer, {
-    filename: 'audio.wav',
-    contentType: 'audio/wav',
-    knownLength: req.file.buffer.length
-});
+        // ✅ CRITICAL FIX: Simple append (this is what works!)
+        formData.append('file', req.file.buffer, 'audio.webm');
         formData.append('model', 'whisper-1');
         formData.append('language', 'en');
         formData.append('response_format', 'json');
         formData.append('temperature', '0');
 
-        console.log('🗣️ Sending audio to OpenAI Whisper API...');
+        console.log('🗣️ Sending audio to OpenAI Whisper API (Simple Method)...');
         
         const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
             method: 'POST',
