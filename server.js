@@ -793,260 +793,264 @@ function generateSmartFallback(question) {
 // API ROUTES
 // ====================================================================
 
-// Health check
-app.get('/api/health', (req, res) => {
-    res.json({ 
-        status: 'healthy', 
-        timestamp: new Date().toISOString(),
-        service: 'ai-interview-subscription-api',
-        version: '1.0.0',
-        environment: process.env.NODE_ENV || 'development',
-        database: 'connected',
-        database_type: 'MongoDB',
-        stripe: process.env.STRIPE_SECRET_KEY ? 'configured' : 'not configured'
+    // Health check
+    app.get('/api/health', (req, res) => {
+        res.json({ 
+            status: 'healthy', 
+            timestamp: new Date().toISOString(),
+            service: 'ai-interview-subscription-api',
+            version: '1.0.0',
+            environment: process.env.NODE_ENV || 'development',
+            database: 'connected',
+            database_type: 'MongoDB',
+            stripe: process.env.STRIPE_SECRET_KEY ? 'configured' : 'not configured'
+        });
     });
-});
 
-// ====================================================================
-// AI ENDPOINTS - MAIN FUNCTIONALITY
-// ====================================================================
+    // ====================================================================
+    // AI ENDPOINTS - MAIN FUNCTIONALITY
+    // ====================================================================
 
-// ✅ COMPLETE ERROR-FREE CODE - Replace your existing endpoints with this
+    // ✅ COMPLETE ERROR-FREE CODE - Replace your existing endpoints with this
 
-app.post('/api/ai/generate-response', async (req, res) => {
-    try {
-        console.log('🤖 AI response request received');
-        const { question, context, user_id } = req.body;
-        
-        if (!question) {
-            return res.status(400).json({
-                success: false,
-                error: 'Question is required'
+    app.post('/api/ai/generate-response', async (req, res) => {
+        try {
+            console.log('🤖 AI response request received');
+            const { question, context, user_id } = req.body;
+            
+            if (!question) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Question is required'
+                });
+            }
+            
+            console.log('📝 Processing question:', question.substring(0, 50) + '...');
+            console.log('👤 User ID:', user_id || 'guest');
+            console.log('🔍 Context fields received:', Object.keys(context || {}));
+            console.log('🔍 Has resumeContext:', !!(context && context.resumeContext));
+            console.log('🔍 Has resumeContent:', !!(context && context.resumeContent));
+            console.log('🔍 Resume context preview:', context?.resumeContext?.substring(0, 100) + '...');
+            
+            // 🆕 NEW: Check for conversation history
+            const hasConversationHistory = context?.conversationHistory?.length > 0;
+            if (hasConversationHistory) {
+                console.log(`🔗 Found ${context.conversationHistory.length} previous exchanges for context`);
+            }
+            
+            let aiResponse;
+            let tokensUsed = 0;
+            let responseSource = 'fallback';
+            
+            // Try OpenAI if configured
+            if (openai) {
+                try {
+                    console.log('🔗 Calling OpenAI API...');
+                    
+                    // 🔥 BUILD RESUME-AWARE SYSTEM PROMPT (UNCHANGED)
+                    let systemPrompt = `You are an expert interview coach helping someone answer interview questions professionally and concisely.
+
+    Guidelines:
+    - Provide specific, actionable responses in 1-2 sentences
+    - Use the STAR method when relevant (Situation, Task, Action, Result)
+    - Be confident but humble
+    - Focus on skills, experience, and value proposition
+    - Keep responses under 150 words
+    - Sound natural and conversational
+    - Answer in first person as if you are the candidate`;
+
+                    // 🔥 ADD RESUME CONTEXT IF AVAILABLE (UNCHANGED)
+                    if (context && context.resumeContext) {
+                        systemPrompt += `\n\nCANDIDATE'S BACKGROUND:\n${context.resumeContext}\n\nIMPORTANT: Use this background to give personalized responses with specific examples from their actual experience. Reference their real skills, companies, and achievements when relevant.`;
+                        console.log('📄 Using resume context in AI prompt');
+                    } else {
+                        console.log('💬 No resume context - using generic response');
+                    }
+
+                    systemPrompt += `\n\nContext: ${context?.timestamp ? 'Live Interview' : 'Interview'} interview
+    Current time: ${new Date().toLocaleString()}`;
+
+                    // 🆕 NEW: Build messages array with conversation history
+                    const messages = [
+                        {
+                            role: 'system',
+                            content: systemPrompt
+                        }
+                    ];
+
+                    // 🆕 NEW: Add conversation history if available
+                    if (hasConversationHistory) {
+                        context.conversationHistory.forEach(exchange => {
+                            if (exchange.question && exchange.response) {
+                                messages.push({
+                                    role: 'user',
+                                    content: `Interview question: "${exchange.question}"`
+                                });
+                                messages.push({
+                                    role: 'assistant', 
+                                    content: exchange.response
+                                });
+                            }
+                        });
+                        console.log(`📚 Added ${context.conversationHistory.length} conversation exchanges to context`);
+                    }
+
+                    // 🔥 BUILD USER PROMPT (UNCHANGED)
+                    let userPrompt = `Interview Question: "${question}"
+
+    Please provide a professional first-person response that:
+    1. Directly answers the question
+    2. Uses specific examples when possible
+    3. Demonstrates relevant skills and experience
+    4. Sounds natural and conversational
+    5. Is concise (1-2 sentences, under 150 words)`;
+
+                    // 🔥 ADD RESUME-SPECIFIC INSTRUCTIONS IF AVAILABLE (UNCHANGED)
+                    if (context && context.resumeContext) {
+                        userPrompt += `\n6. Reference specific experiences, companies, or achievements from the candidate's background above when relevant`;
+                    }
+
+                    userPrompt += `\n\nResponse:`;
+
+                    // Add current question
+                    messages.push({
+                        role: 'user',
+                        content: userPrompt
+                    });
+                    
+                    // 🆕 MODIFIED: Use messages array instead of simple system/user
+                    const completion = await openai.chat.completions.create({
+                        model: 'gpt-4o-mini',
+                        messages: messages, // ← Now includes conversation history
+                        max_tokens: 200,
+                        temperature: 0.7,
+                        top_p: 0.9
+                    });
+                    
+                    aiResponse = completion.choices[0]?.message?.content || 'Unable to generate response.';
+                    tokensUsed = completion.usage?.total_tokens || 0;
+                    responseSource = 'openai';
+                    
+                    console.log('✅ OpenAI response generated successfully');
+                    console.log('📊 Tokens used:', tokensUsed);
+                    console.log('🔗 Used conversation context:', hasConversationHistory);
+                    
+                } catch (openaiError) {
+                    console.error('❌ OpenAI API error:', openaiError.message);
+                    aiResponse = generateSmartFallback(question);
+                    responseSource = 'fallback_openai_error';
+                }
+            } else {
+                console.log('⚠️ OpenAI not configured, using fallback');
+                aiResponse = generateSmartFallback(question);
+                responseSource = 'fallback_no_api';
+            }
+            
+            // Track usage if user provided (UNCHANGED)
+            if (user_id) {
+                try {
+                    await subscriptionSystem.updateUsage(user_id, 'ai_response_generated', { 
+                        question_length: question.length,
+                        response_length: aiResponse.length,
+                        tokens_used: tokensUsed,
+                        source: responseSource,
+                        timestamp: new Date(),
+                        // 🔥 TRACK RESUME USAGE (UNCHANGED)
+                        has_resume_context: !!(context && context.resumeContext),
+                        // 🆕 NEW: Track conversation context usage
+                        has_conversation_history: hasConversationHistory,
+                        conversation_history_length: context?.conversationHistory?.length || 0
+                    });
+                    console.log('📊 Usage tracked for user:', user_id);
+                } catch (usageError) {
+                    console.warn('⚠️ Usage tracking failed:', usageError.message);
+                }
+            }
+            
+            // Return successful response (ENHANCED)
+            res.json({
+                success: true,
+                response: aiResponse,
+                tokens_used: tokensUsed,
+                source: responseSource,
+                user_id: user_id || null,
+                timestamp: new Date().toISOString(),
+                fallback: responseSource.includes('fallback'),
+                // 🔥 INCLUDE RESUME STATUS IN RESPONSE (UNCHANGED)
+                used_resume_context: !!(context && context.resumeContext),
+                // 🆕 NEW: Include conversation context status
+                used_conversation_history: hasConversationHistory,
+                conversation_history_length: context?.conversationHistory?.length || 0
+            });
+            
+        } catch (error) {
+            console.error('❌ AI generation critical error:', error);
+            
+            // Emergency fallback response (UNCHANGED)
+            const emergencyResponse = generateSmartFallback(req.body.question || 'general interview question');
+            
+            res.json({
+                success: true,
+                response: emergencyResponse,
+                tokens_used: 0,
+                source: 'emergency_fallback',
+                fallback: true,
+                error_handled: true,
+                timestamp: new Date().toISOString(),
+                used_resume_context: false,
+                used_conversation_history: false
             });
         }
-        
-        console.log('📝 Processing question:', question.substring(0, 50) + '...');
-        console.log('👤 User ID:', user_id || 'guest');
-        console.log('🔍 Context fields received:', Object.keys(context || {}));
-        console.log('🔍 Has resumeContext:', !!(context && context.resumeContext));
-        console.log('🔍 Has resumeContent:', !!(context && context.resumeContent));
-        console.log('🔍 Resume context preview:', context?.resumeContext?.substring(0, 100) + '...');
-        
-        // 🆕 NEW: Check for conversation history
-        const hasConversationHistory = context?.conversationHistory?.length > 0;
-        if (hasConversationHistory) {
-            console.log(`🔗 Found ${context.conversationHistory.length} previous exchanges for context`);
-        }
-        
-        let aiResponse;
-        let tokensUsed = 0;
-        let responseSource = 'fallback';
-        
-        // Try OpenAI if configured
-        if (openai) {
-            try {
-                console.log('🔗 Calling OpenAI API...');
-                
-                // 🔥 BUILD RESUME-AWARE SYSTEM PROMPT (UNCHANGED)
-                let systemPrompt = `You are an expert interview coach helping someone answer interview questions professionally and concisely.
+    });
 
-Guidelines:
-- Provide specific, actionable responses in 1-2 sentences
-- Use the STAR method when relevant (Situation, Task, Action, Result)
-- Be confident but humble
-- Focus on skills, experience, and value proposition
-- Keep responses under 150 words
-- Sound natural and conversational
-- Answer in first person as if you are the candidate`;
+    // 🎤 NEW TRANSCRIPTION ENDPOINT
+    const multer = require('multer');
+    const upload = multer({ storage: multer.memoryStorage() });
 
-                // 🔥 ADD RESUME CONTEXT IF AVAILABLE (UNCHANGED)
-                if (context && context.resumeContext) {
-                    systemPrompt += `\n\nCANDIDATE'S BACKGROUND:\n${context.resumeContext}\n\nIMPORTANT: Use this background to give personalized responses with specific examples from their actual experience. Reference their real skills, companies, and achievements when relevant.`;
-                    console.log('📄 Using resume context in AI prompt');
-                } else {
-                    console.log('💬 No resume context - using generic response');
-                }
-
-                systemPrompt += `\n\nContext: ${context?.timestamp ? 'Live Interview' : 'Interview'} interview
-Current time: ${new Date().toLocaleString()}`;
-
-                // 🆕 NEW: Build messages array with conversation history
-                const messages = [
-                    {
-                        role: 'system',
-                        content: systemPrompt
-                    }
-                ];
-
-                // 🆕 NEW: Add conversation history if available
-                if (hasConversationHistory) {
-                    context.conversationHistory.forEach(exchange => {
-                        if (exchange.question && exchange.response) {
-                            messages.push({
-                                role: 'user',
-                                content: `Interview question: "${exchange.question}"`
-                            });
-                            messages.push({
-                                role: 'assistant', 
-                                content: exchange.response
-                            });
-                        }
-                    });
-                    console.log(`📚 Added ${context.conversationHistory.length} conversation exchanges to context`);
-                }
-
-                // 🔥 BUILD USER PROMPT (UNCHANGED)
-                let userPrompt = `Interview Question: "${question}"
-
-Please provide a professional first-person response that:
-1. Directly answers the question
-2. Uses specific examples when possible
-3. Demonstrates relevant skills and experience
-4. Sounds natural and conversational
-5. Is concise (1-2 sentences, under 150 words)`;
-
-                // 🔥 ADD RESUME-SPECIFIC INSTRUCTIONS IF AVAILABLE (UNCHANGED)
-                if (context && context.resumeContext) {
-                    userPrompt += `\n6. Reference specific experiences, companies, or achievements from the candidate's background above when relevant`;
-                }
-
-                userPrompt += `\n\nResponse:`;
-
-                // Add current question
-                messages.push({
-                    role: 'user',
-                    content: userPrompt
-                });
-                
-                // 🆕 MODIFIED: Use messages array instead of simple system/user
-                const completion = await openai.chat.completions.create({
-                    model: 'gpt-4o-mini',
-                    messages: messages, // ← Now includes conversation history
-                    max_tokens: 200,
-                    temperature: 0.7,
-                    top_p: 0.9
-                });
-                
-                aiResponse = completion.choices[0]?.message?.content || 'Unable to generate response.';
-                tokensUsed = completion.usage?.total_tokens || 0;
-                responseSource = 'openai';
-                
-                console.log('✅ OpenAI response generated successfully');
-                console.log('📊 Tokens used:', tokensUsed);
-                console.log('🔗 Used conversation context:', hasConversationHistory);
-                
-            } catch (openaiError) {
-                console.error('❌ OpenAI API error:', openaiError.message);
-                aiResponse = generateSmartFallback(question);
-                responseSource = 'fallback_openai_error';
-            }
-        } else {
-            console.log('⚠️ OpenAI not configured, using fallback');
-            aiResponse = generateSmartFallback(question);
-            responseSource = 'fallback_no_api';
-        }
-        
-        // Track usage if user provided (UNCHANGED)
-        if (user_id) {
-            try {
-                await subscriptionSystem.updateUsage(user_id, 'ai_response_generated', { 
-                    question_length: question.length,
-                    response_length: aiResponse.length,
-                    tokens_used: tokensUsed,
-                    source: responseSource,
-                    timestamp: new Date(),
-                    // 🔥 TRACK RESUME USAGE (UNCHANGED)
-                    has_resume_context: !!(context && context.resumeContext),
-                    // 🆕 NEW: Track conversation context usage
-                    has_conversation_history: hasConversationHistory,
-                    conversation_history_length: context?.conversationHistory?.length || 0
-                });
-                console.log('📊 Usage tracked for user:', user_id);
-            } catch (usageError) {
-                console.warn('⚠️ Usage tracking failed:', usageError.message);
-            }
-        }
-        
-        // Return successful response (ENHANCED)
-        res.json({
-            success: true,
-            response: aiResponse,
-            tokens_used: tokensUsed,
-            source: responseSource,
-            user_id: user_id || null,
-            timestamp: new Date().toISOString(),
-            fallback: responseSource.includes('fallback'),
-            // 🔥 INCLUDE RESUME STATUS IN RESPONSE (UNCHANGED)
-            used_resume_context: !!(context && context.resumeContext),
-            // 🆕 NEW: Include conversation context status
-            used_conversation_history: hasConversationHistory,
-            conversation_history_length: context?.conversationHistory?.length || 0
-        });
-        
-    } catch (error) {
-        console.error('❌ AI generation critical error:', error);
-        
-        // Emergency fallback response (UNCHANGED)
-        const emergencyResponse = generateSmartFallback(req.body.question || 'general interview question');
-        
-        res.json({
-            success: true,
-            response: emergencyResponse,
-            tokens_used: 0,
-            source: 'emergency_fallback',
-            fallback: true,
-            error_handled: true,
-            timestamp: new Date().toISOString(),
-            used_resume_context: false,
-            used_conversation_history: false
-        });
-    }
-});
-
-// 🎤 NEW TRANSCRIPTION ENDPOINT
-const multer = require('multer');
-const upload = multer({ storage: multer.memoryStorage() });
-
-// 🔧 FIXED /api/transcribe ENDPOINT - Replace your existing one with this
+    // 🔧 FIXED /api/transcribe ENDPOINT - Replace your existing one with this
+    // 🔥 NUCLEAR SOLUTION: BYPASS FormData COMPLETELY
 app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
     try {
         console.log('🎤 Transcription request received');
         
-        // Check if audio file exists and is large enough
-        if (!req.file) {
-            console.log('⚠️ No audio file received');
+        if (!req.file || req.file.size < 100) {
             return res.json({ 
                 success: false, 
                 transcript: null, 
-                error: 'No audio file provided' 
-            });
-        }
-        
-        if (req.file.size < 100) {
-            console.log('⚠️ Audio file too small:', req.file.size, 'bytes');
-            return res.json({ 
-                success: false, 
-                transcript: null, 
-                error: `Audio file too small: ${req.file.size} bytes` 
+                error: 'No audio file or too small' 
             });
         }
 
         console.log('📁 Audio file size:', req.file.size, 'bytes');
         console.log('📁 Audio file type:', req.file.mimetype);
+
+        // 🔥 SOLUTION: Convert audio to base64 and save as temp file
+        const fs = require('fs');
+        const path = require('path');
+        const { v4: uuidv4 } = require('uuid');
         
-        // ✅ FIXED: Simple FormData creation (no complex options object)
+        // Create temp file
+        const tempFileName = `temp_audio_${uuidv4()}.webm`;
+        const tempFilePath = path.join('/tmp', tempFileName);
+        
+        // Write buffer to temp file
+        fs.writeFileSync(tempFilePath, req.file.buffer);
+        
+        console.log('💾 Temp file created:', tempFilePath);
+
+        // 🔥 Use fs.createReadStream for FormData (this always works)
         const FormData = require('form-data');
         const formData = new FormData();
         
-        // ✅ CRITICAL FIX: Simple append (this is what works!)
-        formData.append('file', req.file.buffer, 'audio.webm');
+        // This method always works with OpenAI
+        formData.append('file', fs.createReadStream(tempFilePath));
         formData.append('model', 'whisper-1');
         formData.append('language', 'en');
         formData.append('response_format', 'json');
         formData.append('temperature', '0');
 
-        console.log('🗣️ Sending audio to OpenAI Whisper API (Simple Method)...');
-        
+        console.log('🔥 Using file stream approach...');
+
         const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
             method: 'POST',
             headers: {
@@ -1056,13 +1060,21 @@ app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
             body: formData
         });
 
-        console.log('📡 Whisper API response status:', response.status);
+        // Clean up temp file
+        try {
+            fs.unlinkSync(tempFilePath);
+            console.log('🗑️ Temp file cleaned up');
+        } catch (e) {
+            console.warn('⚠️ Temp file cleanup warning:', e.message);
+        }
+
+        console.log('📡 Response status:', response.status);
 
         if (response.ok) {
             const result = await response.json();
             const transcript = result.text ? result.text.trim() : null;
             
-            console.log('✅ Whisper transcription successful:', transcript);
+            console.log('✅ WHISPER SUCCESS:', transcript);
             res.json({ 
                 success: true, 
                 transcript: transcript,
@@ -1070,53 +1082,23 @@ app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
                 duration: result.duration || null
             });
         } else {
-            // ✅ CRITICAL FIX: Return the ACTUAL error from OpenAI
             const errorText = await response.text();
-            console.error('❌ Whisper API error details:');
-            console.error('  Status:', response.status);
-            console.error('  Raw error:', errorText);
+            console.error('❌ Whisper API error:', response.status, errorText);
             
             let parsedError;
             try {
                 parsedError = JSON.parse(errorText);
-                console.error('  Parsed error:', parsedError);
             } catch (e) {
                 parsedError = { error: { message: errorText } };
-            }
-            
-            // Return detailed error based on status code
-            let detailedError;
-            switch (response.status) {
-                case 400:
-                    detailedError = `Bad Request: ${parsedError.error?.message || errorText}`;
-                    break;
-                case 401:
-                    detailedError = 'Unauthorized: Invalid or missing API key';
-                    break;
-                case 402:
-                    detailedError = 'Payment Required: Insufficient credits or billing issue';
-                    break;
-                case 413:
-                    detailedError = 'File too large for Whisper API';
-                    break;
-                case 415:
-                    detailedError = 'Unsupported audio format';
-                    break;
-                case 429:
-                    detailedError = 'Rate limit exceeded';
-                    break;
-                default:
-                    detailedError = `API error ${response.status}: ${parsedError.error?.message || errorText}`;
             }
             
             res.json({ 
                 success: false, 
                 transcript: null, 
-                error: detailedError,
+                error: `OpenAI Error: ${parsedError.error?.message || errorText}`,
                 details: {
                     status: response.status,
-                    raw_error: errorText,
-                    parsed_error: parsedError
+                    raw_error: errorText
                 }
             });
         }
@@ -1134,147 +1116,147 @@ app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
     }
 });
 
-// ✅ BONUS: Add test endpoint to verify API key and Whisper access
-app.get('/api/test-whisper', async (req, res) => {
-    try {
-        console.log('🔑 Testing Whisper API access...');
-        
-        // Test API key with models endpoint
-        const modelsResponse = await fetch('https://api.openai.com/v1/models', {
-            headers: {
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+    // ✅ BONUS: Add test endpoint to verify API key and Whisper access
+    app.get('/api/test-whisper', async (req, res) => {
+        try {
+            console.log('🔑 Testing Whisper API access...');
+            
+            // Test API key with models endpoint
+            const modelsResponse = await fetch('https://api.openai.com/v1/models', {
+                headers: {
+                    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+                }
+            });
+            
+            if (!modelsResponse.ok) {
+                const errorText = await modelsResponse.text();
+                return res.json({
+                    success: false,
+                    error: `API key test failed: ${modelsResponse.status}`,
+                    details: errorText
+                });
             }
-        });
-        
-        if (!modelsResponse.ok) {
-            const errorText = await modelsResponse.text();
-            return res.json({
+            
+            const models = await modelsResponse.json();
+            const whisperModel = models.data.find(m => m.id === 'whisper-1');
+            
+            res.json({
+                success: true,
+                api_key_valid: true,
+                whisper_available: !!whisperModel,
+                whisper_model: whisperModel || null,
+                total_models: models.data.length
+            });
+            
+        } catch (error) {
+            console.error('❌ API key test error:', error);
+            res.json({
                 success: false,
-                error: `API key test failed: ${modelsResponse.status}`,
-                details: errorText
+                error: `Test failed: ${error.message}`,
+                details: error.stack
             });
         }
-        
-        const models = await modelsResponse.json();
-        const whisperModel = models.data.find(m => m.id === 'whisper-1');
-        
+    });
+
+    // Continue with the rest of your server.js file...
+    // (any other endpoints, then app.listen() at the very bottom)
+
+    // AI health check endpoint
+    app.get('/api/ai/health', (req, res) => {
         res.json({
             success: true,
-            api_key_valid: true,
-            whisper_available: !!whisperModel,
-            whisper_model: whisperModel || null,
-            total_models: models.data.length
+            service: 'AI Interview Assistant',
+            version: '1.0.0',
+            endpoints: {
+                generate_response: '/api/ai/generate-response',
+                health_check: '/api/ai/health'
+            },
+            openai_configured: !!process.env.OPENAI_API_KEY,
+            openai_available: !!openai,
+            environment: process.env.NODE_ENV || 'development',
+            timestamp: new Date().toISOString()
         });
-        
-    } catch (error) {
-        console.error('❌ API key test error:', error);
-        res.json({
-            success: false,
-            error: `Test failed: ${error.message}`,
-            details: error.stack
-        });
-    }
-});
-
-// Continue with the rest of your server.js file...
-// (any other endpoints, then app.listen() at the very bottom)
-
-// AI health check endpoint
-app.get('/api/ai/health', (req, res) => {
-    res.json({
-        success: true,
-        service: 'AI Interview Assistant',
-        version: '1.0.0',
-        endpoints: {
-            generate_response: '/api/ai/generate-response',
-            health_check: '/api/ai/health'
-        },
-        openai_configured: !!process.env.OPENAI_API_KEY,
-        openai_available: !!openai,
-        environment: process.env.NODE_ENV || 'development',
-        timestamp: new Date().toISOString()
     });
-});
 
-// ====================================================================
-// SUBSCRIPTION ROUTES
-// ====================================================================
+    // ====================================================================
+    // SUBSCRIPTION ROUTES
+    // ====================================================================
 
-// Get subscription plans
-app.get('/api/plans', (req, res) => {
-    try {
-        const result = subscriptionSystem.getPlans();
-        res.json(result);
-    } catch (error) {
-        console.error('❌ Failed to get plans:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Failed to retrieve plans',
-            details: process.env.NODE_ENV === 'development' ? error.message : undefined
-        });
-    }
-});
-
-// Create Stripe checkout session
-app.post('/api/create-checkout-session', async (req, res) => {
-    try {
-        const { planId, userId, successUrl, cancelUrl } = req.body;
-        
-        if (!planId || !userId || !successUrl || !cancelUrl) {
-            return res.status(400).json({
+    // Get subscription plans
+    app.get('/api/plans', (req, res) => {
+        try {
+            const result = subscriptionSystem.getPlans();
+            res.json(result);
+        } catch (error) {
+            console.error('❌ Failed to get plans:', error);
+            res.status(500).json({
                 success: false,
-                error: 'Missing required fields',
-                required: ['planId', 'userId', 'successUrl', 'cancelUrl']
+                error: 'Failed to retrieve plans',
+                details: process.env.NODE_ENV === 'development' ? error.message : undefined
             });
         }
-        
-        console.log('📝 Creating checkout session:', { planId, userId });
-        
-        const result = await subscriptionSystem.createCheckoutSession(
-            planId, 
-            userId, 
-            successUrl, 
-            cancelUrl
-        );
-        
-        res.json(result);
-        
-    } catch (error) {
-        console.error('❌ Checkout session creation failed:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Failed to create checkout session',
-            details: process.env.NODE_ENV === 'development' ? error.message : undefined
-        });
-    }
-});
+    });
 
-// Get subscription status
-app.get('/api/subscription-status/:userId', async (req, res) => {
-    try {
-        const { userId } = req.params;
-        
-        if (!userId) {
-            return res.status(400).json({
+    // Create Stripe checkout session
+    app.post('/api/create-checkout-session', async (req, res) => {
+        try {
+            const { planId, userId, successUrl, cancelUrl } = req.body;
+            
+            if (!planId || !userId || !successUrl || !cancelUrl) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Missing required fields',
+                    required: ['planId', 'userId', 'successUrl', 'cancelUrl']
+                });
+            }
+            
+            console.log('📝 Creating checkout session:', { planId, userId });
+            
+            const result = await subscriptionSystem.createCheckoutSession(
+                planId, 
+                userId, 
+                successUrl, 
+                cancelUrl
+            );
+            
+            res.json(result);
+            
+        } catch (error) {
+            console.error('❌ Checkout session creation failed:', error);
+            res.status(500).json({
                 success: false,
-                error: 'User ID is required'
+                error: 'Failed to create checkout session',
+                details: process.env.NODE_ENV === 'development' ? error.message : undefined
             });
         }
-        
-        console.log('📊 Checking subscription status for user:', userId);
-        
-        const result = await subscriptionSystem.getSubscriptionStatus(userId);
-        res.json(result);
-        
-    } catch (error) {
-        console.error('❌ Subscription status check failed:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Failed to check subscription status',
-            details: process.env.NODE_ENV === 'development' ? error.message : undefined
-        });
-    }
-});
+    });
+
+    // Get subscription status
+    app.get('/api/subscription-status/:userId', async (req, res) => {
+        try {
+            const { userId } = req.params;
+            
+            if (!userId) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'User ID is required'
+                });
+            }
+            
+            console.log('📊 Checking subscription status for user:', userId);
+            
+            const result = await subscriptionSystem.getSubscriptionStatus(userId);
+            res.json(result);
+            
+        } catch (error) {
+            console.error('❌ Subscription status check failed:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to check subscription status',
+                details: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    });
 
 // Start trial
 app.post('/api/start-trial', async (req, res) => {
