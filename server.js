@@ -1009,6 +1009,7 @@ function generateSmartFallback(question) {
 
     // 🔧 FIXED /api/transcribe ENDPOINT - Replace your existing one with this
     // 🔥 NUCLEAR SOLUTION: BYPASS FormData COMPLETELY
+// 🔥 AXIOS SOLUTION: Use different HTTP client + better debugging
 app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
     try {
         console.log('🎤 Transcription request received');
@@ -1024,84 +1025,118 @@ app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
         console.log('📁 Audio file size:', req.file.size, 'bytes');
         console.log('📁 Audio file type:', req.file.mimetype);
 
-        // 🔥 SOLUTION: Convert audio to base64 and save as temp file
-        const fs = require('fs');
-        const path = require('path');
-        const { v4: uuidv4 } = require('uuid');
+        // 🔍 CRITICAL: Check if buffer contains actual audio data
+        const firstBytes = Array.from(req.file.buffer.slice(0, 20));
+        console.log('🔍 First 20 bytes of audio:', firstBytes);
         
-        // Create temp file
-        const tempFileName = `temp_audio_${uuidv4()}.webm`;
-        const tempFilePath = path.join('/tmp', tempFileName);
+        // Check if buffer is all zeros (empty audio)
+        const isEmptyBuffer = req.file.buffer.every(byte => byte === 0);
+        console.log('🔍 Is buffer empty?', isEmptyBuffer);
         
-        // Write buffer to temp file
-        fs.writeFileSync(tempFilePath, req.file.buffer);
-        
-        console.log('💾 Temp file created:', tempFilePath);
+        if (isEmptyBuffer) {
+            console.log('❌ Audio buffer is empty - no actual audio data');
+            return res.json({ 
+                success: false, 
+                transcript: null, 
+                error: 'Audio buffer contains no data' 
+            });
+        }
 
-        // 🔥 Use fs.createReadStream for FormData (this always works)
+        // 🔥 SOLUTION 1: Try axios instead of fetch
+        const axios = require('axios');
         const FormData = require('form-data');
-        const formData = new FormData();
         
-        // This method always works with OpenAI
-        formData.append('file', fs.createReadStream(tempFilePath));
+        const formData = new FormData();
+        formData.append('file', req.file.buffer, {
+            filename: 'audio.webm',
+            contentType: 'audio/webm'
+        });
         formData.append('model', 'whisper-1');
         formData.append('language', 'en');
         formData.append('response_format', 'json');
         formData.append('temperature', '0');
 
-        console.log('🔥 Using file stream approach...');
+        console.log('🔥 Using axios approach...');
 
-        const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-                ...formData.getHeaders()
-            },
-            body: formData
-        });
-
-        // Clean up temp file
         try {
-            fs.unlinkSync(tempFilePath);
-            console.log('🗑️ Temp file cleaned up');
-        } catch (e) {
-            console.warn('⚠️ Temp file cleanup warning:', e.message);
-        }
+            const response = await axios.post('https://api.openai.com/v1/audio/transcriptions', 
+                formData, 
+                {
+                    headers: {
+                        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                        ...formData.getHeaders()
+                    },
+                    timeout: 30000 // 30 second timeout
+                }
+            );
 
-        console.log('📡 Response status:', response.status);
-
-        if (response.ok) {
-            const result = await response.json();
-            const transcript = result.text ? result.text.trim() : null;
+            console.log('✅ Axios SUCCESS:', response.status);
             
-            console.log('✅ WHISPER SUCCESS:', transcript);
+            const transcript = response.data.text ? response.data.text.trim() : null;
+            console.log('✅ TRANSCRIPT:', transcript);
+            
             res.json({ 
                 success: true, 
                 transcript: transcript,
-                confidence: result.confidence || null,
-                duration: result.duration || null
+                confidence: response.data.confidence || null,
+                duration: response.data.duration || null
             });
-        } else {
-            const errorText = await response.text();
-            console.error('❌ Whisper API error:', response.status, errorText);
+
+        } catch (axiosError) {
+            console.error('❌ Axios error:', axiosError.response?.status, axiosError.response?.data);
             
-            let parsedError;
+            // 🔥 FALLBACK: Try different file format (convert webm to wav)
+            console.log('🔄 Trying fallback approach...');
+            
+            const formData2 = new FormData();
+            formData2.append('file', req.file.buffer, {
+                filename: 'audio.wav',
+                contentType: 'audio/wav'
+            });
+            formData2.append('model', 'whisper-1');
+            formData2.append('language', 'en');
+            formData2.append('response_format', 'json');
+            formData2.append('temperature', '0');
+
             try {
-                parsedError = JSON.parse(errorText);
-            } catch (e) {
-                parsedError = { error: { message: errorText } };
+                const response2 = await axios.post('https://api.openai.com/v1/audio/transcriptions', 
+                    formData2, 
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                            ...formData2.getHeaders()
+                        },
+                        timeout: 30000
+                    }
+                );
+
+                console.log('✅ Fallback SUCCESS:', response2.status);
+                const transcript = response2.data.text ? response2.data.text.trim() : null;
+                
+                res.json({ 
+                    success: true, 
+                    transcript: transcript,
+                    method: 'fallback_wav'
+                });
+
+            } catch (fallbackError) {
+                console.error('❌ Fallback also failed:', fallbackError.response?.status, fallbackError.response?.data);
+                
+                res.json({ 
+                    success: false, 
+                    transcript: null, 
+                    error: `Both attempts failed: ${axiosError.response?.data?.error?.message || axiosError.message}`,
+                    details: {
+                        primary_error: axiosError.response?.data,
+                        fallback_error: fallbackError.response?.data,
+                        buffer_size: req.file.buffer.length,
+                        buffer_empty: isEmptyBuffer,
+                        first_bytes: firstBytes
+                    }
+                });
             }
-            
-            res.json({ 
-                success: false, 
-                transcript: null, 
-                error: `OpenAI Error: ${parsedError.error?.message || errorText}`,
-                details: {
-                    status: response.status,
-                    raw_error: errorText
-                }
-            });
         }
+
     } catch (error) {
         console.error('❌ Transcription endpoint error:', error);
         res.json({ 
