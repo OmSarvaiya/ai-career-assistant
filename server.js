@@ -1045,6 +1045,7 @@ app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
         // 🔥 SOLUTION 1: Try axios instead of fetch
         const axios = require('axios');
         const FormData = require('form-data');
+        const formData = new FormData();
         
        const fileExtension = req.file.mimetype.includes('mp4') ? 'mp4' : 
                      req.file.mimetype.includes('webm') ? 'webm' : 
