@@ -1046,11 +1046,16 @@ app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
         const axios = require('axios');
         const FormData = require('form-data');
         
-        const formData = new FormData();
-        formData.append('file', req.file.buffer, {
-            filename: 'audio.webm',
-            contentType: 'audio/webm'
-        });
+       const fileExtension = req.file.mimetype.includes('mp4') ? 'mp4' : 
+                     req.file.mimetype.includes('webm') ? 'webm' : 
+                     req.file.mimetype.includes('wav') ? 'wav' : 'mp4';
+
+formData.append('file', req.file.buffer, {
+    filename: `audio.${fileExtension}`,
+    contentType: req.file.mimetype || 'audio/mp4'
+});
+
+console.log('🔍 Using detected format:', fileExtension, req.file.mimetype);
         formData.append('model', 'whisper-1');
         formData.append('language', 'en');
         formData.append('response_format', 'json');
@@ -1089,10 +1094,11 @@ app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
             console.log('🔄 Trying fallback approach...');
             
             const formData2 = new FormData();
-            formData2.append('file', req.file.buffer, {
-                filename: 'audio.wav',
-                contentType: 'audio/wav'
-            });
+            // ✅ FIXED fallback (try WebM as fallback)
+formData2.append('file', req.file.buffer, {
+    filename: 'audio.webm',
+    contentType: 'audio/webm'
+});
             formData2.append('model', 'whisper-1');
             formData2.append('language', 'en');
             formData2.append('response_format', 'json');
